@@ -180,8 +180,13 @@ int main() {
                 while (SDL_PollEvent( &e ) != 0) {
                     sdlMainLoop(&e, &quit);
                 }
-                //Apply the current image
-                SDL_BlitSurface( gCurrentSurface, NULL, gScreenSurface, NULL );
+
+				SDL_Rect stretchRect;
+				stretchRect.x = 0;
+				stretchRect.y = 0;
+				stretchRect.w = SCREEN_WIDTH;
+				stretchRect.h = SCREEN_HEIGHT;
+				SDL_BlitScaled( gCurrentSurface, NULL, gScreenSurface, &stretchRect );
             
                 //Update the surface
                 SDL_UpdateWindowSurface( gWindow );
