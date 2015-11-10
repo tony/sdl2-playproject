@@ -7,7 +7,7 @@ set(BIN_DIR ${aerobiz_SOURCE_DIR}/bin)
 
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c11")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
@@ -28,6 +28,6 @@ file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
 file (GLOB MY_PROJECT_GFX_ELLIOT_RESOURCES resources/elliot/*.png)
 file (COPY ${MY_PROJECT_GFX_ELLIOT_RESOURCES} DESTINATION resources/elliot)
 
-add_executable(aerobiz src/main.cpp)
+add_executable(aerobiz src/main.c)
 target_link_libraries(aerobiz ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
 install(TARGETS aerobiz RUNTIME DESTINATION ${BIN_DIR})

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include <SDL.h>
 #include <SDL_image.h>
 
@@ -7,7 +8,7 @@ const int SCREEN_HEIGHT = 480;
 
 bool init();
 bool loadMedia();
-void close();
+void app_close();
 SDL_Surface* loadSurface( const char *path );
 
 enum KeyPressSurfaces
@@ -123,7 +124,7 @@ bool loadMedia() {
     return success;
 }
 
-void close() {
+void app_close() {
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
 
@@ -195,6 +196,6 @@ int main() {
 
     }
 
-    close();
+    app_close();
     return 0;
 }
