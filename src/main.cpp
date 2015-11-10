@@ -35,7 +35,6 @@ bool init() {
             gScreenSurface = SDL_GetWindowSurface( gWindow );
             SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
             SDL_UpdateWindowSurface(gWindow);
-            SDL_Delay(2000);
         }
     }
 
@@ -92,6 +91,9 @@ void close() {
 
 int main() {
 
+    bool quit = false;
+    SDL_Event e;
+
     //Start up SDL and create window
     if( !init() ) {
         printf( "Failed to initialize!\n" );
@@ -105,10 +107,17 @@ int main() {
             // Update the surface
             SDL_UpdateWindowSurface(gWindow);
 
-            SDL_Delay(2000);
+            while (!quit) {
+                while (SDL_PollEvent( &e ) != 0) {
+                    if(e.type == SDL_QUIT) {
+                        quit = true;
+                    }
+                }
+            }
         }
 
     }
+
     close();
     return 0;
 }
