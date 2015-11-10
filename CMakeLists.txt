@@ -25,6 +25,8 @@ include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR})
 
 file (GLOB MY_PROJECT_GFX_RESOURCES resources/*.png)
 file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
+file (GLOB MY_PROJECT_GFX_ELLIOT_RESOURCES resources/elliot/*.png)
+file (COPY ${MY_PROJECT_GFX_ELLIOT_RESOURCES} DESTINATION resources/elliot)
 
 add_executable(aerobiz src/main.cpp)
 target_link_libraries(aerobiz ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
