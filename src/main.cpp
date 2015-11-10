@@ -130,6 +130,36 @@ void close() {
     SDL_Quit();
 }
 
+void sdlMainLoop(SDL_Event* e, bool* quit) {
+    if(e->type == SDL_QUIT) {
+        *quit = true;
+    } else if (e->type == SDL_KEYDOWN) {
+
+        switch( e->key.keysym.sym )
+        {
+            case SDLK_UP:
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
+            break;
+
+            case SDLK_DOWN:
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
+            break;
+
+            case SDLK_LEFT:
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
+            break;
+
+            case SDLK_RIGHT:
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
+            break;
+
+            default:
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            break;
+        }
+    }
+}
+
 int main() {
 
     bool quit = false;
@@ -148,33 +178,7 @@ int main() {
             gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
-                    if(e.type == SDL_QUIT) {
-                        quit = true;
-                    } else if (e.type == SDL_KEYDOWN) {
-                
-                        switch( e.key.keysym.sym )
-                        {
-                            case SDLK_UP:
-                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
-                            break;
-
-                            case SDLK_DOWN:
-                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
-                            break;
-
-                            case SDLK_LEFT:
-                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
-                            break;
-
-                            case SDLK_RIGHT:
-                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
-                            break;
-
-                            default:
-                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
-                            break;
-                        }
-                    }
+                    sdlMainLoop(&e, &quit);
                 }
                 //Apply the current image
                 SDL_BlitSurface( gCurrentSurface, NULL, gScreenSurface, NULL );
