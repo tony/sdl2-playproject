@@ -8,11 +8,22 @@ const int SCREEN_HEIGHT = 480;
 bool init();
 bool loadMedia();
 void close();
-SDL_Surface* loadSurface();
+SDL_Surface* loadSurface( const char *path );
+
+enum KeyPressSurfaces
+{
+    KEY_PRESS_SURFACE_DEFAULT,
+    KEY_PRESS_SURFACE_UP,
+    KEY_PRESS_SURFACE_DOWN,
+    KEY_PRESS_SURFACE_LEFT,
+    KEY_PRESS_SURFACE_RIGHT,
+    KEY_PRESS_SURFACE_TOTAL
+};
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
-SDL_Surface* gHelloWorld = NULL;
+SDL_Surface* gKeyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
+SDL_Surface* gCurrentSurface = NULL;
 
 
 bool init() {
@@ -70,19 +81,49 @@ SDL_Surface* loadSurface( const char* path )
 
 bool loadMedia() {
     bool success = true;
-    gHelloWorld = loadSurface("resources/continents.png");
 
-    if (gHelloWorld == NULL) {
-        printf("Unable to load image %s! SDL Error: %s\n", "resources/continents.png", SDL_GetError());
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "resources/elliot/Down_0.png" );
+    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
+    {
+        printf( "Failed to load default image!\n" );
+        success = false;
+    }
+
+    //Load up surface
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ] = loadSurface( "resources/elliot/Up_0.png" );
+    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ] == NULL )
+    {
+        printf( "Failed to load up image!\n" );
+        success = false;
+    }
+
+    //Load down surface
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] = loadSurface( "resources/elliot/Down_0.png" );
+    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] == NULL )
+    {
+        printf( "Failed to load down image!\n" );
+        success = false;
+    }
+
+    //Load left surface
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] = loadSurface( "resources/elliot/Left_0.png" );
+    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] == NULL )
+    {
+        printf( "Failed to load left image!\n" );
+        success = false;
+    }
+
+    //Load right surface
+    gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] = loadSurface( "resources/elliot/Right_0.png" );
+    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
+    {
+        printf( "Failed to load right image!\n" );
         success = false;
     }
     return success;
 }
 
 void close() {
-    SDL_FreeSurface(gHelloWorld);
-    gHelloWorld = NULL;
-
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
 
@@ -92,7 +133,6 @@ void close() {
 int main() {
 
     bool quit = false;
-    SDL_Event e;
 
     //Start up SDL and create window
     if( !init() ) {
@@ -103,16 +143,44 @@ int main() {
             printf( "Failed to load media!\n" );
         } else {
             //Apply the image
-            SDL_BlitSurface( gHelloWorld, NULL, gScreenSurface, NULL );
-            // Update the surface
-            SDL_UpdateWindowSurface(gWindow);
+            SDL_Event e;
 
+            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     if(e.type == SDL_QUIT) {
                         quit = true;
+                    } else if (e.type == SDL_KEYDOWN) {
+                
+                        switch( e.key.keysym.sym )
+                        {
+                            case SDLK_UP:
+                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
+                            break;
+
+                            case SDLK_DOWN:
+                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
+                            break;
+
+                            case SDLK_LEFT:
+                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
+                            break;
+
+                            case SDLK_RIGHT:
+                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
+                            break;
+
+                            default:
+                            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+                            break;
+                        }
                     }
                 }
+                //Apply the current image
+                SDL_BlitSurface( gCurrentSurface, NULL, gScreenSurface, NULL );
+            
+                //Update the surface
+                SDL_UpdateWindowSurface( gWindow );
             }
         }
 
