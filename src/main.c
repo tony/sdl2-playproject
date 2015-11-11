@@ -6,7 +6,7 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-bool init();
+bool init_window();
 bool loadMedia();
 void app_close();
 SDL_Surface* loadSurface( const char *path );
@@ -27,7 +27,7 @@ SDL_Surface* gKeyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
 SDL_Surface* gCurrentSurface = NULL;
 
 
-bool init() {
+bool init_window() {
     bool success = true;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -165,8 +165,7 @@ int main() {
 
     bool quit = false;
 
-    //Start up SDL and create window
-    if( !init() ) {
+    if( !init_window() ) {
         printf( "Failed to initialize!\n" );
     } else {
         //Load media
