@@ -227,8 +227,8 @@ int main() {
                 }
 
                 SDL_RenderClear(app.renderer);
+
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
-                SDL_RenderPresent(app.renderer);
 
                 renderTexture( app.currentTexture, 50, 50 );
 
