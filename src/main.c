@@ -32,6 +32,20 @@ bool initWindow() {
             printf("Window could not be created!  SDL_Error: %s\n", SDL_GetError() );
             success = false;
         } else {
+            app.renderer = SDL_CreateRenderer(app.window, -1, SDL_RENDERER_ACCELERATED);
+            if (app.renderer == NULL) {
+                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+                success = false;
+            } else {
+                SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+
+                int imgFlags = IMG_INIT_PNG;
+                if (!(IMG_Init(imgFlags) & imgFlags)) {
+                    printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+                    success = false;
+                }
+            }
+
             app.screenSurface = SDL_GetWindowSurface( app.window );
             SDL_FillRect( app.screenSurface, NULL, SDL_MapRGB( app.screenSurface->format, 0xFF, 0xFF, 0xFF ) );
             SDL_UpdateWindowSurface(app.window);
@@ -41,23 +55,21 @@ bool initWindow() {
     return success;
 }
 
-SDL_Surface* loadSurface( const char* path )
-{
+SDL_Surface* loadSurface( const char* path ) {
+    bool success = true;
+
     //The final optimized image
+
     SDL_Surface* optimizedSurface = NULL;
 
     //Load image at specified path
     SDL_Surface* loadedSurface = IMG_Load( path );
-    if( loadedSurface == NULL )
-    {
+    if( loadedSurface == NULL ) {
         printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
-    }
-    else
-    {
+    } else {
         //Convert surface to screen format
         optimizedSurface = SDL_ConvertSurface( loadedSurface, app.screenSurface->format, 0 );
-        if( optimizedSurface == NULL )
-        {
+        if( optimizedSurface == NULL ) {
             printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
         }
 
@@ -109,13 +121,26 @@ bool appLoadMedia() {
         printf( "Failed to load right image!\n" );
         success = false;
     }
+
+    app.texture = loadTexture("resources/continents.png");
+    if (app.texture == NULL) {
+        printf("Failed to load image!\n");
+        success = false;
+    }
+
     return success;
 }
 
 void appClose() {
-    SDL_DestroyWindow(app.window);
-    app.window = NULL;
+    SDL_DestroyTexture(app.texture);
+    app.texture = NULL;
 
+    app.renderer = NULL;
+    app.window = NULL;
+    SDL_DestroyRenderer(app.renderer);
+    SDL_DestroyWindow(app.window);
+
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -149,6 +174,23 @@ void appMainLoop(SDL_Event* e, bool* quit) {
     }
 }
 
+
+SDL_Texture* loadTexture(const char* path) {
+    SDL_Texture* newTexture = NULL;
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if (loadedSurface == NULL) {
+        printf("UNable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
+    } else {
+        newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
+        if (newTexture == NULL) {
+            printf("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
+        }
+
+        SDL_FreeSurface(loadedSurface);
+    }
+    return newTexture;
+}
+
 int main() {
 
     bool quit = false;
@@ -169,15 +211,19 @@ int main() {
                     appMainLoop(&e, &quit);
                 }
 
-				SDL_Rect stretchRect;
-				stretchRect.x = 0;
-				stretchRect.y = 0;
-				stretchRect.w = SCREEN_WIDTH;
-				stretchRect.h = SCREEN_HEIGHT;
-				SDL_BlitScaled( app.currentSurface, NULL, app.screenSurface, &stretchRect );
-            
-                //Update the surface
-                SDL_UpdateWindowSurface( app.window );
+                SDL_RenderClear(app.renderer);
+                SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
+                SDL_RenderPresent(app.renderer);
+
+				/* SDL_Rect stretchRect; */
+				/* stretchRect.x = 0; */
+				/* stretchRect.y = 0; */
+				/* stretchRect.w = SCREEN_WIDTH; */
+				/* stretchRect.h = SCREEN_HEIGHT; */
+				/* SDL_BlitScaled( app.currentSurface, NULL, app.screenSurface, &stretchRect ); */
+                /*  */
+                /* //Update the surface */
+                /* SDL_UpdateWindowSurface( app.window ); */
             }
         }
 

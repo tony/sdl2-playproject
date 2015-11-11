@@ -2,10 +2,10 @@ bool initWindow();
 bool appLoadMedia();
 void appClose();
 void appMainLoop(SDL_Event* e, bool* quit);
-SDL_Surface* loadSurface( const char *path );
+SDL_Surface* loadSurface(const char* path);
+SDL_Texture* loadTexture(const char* path);
 
-enum KeyPressSurfaces
-{
+enum KeyPressSurfaces {
     KEY_PRESS_SURFACE_DEFAULT,
     KEY_PRESS_SURFACE_UP,
     KEY_PRESS_SURFACE_DOWN,
@@ -19,6 +19,8 @@ struct App {
     SDL_Surface* screenSurface;
     SDL_Surface* keyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
     SDL_Surface* currentSurface;
+    SDL_Renderer* renderer;
+    SDL_Texture* texture;
 };
 
 typedef struct App App;
