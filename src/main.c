@@ -10,8 +10,8 @@ const int SCREEN_HEIGHT = 480;
 App app = {
     .window = NULL,
     .screenSurface = NULL,
-    .keyPressSurfaces = NULL,
-    .currentSurface = NULL
+    .keyPressTextures = NULL,
+    .currentTexture = NULL
 };
 
 
@@ -27,7 +27,8 @@ bool initWindow() {
                 SCREEN_WIDTH,
                 SCREEN_HEIGHT,
                 SDL_WINDOW_SHOWN
-                );
+        );
+
         if (app.window == NULL) {
             printf("Window could not be created!  SDL_Error: %s\n", SDL_GetError() );
             success = false;
@@ -83,40 +84,40 @@ SDL_Surface* loadSurface( const char* path ) {
 bool appLoadMedia() {
     bool success = true;
 
-    app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "resources/elliot/Down_0.png" );
-    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
+    app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
+    if( app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
     {
         printf( "Failed to load default image!\n" );
         success = false;
     }
 
     //Load up surface
-    app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ] = loadSurface( "resources/elliot/Up_0.png" );
-    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ] == NULL )
+    app.keyPressTextures[ KEY_PRESS_SURFACE_UP ] = loadTexture( "resources/elliot/Up_0.png" );
+    if( app.keyPressTextures[ KEY_PRESS_SURFACE_UP ] == NULL )
     {
         printf( "Failed to load up image!\n" );
         success = false;
     }
 
     //Load down surface
-    app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] = loadSurface( "resources/elliot/Down_0.png" );
-    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] == NULL )
+    app.keyPressTextures[ KEY_PRESS_SURFACE_DOWN ] = loadTexture( "resources/elliot/Down_0.png" );
+    if( app.keyPressTextures[ KEY_PRESS_SURFACE_DOWN ] == NULL )
     {
         printf( "Failed to load down image!\n" );
         success = false;
     }
 
     //Load left surface
-    app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] = loadSurface( "resources/elliot/Left_0.png" );
-    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] == NULL )
+    app.keyPressTextures[ KEY_PRESS_SURFACE_LEFT ] = loadTexture( "resources/elliot/Left_0.png" );
+    if( app.keyPressTextures[ KEY_PRESS_SURFACE_LEFT ] == NULL )
     {
         printf( "Failed to load left image!\n" );
         success = false;
     }
 
     //Load right surface
-    app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] = loadSurface( "resources/elliot/Right_0.png" );
-    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
+    app.keyPressTextures[ KEY_PRESS_SURFACE_RIGHT ] = loadTexture( "resources/elliot/Right_0.png" );
+    if( app.keyPressTextures[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
     {
         printf( "Failed to load right image!\n" );
         success = false;
@@ -149,26 +150,30 @@ void appMainLoop(SDL_Event* e, bool* quit) {
         *quit = true;
     } else if (e->type == SDL_KEYDOWN) {
 
-        switch( e->key.keysym.sym )
-        {
+        switch( e->key.keysym.sym ) {
+            case  SDLK_ESCAPE:
+
+            *quit = true;
+            break;
+
             case SDLK_UP:
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_UP ];
             break;
 
             case SDLK_DOWN:
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DOWN ];
             break;
 
             case SDLK_LEFT:
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_LEFT ];
             break;
 
             case SDLK_RIGHT:
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_RIGHT ];
             break;
 
             default:
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             break;
         }
     }
@@ -205,7 +210,7 @@ int main() {
             //Apply the image
             SDL_Event e;
 
-            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     appMainLoop(&e, &quit);
@@ -215,15 +220,9 @@ int main() {
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
                 SDL_RenderPresent(app.renderer);
 
-				/* SDL_Rect stretchRect; */
-				/* stretchRect.x = 0; */
-				/* stretchRect.y = 0; */
-				/* stretchRect.w = SCREEN_WIDTH; */
-				/* stretchRect.h = SCREEN_HEIGHT; */
-				/* SDL_BlitScaled( app.currentSurface, NULL, app.screenSurface, &stretchRect ); */
-                /*  */
-                /* //Update the surface */
-                /* SDL_UpdateWindowSurface( app.window ); */
+                SDL_RenderClear(app.renderer);
+                SDL_RenderCopy(app.renderer, app.currentTexture, NULL, NULL);
+                SDL_RenderPresent(app.renderer);
             }
         }
 
