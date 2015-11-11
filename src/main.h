@@ -13,3 +13,12 @@ enum KeyPressSurfaces
     KEY_PRESS_SURFACE_RIGHT,
     KEY_PRESS_SURFACE_TOTAL
 };
+
+struct App {
+    SDL_Window* window;
+    SDL_Surface* screenSurface;
+    SDL_Surface* keyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
+    SDL_Surface* currentSurface;
+};
+
+typedef struct App App;

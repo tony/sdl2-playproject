@@ -7,10 +7,12 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-SDL_Window* gWindow = NULL;
-SDL_Surface* gScreenSurface = NULL;
-SDL_Surface* gKeyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
-SDL_Surface* gCurrentSurface = NULL;
+App app = {
+    .window = NULL,
+    .screenSurface = NULL,
+    .keyPressSurfaces = NULL,
+    .currentSurface = NULL
+};
 
 
 bool initWindow() {
@@ -19,20 +21,20 @@ bool initWindow() {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
         success = false;
     } else {
-        gWindow = SDL_CreateWindow("SDL Tutorial",
+        app.window = SDL_CreateWindow("SDL Tutorial",
                 SDL_WINDOWPOS_UNDEFINED, 
                 SDL_WINDOWPOS_UNDEFINED, 
                 SCREEN_WIDTH,
                 SCREEN_HEIGHT,
                 SDL_WINDOW_SHOWN
                 );
-        if (gWindow == NULL) {
+        if (app.window == NULL) {
             printf("Window could not be created!  SDL_Error: %s\n", SDL_GetError() );
             success = false;
         } else {
-            gScreenSurface = SDL_GetWindowSurface( gWindow );
-            SDL_FillRect( gScreenSurface, NULL, SDL_MapRGB( gScreenSurface->format, 0xFF, 0xFF, 0xFF ) );
-            SDL_UpdateWindowSurface(gWindow);
+            app.screenSurface = SDL_GetWindowSurface( app.window );
+            SDL_FillRect( app.screenSurface, NULL, SDL_MapRGB( app.screenSurface->format, 0xFF, 0xFF, 0xFF ) );
+            SDL_UpdateWindowSurface(app.window);
         }
     }
 
@@ -53,7 +55,7 @@ SDL_Surface* loadSurface( const char* path )
     else
     {
         //Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+        optimizedSurface = SDL_ConvertSurface( loadedSurface, app.screenSurface->format, 0 );
         if( optimizedSurface == NULL )
         {
             printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
@@ -69,40 +71,40 @@ SDL_Surface* loadSurface( const char* path )
 bool loadMedia() {
     bool success = true;
 
-    gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "resources/elliot/Down_0.png" );
-    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
+    app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "resources/elliot/Down_0.png" );
+    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
     {
         printf( "Failed to load default image!\n" );
         success = false;
     }
 
     //Load up surface
-    gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ] = loadSurface( "resources/elliot/Up_0.png" );
-    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ] == NULL )
+    app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ] = loadSurface( "resources/elliot/Up_0.png" );
+    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ] == NULL )
     {
         printf( "Failed to load up image!\n" );
         success = false;
     }
 
     //Load down surface
-    gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] = loadSurface( "resources/elliot/Down_0.png" );
-    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] == NULL )
+    app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] = loadSurface( "resources/elliot/Down_0.png" );
+    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ] == NULL )
     {
         printf( "Failed to load down image!\n" );
         success = false;
     }
 
     //Load left surface
-    gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] = loadSurface( "resources/elliot/Left_0.png" );
-    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] == NULL )
+    app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] = loadSurface( "resources/elliot/Left_0.png" );
+    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ] == NULL )
     {
         printf( "Failed to load left image!\n" );
         success = false;
     }
 
     //Load right surface
-    gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] = loadSurface( "resources/elliot/Right_0.png" );
-    if( gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
+    app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] = loadSurface( "resources/elliot/Right_0.png" );
+    if( app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
     {
         printf( "Failed to load right image!\n" );
         success = false;
@@ -111,8 +113,8 @@ bool loadMedia() {
 }
 
 void appClose() {
-    SDL_DestroyWindow(gWindow);
-    gWindow = NULL;
+    SDL_DestroyWindow(app.window);
+    app.window = NULL;
 
     SDL_Quit();
 }
@@ -125,23 +127,23 @@ void appMainLoop(SDL_Event* e, bool* quit) {
         switch( e->key.keysym.sym )
         {
             case SDLK_UP:
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_UP ];
             break;
 
             case SDLK_DOWN:
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DOWN ];
             break;
 
             case SDLK_LEFT:
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_LEFT ];
             break;
 
             case SDLK_RIGHT:
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_RIGHT ];
             break;
 
             default:
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             break;
         }
     }
@@ -161,7 +163,7 @@ int main() {
             //Apply the image
             SDL_Event e;
 
-            gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.currentSurface = app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     appMainLoop(&e, &quit);
@@ -172,10 +174,10 @@ int main() {
 				stretchRect.y = 0;
 				stretchRect.w = SCREEN_WIDTH;
 				stretchRect.h = SCREEN_HEIGHT;
-				SDL_BlitScaled( gCurrentSurface, NULL, gScreenSurface, &stretchRect );
+				SDL_BlitScaled( app.currentSurface, NULL, app.screenSurface, &stretchRect );
             
                 //Update the surface
-                SDL_UpdateWindowSurface( gWindow );
+                SDL_UpdateWindowSurface( app.window );
             }
         }
 
