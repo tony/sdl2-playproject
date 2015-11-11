@@ -3,7 +3,6 @@ bool appLoadMedia();
 void appClose();
 void appMainLoop(SDL_Event* e, bool* quit);
 void renderTexture(SDL_Texture* texture, int x, int y);
-SDL_Surface* loadSurface(const char* path);
 SDL_Texture* loadTexture(const char* path);
 
 enum KeyPressTextures {
@@ -17,7 +16,6 @@ enum KeyPressTextures {
 
 struct App {
     SDL_Window* window;
-    SDL_Surface* screenSurface;
     SDL_Texture* keyPressTextures[ KEY_PRESS_SURFACE_TOTAL ];
     SDL_Texture* currentTexture;
     SDL_Renderer* renderer;

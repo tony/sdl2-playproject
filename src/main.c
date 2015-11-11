@@ -9,7 +9,6 @@ const int SCREEN_HEIGHT = 480;
 
 App app = {
     .window = NULL,
-    .screenSurface = NULL,
     .keyPressTextures = NULL,
     .currentTexture = NULL
 };
@@ -47,38 +46,10 @@ bool initWindow() {
                 }
             }
 
-            app.screenSurface = SDL_GetWindowSurface( app.window );
-            SDL_FillRect( app.screenSurface, NULL, SDL_MapRGB( app.screenSurface->format, 0xFF, 0xFF, 0xFF ) );
-            SDL_UpdateWindowSurface(app.window);
         }
     }
 
     return success;
-}
-
-SDL_Surface* loadSurface( const char* path ) {
-    bool success = true;
-
-    //The final optimized image
-
-    SDL_Surface* optimizedSurface = NULL;
-
-    //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load( path );
-    if( loadedSurface == NULL ) {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError() );
-    } else {
-        //Convert surface to screen format
-        optimizedSurface = SDL_ConvertSurface( loadedSurface, app.screenSurface->format, 0 );
-        if( optimizedSurface == NULL ) {
-            printf( "Unable to optimize image %s! SDL Error: %s\n", path, SDL_GetError() );
-        }
-
-        //Get rid of old loaded surface
-        SDL_FreeSurface( loadedSurface );
-    }
-
-    return optimizedSurface;
 }
 
 SDL_Texture* loadTexture(const char* path) {
