@@ -81,6 +81,33 @@ SDL_Surface* loadSurface( const char* path ) {
     return optimizedSurface;
 }
 
+SDL_Texture* loadTexture(const char* path) {
+    SDL_Texture* newTexture = NULL;
+    SDL_Surface* loadedSurface = IMG_Load(path);
+    if (loadedSurface == NULL) {
+        printf("Unable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
+    } else {
+        //Color key image
+        SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+
+        newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
+        if (newTexture == NULL) {
+            printf("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
+        }
+
+        SDL_FreeSurface(loadedSurface);
+    }
+    return newTexture;
+}
+
+void renderTexture(SDL_Texture* texture, int x, int y) {
+    int w, h;
+    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_Rect renderQuad = { x, y, w, h };
+    SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
+}
+
+
 bool appLoadMedia() {
     bool success = true;
 
@@ -179,23 +206,6 @@ void appMainLoop(SDL_Event* e, bool* quit) {
     }
 }
 
-
-SDL_Texture* loadTexture(const char* path) {
-    SDL_Texture* newTexture = NULL;
-    SDL_Surface* loadedSurface = IMG_Load(path);
-    if (loadedSurface == NULL) {
-        printf("UNable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
-    } else {
-        newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
-        if (newTexture == NULL) {
-            printf("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
-        }
-
-        SDL_FreeSurface(loadedSurface);
-    }
-    return newTexture;
-}
-
 int main() {
 
     bool quit = false;
@@ -220,8 +230,8 @@ int main() {
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
                 SDL_RenderPresent(app.renderer);
 
-                SDL_RenderClear(app.renderer);
-                SDL_RenderCopy(app.renderer, app.currentTexture, NULL, NULL);
+                renderTexture( app.currentTexture, 50, 50 );
+
                 SDL_RenderPresent(app.renderer);
             }
         }

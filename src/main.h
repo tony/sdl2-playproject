@@ -2,6 +2,7 @@ bool initWindow();
 bool appLoadMedia();
 void appClose();
 void appMainLoop(SDL_Event* e, bool* quit);
+void renderTexture(SDL_Texture* texture, int x, int y);
 SDL_Surface* loadSurface(const char* path);
 SDL_Texture* loadTexture(const char* path);
 
