@@ -2,24 +2,10 @@
 #include <stdbool.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include "main.h"
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
-
-bool init_window();
-bool loadMedia();
-void app_close();
-SDL_Surface* loadSurface( const char *path );
-
-enum KeyPressSurfaces
-{
-    KEY_PRESS_SURFACE_DEFAULT,
-    KEY_PRESS_SURFACE_UP,
-    KEY_PRESS_SURFACE_DOWN,
-    KEY_PRESS_SURFACE_LEFT,
-    KEY_PRESS_SURFACE_RIGHT,
-    KEY_PRESS_SURFACE_TOTAL
-};
 
 SDL_Window* gWindow = NULL;
 SDL_Surface* gScreenSurface = NULL;
@@ -27,7 +13,7 @@ SDL_Surface* gKeyPressSurfaces[ KEY_PRESS_SURFACE_TOTAL ];
 SDL_Surface* gCurrentSurface = NULL;
 
 
-bool init_window() {
+bool initWindow() {
     bool success = true;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -124,14 +110,14 @@ bool loadMedia() {
     return success;
 }
 
-void app_close() {
+void appClose() {
     SDL_DestroyWindow(gWindow);
     gWindow = NULL;
 
     SDL_Quit();
 }
 
-void sdlMainLoop(SDL_Event* e, bool* quit) {
+void appMainLoop(SDL_Event* e, bool* quit) {
     if(e->type == SDL_QUIT) {
         *quit = true;
     } else if (e->type == SDL_KEYDOWN) {
@@ -165,7 +151,7 @@ int main() {
 
     bool quit = false;
 
-    if( !init_window() ) {
+    if( !initWindow() ) {
         printf( "Failed to initialize!\n" );
     } else {
         //Load media
@@ -178,7 +164,7 @@ int main() {
             gCurrentSurface = gKeyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
-                    sdlMainLoop(&e, &quit);
+                    appMainLoop(&e, &quit);
                 }
 
 				SDL_Rect stretchRect;
@@ -195,6 +181,6 @@ int main() {
 
     }
 
-    app_close();
+    appClose();
     return 0;
 }
