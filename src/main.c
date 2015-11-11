@@ -14,7 +14,7 @@ App app = {
 };
 
 
-bool initWindow() {
+bool initWindow(void) {
     bool success = true;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -79,7 +79,7 @@ void renderTexture(SDL_Texture* texture, int x, int y) {
 }
 
 
-bool appLoadMedia() {
+bool appLoadMedia(void) {
     bool success = true;
 
     app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
@@ -130,7 +130,7 @@ bool appLoadMedia() {
     return success;
 }
 
-void appClose() {
+void appClose(void) {
     SDL_DestroyTexture(app.texture);
     app.texture = NULL;
 
@@ -177,7 +177,7 @@ void appMainLoop(SDL_Event* e, bool* quit) {
     }
 }
 
-int main() {
+int main(void) {
 
     bool quit = false;
 
