@@ -1,5 +1,5 @@
 bool initWindow();
-bool loadMedia();
+bool appLoadMedia();
 void appClose();
 void appMainLoop(SDL_Event* e, bool* quit);
 SDL_Surface* loadSurface( const char *path );

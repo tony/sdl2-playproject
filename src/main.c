@@ -68,7 +68,7 @@ SDL_Surface* loadSurface( const char* path )
     return optimizedSurface;
 }
 
-bool loadMedia() {
+bool appLoadMedia() {
     bool success = true;
 
     app.keyPressSurfaces[ KEY_PRESS_SURFACE_DEFAULT ] = loadSurface( "resources/elliot/Down_0.png" );
@@ -157,7 +157,7 @@ int main() {
         printf( "Failed to initialize!\n" );
     } else {
         //Load media
-        if( !loadMedia() ) {
+        if( !appLoadMedia() ) {
             printf( "Failed to load media!\n" );
         } else {
             //Apply the image
