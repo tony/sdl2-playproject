@@ -139,7 +139,7 @@ void handleAppEvent(SDL_Event* e, bool* quit) {
             break;
 
             case SDLK_c:
-                if (e->key.keysym.mod && KMOD_CTRL) {
+                if (e->key.keysym.mod & KMOD_CTRL) {
                     *quit = true;
                 }
             break;
