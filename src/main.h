@@ -1,8 +1,8 @@
 bool initWindow(void);
 bool appLoadMedia(void);
 void appClose(void);
-void appMainLoop(SDL_Event* e, bool* quit);
-void heroLoop(SDL_Event* e);
+void handleAppEvent(SDL_Event* e, bool* quit);
+void handleHeroEvent(SDL_Event* e);
 void renderTexture(SDL_Texture* texture, int x, int y, int w, int h);
 SDL_Texture* loadTexture(const char* path);
 
