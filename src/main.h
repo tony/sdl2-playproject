@@ -14,6 +14,9 @@ enum KeyPressTextures {
     KEY_PRESS_SURFACE_TOTAL
 };
 
+/**
+ * Namespace for global objects (window, renderer, etc.)
+ */
 typedef struct App {
     SDL_Window* window;
     SDL_Texture* keyPressTextures[ KEY_PRESS_SURFACE_TOTAL ];
