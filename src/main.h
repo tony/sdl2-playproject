@@ -14,12 +14,10 @@ enum KeyPressTextures {
     KEY_PRESS_SURFACE_TOTAL
 };
 
-struct App {
+typedef struct App {
     SDL_Window* window;
     SDL_Texture* keyPressTextures[ KEY_PRESS_SURFACE_TOTAL ];
     SDL_Texture* currentTexture;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
-};
-
-typedef struct App App;
+} App;
