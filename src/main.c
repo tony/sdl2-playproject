@@ -7,15 +7,19 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+Sprite heroSprite = {
+    .texture = NULL
+};
+
 Hero hero = {
-    .texture = NULL,
+    .sprite = &heroSprite,
     .state = Stand,
     .StateTextures = NULL
 };
 
 App app = {
     .window = NULL,
-    .hero = &hero,
+    .hero = &hero
 };
 
 
@@ -166,23 +170,23 @@ void handleHeroEvent(SDL_Event* e) {
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
             case SDLK_UP:
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ];
             break;
 
             case SDLK_DOWN:
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ];
             break;
 
             case SDLK_LEFT:
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ];
             break;
 
             case SDLK_RIGHT:
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ];
             break;
 
             default:
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             break;
         }
     }
@@ -202,7 +206,7 @@ int main(void) {
             //Apply the image
             SDL_Event e;
 
-            app.hero->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     handleAppEvent(&e, &quit);
@@ -213,7 +217,7 @@ int main(void) {
 
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
 
-                renderTexture(app.hero->texture, 50, 50, -1, -1);
+                renderTexture(app.hero->sprite->texture, 50, 50, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }

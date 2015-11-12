@@ -22,12 +22,15 @@ enum HeroState {
     Stand
 };
 
+typedef struct Sprite {
+    SDL_Texture* texture;
+} Sprite;
+
 typedef struct Hero {
     SDL_Texture* StateTextures[ KEY_PRESS_SURFACE_TOTAL ];
-    SDL_Texture* texture;
+    Sprite* sprite;
     enum HeroState state;
 } Hero;
-
 
 /**
  * Namespace for global objects (window, renderer, etc.)
