@@ -88,8 +88,6 @@ void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
 bool appLoadMedia(void) {
     bool success = true;
 
-    static int frame = 0;
-
     app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
     if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
     {
