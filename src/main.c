@@ -29,32 +29,28 @@ bool initWindow(void) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
         success = false;
     } else {
-        app.window = SDL_CreateWindow("SDL Tutorial",
-                SDL_WINDOWPOS_UNDEFINED, 
-                SDL_WINDOWPOS_UNDEFINED, 
+        SDL_CreateWindowAndRenderer(
                 SCREEN_WIDTH,
                 SCREEN_HEIGHT,
-                SDL_WINDOW_SHOWN
+                SDL_WINDOW_SHOWN,
+                &app.window,
+                &app.renderer
         );
 
         if (app.window == NULL) {
             printf("Window could not be created!  SDL_Error: %s\n", SDL_GetError() );
             success = false;
-        } else {
-            app.renderer = SDL_CreateRenderer(app.window, -1, SDL_RENDERER_ACCELERATED);
-            if (app.renderer == NULL) {
+        } else if (app.renderer == NULL) {
                 printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
                 success = false;
-            } else {
-                SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        } else {
+            SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-                int imgFlags = IMG_INIT_PNG;
-                if (!(IMG_Init(imgFlags) & imgFlags)) {
-                    printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-                    success = false;
-                }
+            int imgFlags = IMG_INIT_PNG;
+            if (!(IMG_Init(imgFlags) & imgFlags)) {
+                printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+                success = false;
             }
-
         }
     }
 
