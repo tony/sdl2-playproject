@@ -110,8 +110,8 @@ bool appLoadMedia(void) {
         }
     }
 
-    app.texture = loadTexture("resources/continents.png");
-    if (app.texture == NULL) {
+    app.bgTexture = loadTexture("resources/continents.png");
+    if (app.bgTexture == NULL) {
         printf("Failed to load image!\n");
         success = false;
     }
@@ -120,8 +120,8 @@ bool appLoadMedia(void) {
 }
 
 void appClose(void) {
-    SDL_DestroyTexture(app.texture);
-    app.texture = NULL;
+    SDL_DestroyTexture(app.bgTexture);
+    app.bgTexture = NULL;
 
     app.renderer = NULL;
     app.window = NULL;
@@ -194,7 +194,7 @@ int main(void) {
 
                 SDL_RenderClear(app.renderer);
 
-                SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
+                SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
 
                 renderTexture(app.hero->sprite->texture, 50, 50, -1, -1);
 

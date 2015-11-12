@@ -39,5 +39,5 @@ typedef struct App {
     SDL_Window* window;
     Hero* hero;
     SDL_Renderer* renderer;
-    SDL_Texture* texture;
+    SDL_Texture* bgTexture;
 } App;
