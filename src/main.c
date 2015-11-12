@@ -93,42 +93,21 @@ bool appLoadMedia(void) {
     bool success = true;
 
     app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
-    {
-        printf( "Failed to load default image!\n" );
-        success = false;
+
+    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL ) {
+
     }
 
-    //Load up surface
     app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ] = loadTexture( "resources/elliot/Up_0.png" );
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ] == NULL )
-    {
-        printf( "Failed to load up image!\n" );
-        success = false;
-    }
-
-    //Load down surface
     app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ] = loadTexture( "resources/elliot/Down_0.png" );
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ] == NULL )
-    {
-        printf( "Failed to load down image!\n" );
-        success = false;
-    }
-
-    //Load left surface
     app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ] = loadTexture( "resources/elliot/Left_0.png" );
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ] == NULL )
-    {
-        printf( "Failed to load left image!\n" );
-        success = false;
-    }
-
-    //Load right surface
     app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ] = loadTexture( "resources/elliot/Right_0.png" );
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ] == NULL )
-    {
-        printf( "Failed to load right image!\n" );
-        success = false;
+
+    for (int i=KEY_PRESS_SURFACE_DEFAULT; i <= KEY_PRESS_SURFACE_TOTAL; ++i) {
+        if (app.hero->StateTextures[i] == NULL) {
+            printf( "Failed to load default image!\n" );
+            success = false;
+        }
     }
 
     app.texture = loadTexture("resources/continents.png");
