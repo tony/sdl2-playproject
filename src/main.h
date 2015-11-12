@@ -20,7 +20,7 @@ enum KeyPressTextures {
 typedef struct App {
     SDL_Window* window;
     SDL_Texture* keyPressTextures[ KEY_PRESS_SURFACE_TOTAL ];
-    SDL_Texture* currentTexture;
+    SDL_Texture* heroSprite;
     SDL_Renderer* renderer;
     SDL_Texture* texture;
 } App;

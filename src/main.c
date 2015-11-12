@@ -10,7 +10,7 @@ const int SCREEN_HEIGHT = 480;
 App app = {
     .window = NULL,
     .keyPressTextures = NULL,
-    .currentTexture = NULL
+    .heroSprite = NULL
 };
 
 
@@ -72,7 +72,6 @@ SDL_Texture* loadTexture(const char* path) {
 }
 
 void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
-
     if (w < 1 || h < 1) {
         SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     }
@@ -83,6 +82,8 @@ void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
 
 bool appLoadMedia(void) {
     bool success = true;
+
+    static int frame = 0;
 
     app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
     if( app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL )
@@ -157,23 +158,23 @@ void appMainLoop(SDL_Event* e, bool* quit) {
             break;
 
             case SDLK_UP:
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_UP ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_UP ];
             break;
 
             case SDLK_DOWN:
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DOWN ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_DOWN ];
             break;
 
             case SDLK_LEFT:
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_LEFT ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_LEFT ];
             break;
 
             case SDLK_RIGHT:
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_RIGHT ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_RIGHT ];
             break;
 
             default:
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             break;
         }
     }
@@ -193,7 +194,7 @@ int main(void) {
             //Apply the image
             SDL_Event e;
 
-            app.currentTexture = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     appMainLoop(&e, &quit);
@@ -203,7 +204,7 @@ int main(void) {
 
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
 
-                renderTexture(app.currentTexture, 50, 50, -1, -1);
+                renderTexture(app.heroSprite, 50, 50, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }
