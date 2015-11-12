@@ -149,14 +149,12 @@ void appClose(void) {
 void appMainLoop(SDL_Event* e, bool* quit) {
     if(e->type == SDL_QUIT) {
         *quit = true;
-    } else if (e->type == SDL_KEYDOWN) {
+    }
+}
 
+void heroLoop(SDL_Event* e) {
+    if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
-            case  SDLK_ESCAPE:
-
-            *quit = true;
-            break;
-
             case SDLK_UP:
             app.heroSprite = app.keyPressTextures[ KEY_PRESS_SURFACE_UP ];
             break;
@@ -198,6 +196,7 @@ int main(void) {
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     appMainLoop(&e, &quit);
+                    heroLoop(&e);
                 }
 
                 SDL_RenderClear(app.renderer);
