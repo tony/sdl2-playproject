@@ -71,9 +71,11 @@ SDL_Texture* loadTexture(const char* path) {
     return newTexture;
 }
 
-void renderTexture(SDL_Texture* texture, int x, int y) {
-    int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
+
+    if (w < 1 || h < 1) {
+        SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    }
     SDL_Rect renderQuad = { x, y, w, h };
     SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
 }
@@ -201,7 +203,7 @@ int main(void) {
 
                 SDL_RenderCopy(app.renderer, app.texture, NULL, NULL);
 
-                renderTexture( app.currentTexture, 50, 50 );
+                renderTexture(app.currentTexture, 50, 50, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }
