@@ -13,8 +13,8 @@ Sprite heroSprite = {
 
 Hero hero = {
     .sprite = &heroSprite,
-    .state = Stand,
-    .StateTextures = NULL
+    .state = HERO_STATE_DEFAULT,
+    .HeroState = NULL
 };
 
 App app = {
@@ -96,19 +96,14 @@ app_load_media(void)
 {
     bool success = true;
 
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
 
-    if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL ) {
-
-    }
-
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ] = texture_load( "resources/elliot/Up_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
-
-    for (int i=KEY_PRESS_SURFACE_DEFAULT; i <= KEY_PRESS_SURFACE_TOTAL; ++i) {
-        if (app.hero->StateTextures[i] == NULL) {
+    for (int i=HERO_STATE_DEFAULT; i <= HERO_STATE_TOTAL; ++i) {
+        if (app.hero->HeroState[i] == NULL) {
             printf( "Failed to load default image!\n" );
             success = false;
         }
@@ -165,23 +160,23 @@ hero_callback(SDL_Event* e)
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
             case SDLK_UP:
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_UP ];
             break;
 
             case SDLK_DOWN:
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_DOWN ];
             break;
 
             case SDLK_LEFT:
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_LEFT ];
             break;
 
             case SDLK_RIGHT:
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_RIGHT ];
             break;
 
             default:
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_DEFAULT ];
             break;
         }
     }
@@ -200,7 +195,7 @@ int main(void) {
             //Apply the image
             SDL_Event e;
 
-            app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
+            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     app_callback(&e, &quit);
