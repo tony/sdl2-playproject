@@ -23,7 +23,9 @@ App app = {
 };
 
 
-bool initWindow(void) {
+bool
+initWindow(void)
+{
     bool success = true;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
@@ -57,7 +59,9 @@ bool initWindow(void) {
     return success;
 }
 
-SDL_Texture* loadTexture(const char* path) {
+SDL_Texture*
+loadTexture(const char* path)
+{
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load(path);
     if (loadedSurface == NULL) {
@@ -76,7 +80,9 @@ SDL_Texture* loadTexture(const char* path) {
     return newTexture;
 }
 
-void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
+void
+renderTexture(SDL_Texture* texture, int x, int y, int w, int h)
+{
     if (w < 1 || h < 1) {
         SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     }
@@ -85,7 +91,9 @@ void renderTexture(SDL_Texture* texture, int x, int y, int w, int h) {
 }
 
 
-bool appLoadMedia(void) {
+bool
+appLoadMedia(void)
+{
     bool success = true;
 
     app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
@@ -115,7 +123,9 @@ bool appLoadMedia(void) {
     return success;
 }
 
-void appClose(void) {
+void 
+appClose(void) 
+{
     SDL_DestroyTexture(app.bgTexture);
     app.bgTexture = NULL;
 
@@ -128,7 +138,9 @@ void appClose(void) {
     SDL_Quit();
 }
 
-void handleAppEvent(SDL_Event* e, bool* quit) {
+void
+handleAppEvent(SDL_Event* e, bool* quit) 
+{
     if(e->type == SDL_QUIT) {
         *quit = true;
     } else if (e->type == SDL_KEYDOWN) {
@@ -147,7 +159,9 @@ void handleAppEvent(SDL_Event* e, bool* quit) {
     }
 }
 
-void handleHeroEvent(SDL_Event* e) {
+void
+handleHeroEvent(SDL_Event* e)
+{
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
             case SDLK_UP:
@@ -174,7 +188,6 @@ void handleHeroEvent(SDL_Event* e) {
 }
 
 int main(void) {
-
     bool quit = false;
 
     if( !initWindow() ) {
