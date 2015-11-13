@@ -1,10 +1,10 @@
-bool initWindow(void);
-bool appLoadMedia(void);
-void appClose(void);
-void handleAppEvent(SDL_Event* e, bool* quit);
-void handleHeroEvent(SDL_Event* e);
-void renderTexture(SDL_Texture* texture, int x, int y, int w, int h);
-SDL_Texture* loadTexture(const char* path);
+bool app_init(void);
+bool app_load_media(void);
+void app_close(void);
+void app_callback(SDL_Event* e, bool* quit);
+void hero_callback(SDL_Event* e);
+void texture_render(SDL_Texture* texture, int x, int y, int w, int h);
+SDL_Texture* texture_load(const char* path);
 
 enum StateTextures {
     KEY_PRESS_SURFACE_DEFAULT,

@@ -24,7 +24,7 @@ App app = {
 
 
 bool
-initWindow(void)
+app_init(void)
 {
     bool success = true;
     if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
@@ -60,7 +60,7 @@ initWindow(void)
 }
 
 SDL_Texture*
-loadTexture(const char* path)
+texture_load(const char* path)
 {
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -81,7 +81,7 @@ loadTexture(const char* path)
 }
 
 void
-renderTexture(SDL_Texture* texture, int x, int y, int w, int h)
+texture_render(SDL_Texture* texture, int x, int y, int w, int h)
 {
     if (w < 1 || h < 1) {
         SDL_QueryTexture(texture, NULL, NULL, &w, &h);
@@ -92,20 +92,20 @@ renderTexture(SDL_Texture* texture, int x, int y, int w, int h)
 
 
 bool
-appLoadMedia(void)
+app_load_media(void)
 {
     bool success = true;
 
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = loadTexture( "resources/elliot/Down_0.png" );
+    app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
 
     if( app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ] == NULL ) {
 
     }
 
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ] = loadTexture( "resources/elliot/Up_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ] = loadTexture( "resources/elliot/Down_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ] = loadTexture( "resources/elliot/Left_0.png" );
-    app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ] = loadTexture( "resources/elliot/Right_0.png" );
+    app.hero->StateTextures[ KEY_PRESS_SURFACE_UP ] = texture_load( "resources/elliot/Up_0.png" );
+    app.hero->StateTextures[ KEY_PRESS_SURFACE_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->StateTextures[ KEY_PRESS_SURFACE_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
+    app.hero->StateTextures[ KEY_PRESS_SURFACE_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
 
     for (int i=KEY_PRESS_SURFACE_DEFAULT; i <= KEY_PRESS_SURFACE_TOTAL; ++i) {
         if (app.hero->StateTextures[i] == NULL) {
@@ -114,7 +114,7 @@ appLoadMedia(void)
         }
     }
 
-    app.bgTexture = loadTexture("resources/continents.png");
+    app.bgTexture = texture_load("resources/continents.png");
     if (app.bgTexture == NULL) {
         printf("Failed to load image!\n");
         success = false;
@@ -124,7 +124,7 @@ appLoadMedia(void)
 }
 
 void 
-appClose(void) 
+app_close(void) 
 {
     SDL_DestroyTexture(app.bgTexture);
     app.bgTexture = NULL;
@@ -139,7 +139,7 @@ appClose(void)
 }
 
 void
-handleAppEvent(SDL_Event* e, bool* quit) 
+app_callback(SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
         *quit = true;
@@ -160,7 +160,7 @@ handleAppEvent(SDL_Event* e, bool* quit)
 }
 
 void
-handleHeroEvent(SDL_Event* e)
+hero_callback(SDL_Event* e)
 {
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
@@ -190,11 +190,11 @@ handleHeroEvent(SDL_Event* e)
 int main(void) {
     bool quit = false;
 
-    if( !initWindow() ) {
+    if(!app_init()) {
         printf( "Failed to initialize!\n" );
     } else {
         //Load media
-        if( !appLoadMedia() ) {
+        if(!app_load_media()) {
             printf( "Failed to load media!\n" );
         } else {
             //Apply the image
@@ -203,15 +203,15 @@ int main(void) {
             app.hero->sprite->texture = app.hero->StateTextures[ KEY_PRESS_SURFACE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
-                    handleAppEvent(&e, &quit);
-                    handleHeroEvent(&e);
+                    app_callback(&e, &quit);
+                    hero_callback(&e);
                 }
 
                 SDL_RenderClear(app.renderer);
 
                 SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
 
-                renderTexture(app.hero->sprite->texture, 50, 50, -1, -1);
+                texture_render(app.hero->sprite->texture, 50, 50, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }
@@ -219,6 +219,6 @@ int main(void) {
 
     }
 
-    appClose();
+    app_close();
     return 0;
 }
