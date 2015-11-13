@@ -140,15 +140,15 @@ app_callback(SDL_Event* e, bool* quit)
         *quit = true;
     } else if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
-            case  SDLK_ESCAPE:
+        case SDLK_ESCAPE:
 
             *quit = true;
             break;
 
-            case SDLK_c:
-                if (e->key.keysym.mod & KMOD_CTRL) {
-                    *quit = true;
-                }
+        case SDLK_c:
+            if (e->key.keysym.mod & KMOD_CTRL) {
+                *quit = true;
+            }
             break;
         }
     }
@@ -159,23 +159,23 @@ hero_callback(SDL_Event* e)
 {
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
-            case SDLK_UP:
+        case SDLK_UP:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_UP ];
             break;
 
-            case SDLK_DOWN:
+        case SDLK_DOWN:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_DOWN ];
             break;
 
-            case SDLK_LEFT:
+        case SDLK_LEFT:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_LEFT ];
             break;
 
-            case SDLK_RIGHT:
+        case SDLK_RIGHT:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_RIGHT ];
             break;
 
-            default:
+        default:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_DEFAULT ];
             break;
         }
