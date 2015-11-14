@@ -92,22 +92,9 @@ texture_render(SDL_Texture* texture, int x, int y, int w, int h)
 
 
 bool
-app_load_media(void)
+app_load_textures(void)
 {
     bool success = true;
-
-    app.hero->HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
-
-    for (int i=HERO_STATE_DEFAULT; i <= HERO_STATE_TOTAL; ++i) {
-        if (app.hero->HeroState[i] == NULL) {
-            printf( "Failed to load default image!\n" );
-            success = false;
-        }
-    }
 
     app.bgTexture = texture_load("resources/continents.png");
     if (app.bgTexture == NULL) {
@@ -182,15 +169,36 @@ hero_callback(SDL_Event* e)
     }
 }
 
+bool
+hero_load_textures(void)
+{
+    bool success = true;
+
+    app.hero->HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
+    app.hero->HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
+
+    for (int i=HERO_STATE_DEFAULT; i <= HERO_STATE_TOTAL; ++i) {
+        if (app.hero->HeroState[i] == NULL) {
+            printf( "Failed to load default image!\n" );
+            success = false;
+        }
+    }
+    return success;
+}
+
 int main(void) {
     bool quit = false;
 
     if(!app_init()) {
         printf( "Failed to initialize!\n" );
     } else {
-        //Load media
-        if(!app_load_media()) {
-            printf( "Failed to load media!\n" );
+        if(!app_load_textures()) {
+            printf("Failed to load media!\n");
+        } else if(!hero_load_textures()) {
+            printf("Failed to hero media!\n");
         } else {
             //Apply the image
             SDL_Event e;

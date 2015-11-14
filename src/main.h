@@ -1,5 +1,6 @@
 bool app_init(void);
-bool app_load_media(void);
+bool app_load_textures(void);
+bool hero_load_textures(void);
 void app_close(void);
 void app_callback(SDL_Event* e, bool* quit);
 void hero_callback(SDL_Event* e);
