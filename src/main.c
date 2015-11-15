@@ -21,7 +21,6 @@ Hero hero = {
 
 App app = {
     .window = NULL,
-    .hero = &hero
 };
 
 
@@ -149,33 +148,33 @@ hero_callback(SDL_Event* e)
     if (e->type == SDL_KEYDOWN) {
         switch( e->key.keysym.sym ) {
         case SDLK_UP:
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_UP ];
-            hero_throttle_alter(&app.hero->velocity, 0, -1);
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_UP ];
+            hero_throttle_alter(&hero.velocity, 0, -1);
             break;
 
         case SDLK_DOWN:
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_DOWN ];
-            hero_throttle_alter(&app.hero->velocity, 0, 1);
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_DOWN ];
+            hero_throttle_alter(&hero.velocity, 0, 1);
             break;
 
         case SDLK_LEFT:
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_LEFT ];
-            hero_throttle_alter(&app.hero->velocity, -1, 0);
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_LEFT ];
+            hero_throttle_alter(&hero.velocity, -1, 0);
             break;
 
         case SDLK_RIGHT:
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_RIGHT ];
-            hero_throttle_alter(&app.hero->velocity, 1, 0);
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_RIGHT ];
+            hero_throttle_alter(&hero.velocity, 1, 0);
             break;
 
         default:
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_DEFAULT ];
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_DEFAULT ];
             break;
         }
     }
 
-    hero_throttle_acceleration();
-    hero_calculate_position();
+    hero_throttle_acceleration(&hero.velocity);
+    hero_calculate_position(&hero.position, &hero.velocity);
 }
 
 void hero_throttle_alter(SDL_Point* velocity, int x, int y) {
@@ -188,21 +187,21 @@ void hero_throttle_alter(SDL_Point* velocity, int x, int y) {
     }
 }
 
-void hero_throttle_acceleration(void)
+void hero_throttle_acceleration(SDL_Point* velocity)
 {
-    if (abs(app.hero->velocity.x) > MAX_HERO_MOVEMENT) {
-        app.hero->velocity.x = app.hero->velocity.x > 0 ? app.hero->velocity.x-- : app.hero->velocity.x++;
+    if (abs((*velocity).x) > MAX_HERO_MOVEMENT) {
+        (*velocity).x = (*velocity).x > 0 ? (*velocity).x-- : (*velocity).x++;
     }
-    if (abs(app.hero->velocity.y) > MAX_HERO_MOVEMENT) {
-        app.hero->velocity.y = app.hero->velocity.y > 0 ? app.hero->velocity.y-- : app.hero->velocity.y++;
+    if (abs((*velocity).y) > MAX_HERO_MOVEMENT) {
+        (*velocity).y = (*velocity).y > 0 ? (*velocity).y-- : (*velocity).y++;
     }
 }
 
 void
-hero_calculate_position(void)
+hero_calculate_position(SDL_Rect* position, SDL_Point* velocity)
 {
-    app.hero->position.x += app.hero->velocity.x;
-    app.hero->position.y += app.hero->velocity.y;
+    (*position).x += (*velocity).x;
+    (*position).y += (*velocity).y;
 }
 
 bool
@@ -210,14 +209,14 @@ hero_load_textures(void)
 {
     bool success = true;
 
-    app.hero->HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
-    app.hero->HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
+    hero.HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
+    hero.HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
+    hero.HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
+    hero.HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
 
     for (int i=HERO_STATE_DEFAULT; i <= HERO_STATE_TOTAL; ++i) {
-        if (app.hero->HeroState[i] == NULL) {
+        if (hero.HeroState[i] == NULL) {
             printf( "Failed to load default image!\n" );
             success = false;
         }
@@ -239,7 +238,7 @@ int main(void) {
             //Apply the image
             SDL_Event e;
 
-            app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_DEFAULT ];
+            hero.sprite->texture = hero.HeroState[ HERO_STATE_DEFAULT ];
             while (!quit) {
                 while (SDL_PollEvent( &e ) != 0) {
                     app_callback(&e, &quit);
@@ -250,7 +249,7 @@ int main(void) {
 
                 SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
 
-                texture_render(app.hero->sprite->texture, app.hero->position.x, app.hero->position.y, -1, -1);
+                texture_render(hero.sprite->texture, hero.position.x, hero.position.y, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }
