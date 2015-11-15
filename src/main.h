@@ -4,6 +4,9 @@ bool hero_load_textures(void);
 void app_close(void);
 void app_callback(SDL_Event* e, bool* quit);
 void hero_callback(SDL_Event* e);
+void hero_throttle_alter(SDL_Point* velocity, int x, int y);
+void hero_calculate_position(void);
+void hero_throttle_acceleration(void);
 void texture_render(SDL_Texture* texture, int x, int y, int w, int h);
 SDL_Texture* texture_load(const char* path);
 
@@ -23,6 +26,8 @@ typedef struct Sprite {
 typedef struct Hero {
     SDL_Texture* HeroState[ HERO_STATE_TOTAL ];
     Sprite* sprite;
+    SDL_Rect position;
+    SDL_Point velocity;
     enum HeroState state;
 } Hero;
 

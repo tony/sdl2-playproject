@@ -6,6 +6,7 @@
 
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+const int MAX_HERO_MOVEMENT = 5;
 
 Sprite heroSprite = {
     .texture = NULL
@@ -14,6 +15,7 @@ Sprite heroSprite = {
 Hero hero = {
     .sprite = &heroSprite,
     .state = HERO_STATE_DEFAULT,
+    .position = { 150, 50, -1, -1 },
     .HeroState = NULL
 };
 
@@ -148,18 +150,22 @@ hero_callback(SDL_Event* e)
         switch( e->key.keysym.sym ) {
         case SDLK_UP:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_UP ];
+            hero_throttle_alter(&app.hero->velocity, 0, -1);
             break;
 
         case SDLK_DOWN:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_DOWN ];
+            hero_throttle_alter(&app.hero->velocity, 0, 1);
             break;
 
         case SDLK_LEFT:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_LEFT ];
+            hero_throttle_alter(&app.hero->velocity, -1, 0);
             break;
 
         case SDLK_RIGHT:
             app.hero->sprite->texture = app.hero->HeroState[ HERO_STATE_WALK_RIGHT ];
+            hero_throttle_alter(&app.hero->velocity, 1, 0);
             break;
 
         default:
@@ -167,6 +173,36 @@ hero_callback(SDL_Event* e)
             break;
         }
     }
+
+    hero_throttle_acceleration();
+    hero_calculate_position();
+}
+
+void hero_throttle_alter(SDL_Point* velocity, int x, int y) {
+    if (abs((*velocity).x + x) <= MAX_HERO_MOVEMENT) {
+        (*velocity).x += x;
+    }
+
+    if (abs((*velocity).y + y) <= MAX_HERO_MOVEMENT) {
+        (*velocity).y += y;
+    }
+}
+
+void hero_throttle_acceleration(void)
+{
+    if (abs(app.hero->velocity.x) > MAX_HERO_MOVEMENT) {
+        app.hero->velocity.x = app.hero->velocity.x > 0 ? app.hero->velocity.x-- : app.hero->velocity.x++;
+    }
+    if (abs(app.hero->velocity.y) > MAX_HERO_MOVEMENT) {
+        app.hero->velocity.y = app.hero->velocity.y > 0 ? app.hero->velocity.y-- : app.hero->velocity.y++;
+    }
+}
+
+void
+hero_calculate_position(void)
+{
+    app.hero->position.x += app.hero->velocity.x;
+    app.hero->position.y += app.hero->velocity.y;
 }
 
 bool
@@ -214,7 +250,7 @@ int main(void) {
 
                 SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
 
-                texture_render(app.hero->sprite->texture, 50, 50, -1, -1);
+                texture_render(app.hero->sprite->texture, app.hero->position.x, app.hero->position.y, -1, -1);
 
                 SDL_RenderPresent(app.renderer);
             }
