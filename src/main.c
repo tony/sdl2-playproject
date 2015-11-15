@@ -1,3 +1,5 @@
+#include <assert.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <SDL.h>
@@ -8,12 +10,8 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
-Sprite heroSprite = {
-    .texture = NULL
-};
-
 Hero hero = {
-    .sprite = &heroSprite,
+    .texture = NULL,
     .state = HERO_STATE_DEFAULT,
     .position = { 150, 50, -1, -1 },
     .HeroState = NULL
@@ -23,41 +21,17 @@ App app = {
     .window = NULL,
 };
 
-
-bool
-app_init(void)
+/* Log a critical error with error string and die. */
+__dead void
+fatal(const char *msg, ...)
 {
-    bool success = true;
-    if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError() );
-        success = false;
-    } else {
-        SDL_CreateWindowAndRenderer(
-                SCREEN_WIDTH,
-                SCREEN_HEIGHT,
-                SDL_WINDOW_SHOWN,
-                &app.window,
-                &app.renderer
-        );
+    char    *fmt;
+    va_list  ap;
 
-        if (app.window == NULL) {
-            printf("Window could not be created!  SDL_Error: %s\n", SDL_GetError() );
-            success = false;
-        } else if (app.renderer == NULL) {
-                printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-                success = false;
-        } else {
-            SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-            int imgFlags = IMG_INIT_PNG;
-            if (!(IMG_Init(imgFlags) & imgFlags)) {
-                printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-                success = false;
-            }
-        }
-    }
-
-    return success;
+    va_start(ap, msg);
+    if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1)
+        exit(1);
+    exit(1);
 }
 
 SDL_Texture*
@@ -69,7 +43,7 @@ texture_load(const char* path)
         printf("Unable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
     } else {
         //Color key image
-        SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
+        SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
         newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
         if (newTexture == NULL) {
@@ -127,7 +101,7 @@ app_callback(SDL_Event* e, bool* quit)
     if(e->type == SDL_QUIT) {
         *quit = true;
     } else if (e->type == SDL_KEYDOWN) {
-        switch( e->key.keysym.sym ) {
+        switch(e->key.keysym.sym) {
         case SDLK_ESCAPE:
 
             *quit = true;
@@ -146,29 +120,29 @@ void
 hero_callback(SDL_Event* e)
 {
     if (e->type == SDL_KEYDOWN) {
-        switch( e->key.keysym.sym ) {
+        switch(e->key.keysym.sym) {
         case SDLK_UP:
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_UP ];
+            hero.texture = hero.HeroState[ HERO_STATE_WALK_UP ];
             hero_throttle_alter(&hero.velocity, 0, -1);
             break;
 
         case SDLK_DOWN:
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_DOWN ];
+            hero.texture = hero.HeroState[ HERO_STATE_WALK_DOWN ];
             hero_throttle_alter(&hero.velocity, 0, 1);
             break;
 
         case SDLK_LEFT:
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_LEFT ];
+            hero.texture = hero.HeroState[ HERO_STATE_WALK_LEFT ];
             hero_throttle_alter(&hero.velocity, -1, 0);
             break;
 
         case SDLK_RIGHT:
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_WALK_RIGHT ];
+            hero.texture = hero.HeroState[ HERO_STATE_WALK_RIGHT ];
             hero_throttle_alter(&hero.velocity, 1, 0);
             break;
 
         default:
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_DEFAULT ];
+            hero.texture = hero.HeroState[ HERO_STATE_DEFAULT ];
             break;
         }
     }
@@ -209,15 +183,15 @@ hero_load_textures(void)
 {
     bool success = true;
 
-    hero.HeroState[ HERO_STATE_DEFAULT ] = texture_load( "resources/elliot/Down_0.png" );
-    hero.HeroState[ HERO_STATE_WALK_UP ] = texture_load( "resources/elliot/Up_0.png" );
-    hero.HeroState[ HERO_STATE_WALK_DOWN ] = texture_load( "resources/elliot/Down_0.png" );
-    hero.HeroState[ HERO_STATE_WALK_LEFT ] = texture_load( "resources/elliot/Left_0.png" );
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load( "resources/elliot/Right_0.png" );
+    hero.HeroState[ HERO_STATE_DEFAULT ] = texture_load("resources/elliot/Down_0.png");
+    hero.HeroState[ HERO_STATE_WALK_UP ] = texture_load("resources/elliot/Up_0.png");
+    hero.HeroState[ HERO_STATE_WALK_DOWN ] = texture_load("resources/elliot/Down_0.png");
+    hero.HeroState[ HERO_STATE_WALK_LEFT ] = texture_load("resources/elliot/Left_0.png");
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load("resources/elliot/Right_0.png");
 
-    for (int i=HERO_STATE_DEFAULT; i <= HERO_STATE_TOTAL; ++i) {
+    for (int i=HERO_STATE_DEFAULT; i < HERO_STATE_TOTAL; ++i) {
         if (hero.HeroState[i] == NULL) {
-            printf( "Failed to load default image!\n" );
+            printf("Failed to load default image!\n");
             success = false;
         }
     }
@@ -227,34 +201,54 @@ hero_load_textures(void)
 int main(void) {
     bool quit = false;
 
-    if(!app_init()) {
-        printf( "Failed to initialize!\n" );
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     } else {
-        if(!app_load_textures()) {
-            printf("Failed to load media!\n");
-        } else if(!hero_load_textures()) {
-            printf("Failed to hero media!\n");
-        } else {
-            //Apply the image
-            SDL_Event e;
+        SDL_CreateWindowAndRenderer(
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT,
+                SDL_WINDOW_SHOWN,
+                &app.window,
+                &app.renderer
+       );
 
-            hero.sprite->texture = hero.HeroState[ HERO_STATE_DEFAULT ];
-            while (!quit) {
-                while (SDL_PollEvent( &e ) != 0) {
-                    app_callback(&e, &quit);
-                    hero_callback(&e);
-                }
-
-                SDL_RenderClear(app.renderer);
-
-                SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
-
-                texture_render(hero.sprite->texture, hero.position.x, hero.position.y, -1, -1);
-
-                SDL_RenderPresent(app.renderer);
-            }
+        if (app.window == NULL) {
+            fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
         }
+        if (app.renderer == NULL) {
+                fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+        }
+        SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
+        int imgFlags = IMG_INIT_PNG;
+        if (!(IMG_Init(imgFlags) & imgFlags)) {
+            fatal("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+        }
+    }
+
+    if(!app_load_textures()) {
+        fatal("Failed to load media!\n");
+    } else if(!hero_load_textures()) {
+        fatal("Failed to hero media!\n");
+    } else {
+        //Apply the image
+        SDL_Event e;
+
+        hero.texture = hero.HeroState[ HERO_STATE_DEFAULT ];
+        while (!quit) {
+            while (SDL_PollEvent(&e) != 0) {
+                app_callback(&e, &quit);
+                hero_callback(&e);
+            }
+
+            SDL_RenderClear(app.renderer);
+
+            SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
+
+            texture_render(hero.texture, hero.position.x, hero.position.y, -1, -1);
+
+            SDL_RenderPresent(app.renderer);
+        }
     }
 
     app_close();

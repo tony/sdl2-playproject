@@ -1,4 +1,3 @@
-bool app_init(void);
 bool app_load_textures(void);
 bool hero_load_textures(void);
 void app_close(void);
@@ -19,13 +18,9 @@ enum HeroState {
     HERO_STATE_TOTAL
 };
 
-typedef struct Sprite {
-    SDL_Texture* texture;
-} Sprite;
-
 typedef struct Hero {
     SDL_Texture* HeroState[ HERO_STATE_TOTAL ];
-    Sprite* sprite;
+    SDL_Texture* texture;
     SDL_Rect position;
     SDL_Point velocity;
     enum HeroState state;
@@ -40,3 +35,10 @@ typedef struct App {
     SDL_Renderer* renderer;
     SDL_Texture* bgTexture;
 } App;
+
+#ifndef __dead
+#define __dead __attribute__ ((__noreturn__))
+#endif
+
+/* Fatal errors. */
+__dead void fatal(const char *msg, ...);
