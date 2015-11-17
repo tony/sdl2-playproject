@@ -11,7 +11,7 @@ const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
 Hero hero = {
-    .texture = NULL,
+    .spriteSheet = NULL,
     .position = { 0, 0, 30, 30 },
     .state = HERO_STATE_DEFAULT
 };
@@ -38,15 +38,15 @@ texture_load(const char* path)
 {
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load(path);
+
     if (loadedSurface == NULL) {
-        printf("Unable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
+        fatal("Unable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
     } else {
-        //Color key image
         SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
         newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
         if (newTexture == NULL) {
-            printf("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
+            fatal("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
         }
 
         SDL_FreeSurface(loadedSurface);
@@ -166,7 +166,7 @@ hero_load_textures(void)
 {
     bool success = true;
 
-    hero.texture = texture_load("resources/elliot/spritesheet.png");
+    hero.spriteSheet = texture_load("resources/elliot/spritesheet.png");
 
     hero.HeroState[HERO_STATE_DEFAULT].x = 0;
     hero.HeroState[HERO_STATE_DEFAULT].y = 0;
@@ -189,7 +189,7 @@ hero_load_textures(void)
     hero.HeroState[HERO_STATE_WALK_RIGHT].w = 30;
     hero.HeroState[HERO_STATE_WALK_RIGHT].h = 30;
 
-    if (hero.texture == NULL) {
+    if (hero.spriteSheet == NULL) {
         printf("Failed to load hero spritesheet!\n");
         success = false;
     }
@@ -238,7 +238,7 @@ int main(void) {
             app_callback(&e, &quit);
             hero_callback(&e);
         }
-        SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[hero.state], &hero.position);
+        SDL_RenderCopy(app.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
         SDL_RenderPresent(app.renderer);
     }
