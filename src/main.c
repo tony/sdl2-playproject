@@ -6,13 +6,14 @@
 #include <SDL_image.h>
 #include "main.h"
 
-const int SCREEN_WIDTH = 640;
+const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
 Hero hero = {
     .texture = NULL,
-    .position = { 150, 50, 40, 40 }
+    .position = { 0, 0, 30, 30 },
+    .state = HERO_STATE_DEFAULT
 };
 
 App app = {
@@ -59,8 +60,8 @@ texture_render(SDL_Texture* texture, int x, int y, int w, int h)
     if (w < 1 || h < 1) {
         SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     }
-    SDL_Rect srcRect = { 0, 40, 40, 40 };
-    SDL_Rect renderQuad = { x, y, 40, 40 };
+    SDL_Rect srcRect = { 0, 30, 30, 30 };
+    SDL_Rect renderQuad = { x, y, 30, 30 };
 
     SDL_RenderCopy(app.renderer, texture, &srcRect, &renderQuad);
     //SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
@@ -104,7 +105,6 @@ app_callback(SDL_Event* e, bool* quit)
     } else if (e->type == SDL_KEYDOWN) {
         switch(e->key.keysym.sym) {
         case SDLK_ESCAPE:
-
             *quit = true;
             break;
 
@@ -124,26 +124,22 @@ hero_callback(SDL_Event* e)
         switch(e->key.keysym.sym) {
         case SDLK_UP:
             hero_throttle_alter(&hero.velocity, 0, -1);
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_UP ], &hero.position);
+            hero.state = HERO_STATE_WALK_UP;
             break;
 
         case SDLK_DOWN:
             hero_throttle_alter(&hero.velocity, 0, 1);
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_DOWN ], &hero.position);
+            hero.state = HERO_STATE_WALK_DOWN;
             break;
 
         case SDLK_LEFT:
             hero_throttle_alter(&hero.velocity, -1, 0);
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_LEFT ], &hero.position);
+            hero.state = HERO_STATE_WALK_LEFT;
             break;
 
         case SDLK_RIGHT:
             hero_throttle_alter(&hero.velocity, 1, 0);
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_RIGHT ], &hero.position);
-            break;
-
-        default:
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_DEFAULT ], &hero.position);
+            hero.state = HERO_STATE_WALK_RIGHT;
             break;
         }
     }
@@ -189,19 +185,19 @@ hero_load_textures(void)
     hero.HeroState[ HERO_STATE_DEFAULT ].w = 30;
     hero.HeroState[ HERO_STATE_DEFAULT ].h = 30;
     hero.HeroState[ HERO_STATE_WALK_UP ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_UP ].y = 400;
+    hero.HeroState[ HERO_STATE_WALK_UP ].y = 1010;
     hero.HeroState[ HERO_STATE_WALK_UP ].w = 30;
     hero.HeroState[ HERO_STATE_WALK_UP ].h = 30;
     hero.HeroState[ HERO_STATE_WALK_DOWN ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_DOWN ].y = 800;
+    hero.HeroState[ HERO_STATE_WALK_DOWN ].y = 0;
     hero.HeroState[ HERO_STATE_WALK_DOWN ].w = 30;
     hero.HeroState[ HERO_STATE_WALK_DOWN ].h = 30;
     hero.HeroState[ HERO_STATE_WALK_LEFT ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_LEFT ].y = 900;
+    hero.HeroState[ HERO_STATE_WALK_LEFT ].y = 505;
     hero.HeroState[ HERO_STATE_WALK_LEFT ].w = 30;
     hero.HeroState[ HERO_STATE_WALK_LEFT ].h = 30;
     hero.HeroState[ HERO_STATE_WALK_RIGHT ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ].y = 1100;
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ].y = 720;
     hero.HeroState[ HERO_STATE_WALK_RIGHT ].w = 30;
     hero.HeroState[ HERO_STATE_WALK_RIGHT ].h = 30;
 
@@ -251,12 +247,12 @@ int main(void) {
         //SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_DEFAULT ], &hero.position);
         while (!quit) {
             SDL_RenderClear(app.renderer);
-            //SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
+            SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
             while (SDL_PollEvent(&e) != 0) {
                 app_callback(&e, &quit);
                 hero_callback(&e);
             }
-            //texture_render(hero.texture, hero.position.x, hero.position.y, -1, -1);
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ hero.state ], &hero.position);
 
             SDL_RenderPresent(app.renderer);
         }
