@@ -210,52 +210,49 @@ hero_load_textures(void)
 
 int main(void) {
     bool quit = false;
+    int imgFlags = IMG_INIT_PNG;
+    SDL_Event e;
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    } else {
-        SDL_CreateWindowAndRenderer(
-                SCREEN_WIDTH,
-                SCREEN_HEIGHT,
-                SDL_WINDOW_SHOWN,
-                &app.window,
-                &app.renderer
-       );
+    }
 
-        if (app.window == NULL) {
-            fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
-        }
-        if (app.renderer == NULL) {
-                fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-        }
-        SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
+        fatal("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+    }
 
-        int imgFlags = IMG_INIT_PNG;
-        if (!(IMG_Init(imgFlags) & imgFlags)) {
-            fatal("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-        }
+    SDL_CreateWindowAndRenderer(
+            SCREEN_WIDTH,
+            SCREEN_HEIGHT,
+            SDL_WINDOW_SHOWN,
+            &app.window,
+            &app.renderer
+   );
+
+    if (app.window == NULL) {
+        fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
+    } else if (app.renderer == NULL) {
+        fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
     if(!app_load_textures()) {
         fatal("Failed to load media!\n");
     } else if(!hero_load_textures()) {
         fatal("Failed to hero media!\n");
-    } else {
-        //Apply the image
-        SDL_Event e;
+    }
 
-        //SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_DEFAULT ], &hero.position);
-        while (!quit) {
-            SDL_RenderClear(app.renderer);
-            SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
-            while (SDL_PollEvent(&e) != 0) {
-                app_callback(&e, &quit);
-                hero_callback(&e);
-            }
-            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ hero.state ], &hero.position);
+    SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-            SDL_RenderPresent(app.renderer);
+    while (!quit) {
+        SDL_RenderClear(app.renderer);
+        SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
+        while (SDL_PollEvent(&e) != 0) {
+            app_callback(&e, &quit);
+            hero_callback(&e);
         }
+        SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ hero.state ], &hero.position);
+
+        SDL_RenderPresent(app.renderer);
     }
 
     app_close();
