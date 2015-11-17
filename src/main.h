@@ -19,8 +19,8 @@ enum HeroState {
 };
 
 typedef struct Hero {
-    SDL_Texture* HeroState[ HERO_STATE_TOTAL ];
-    SDL_Texture* texture;
+    SDL_Rect HeroState[ HERO_STATE_TOTAL ];
+    SDL_Texture* texture; // sprite sheet
     SDL_Rect position;
     SDL_Point velocity;
     enum HeroState state;

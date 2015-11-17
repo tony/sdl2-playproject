@@ -12,9 +12,7 @@ const int MAX_HERO_MOVEMENT = 5;
 
 Hero hero = {
     .texture = NULL,
-    .state = HERO_STATE_DEFAULT,
-    .position = { 150, 50, -1, -1 },
-    .HeroState = NULL
+    .position = { 150, 50, 40, 40 }
 };
 
 App app = {
@@ -61,8 +59,11 @@ texture_render(SDL_Texture* texture, int x, int y, int w, int h)
     if (w < 1 || h < 1) {
         SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     }
-    SDL_Rect renderQuad = { x, y, w, h };
-    SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
+    SDL_Rect srcRect = { 0, 40, 40, 40 };
+    SDL_Rect renderQuad = { x, y, 40, 40 };
+
+    SDL_RenderCopy(app.renderer, texture, &srcRect, &renderQuad);
+    //SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
 }
 
 
@@ -122,27 +123,27 @@ hero_callback(SDL_Event* e)
     if (e->type == SDL_KEYDOWN) {
         switch(e->key.keysym.sym) {
         case SDLK_UP:
-            hero.texture = hero.HeroState[ HERO_STATE_WALK_UP ];
             hero_throttle_alter(&hero.velocity, 0, -1);
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_UP ], &hero.position);
             break;
 
         case SDLK_DOWN:
-            hero.texture = hero.HeroState[ HERO_STATE_WALK_DOWN ];
             hero_throttle_alter(&hero.velocity, 0, 1);
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_DOWN ], &hero.position);
             break;
 
         case SDLK_LEFT:
-            hero.texture = hero.HeroState[ HERO_STATE_WALK_LEFT ];
             hero_throttle_alter(&hero.velocity, -1, 0);
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_LEFT ], &hero.position);
             break;
 
         case SDLK_RIGHT:
-            hero.texture = hero.HeroState[ HERO_STATE_WALK_RIGHT ];
             hero_throttle_alter(&hero.velocity, 1, 0);
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_WALK_RIGHT ], &hero.position);
             break;
 
         default:
-            hero.texture = hero.HeroState[ HERO_STATE_DEFAULT ];
+            SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_DEFAULT ], &hero.position);
             break;
         }
     }
@@ -182,18 +183,31 @@ bool
 hero_load_textures(void)
 {
     bool success = true;
+    hero.texture = texture_load("resources/elliot/spritesheet.png");
+    hero.HeroState[ HERO_STATE_DEFAULT ].x = 0;
+    hero.HeroState[ HERO_STATE_DEFAULT ].y = 0;
+    hero.HeroState[ HERO_STATE_DEFAULT ].w = 30;
+    hero.HeroState[ HERO_STATE_DEFAULT ].h = 30;
+    hero.HeroState[ HERO_STATE_WALK_UP ].x = 0;
+    hero.HeroState[ HERO_STATE_WALK_UP ].y = 400;
+    hero.HeroState[ HERO_STATE_WALK_UP ].w = 30;
+    hero.HeroState[ HERO_STATE_WALK_UP ].h = 30;
+    hero.HeroState[ HERO_STATE_WALK_DOWN ].x = 0;
+    hero.HeroState[ HERO_STATE_WALK_DOWN ].y = 800;
+    hero.HeroState[ HERO_STATE_WALK_DOWN ].w = 30;
+    hero.HeroState[ HERO_STATE_WALK_DOWN ].h = 30;
+    hero.HeroState[ HERO_STATE_WALK_LEFT ].x = 0;
+    hero.HeroState[ HERO_STATE_WALK_LEFT ].y = 900;
+    hero.HeroState[ HERO_STATE_WALK_LEFT ].w = 30;
+    hero.HeroState[ HERO_STATE_WALK_LEFT ].h = 30;
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ].x = 0;
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ].y = 1100;
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ].w = 30;
+    hero.HeroState[ HERO_STATE_WALK_RIGHT ].h = 30;
 
-    hero.HeroState[ HERO_STATE_DEFAULT ] = texture_load("resources/elliot/Down_0.png");
-    hero.HeroState[ HERO_STATE_WALK_UP ] = texture_load("resources/elliot/Up_0.png");
-    hero.HeroState[ HERO_STATE_WALK_DOWN ] = texture_load("resources/elliot/Down_0.png");
-    hero.HeroState[ HERO_STATE_WALK_LEFT ] = texture_load("resources/elliot/Left_0.png");
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ] = texture_load("resources/elliot/Right_0.png");
-
-    for (int i=HERO_STATE_DEFAULT; i < HERO_STATE_TOTAL; ++i) {
-        if (hero.HeroState[i] == NULL) {
-            printf("Failed to load default image!\n");
-            success = false;
-        }
+    if (hero.texture == NULL) {
+        printf("Failed to load hero spritesheet!\n");
+        success = false;
     }
     return success;
 }
@@ -234,18 +248,15 @@ int main(void) {
         //Apply the image
         SDL_Event e;
 
-        hero.texture = hero.HeroState[ HERO_STATE_DEFAULT ];
+        //SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ HERO_STATE_DEFAULT ], &hero.position);
         while (!quit) {
+            SDL_RenderClear(app.renderer);
+            //SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
             while (SDL_PollEvent(&e) != 0) {
                 app_callback(&e, &quit);
                 hero_callback(&e);
             }
-
-            SDL_RenderClear(app.renderer);
-
-            SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
-
-            texture_render(hero.texture, hero.position.x, hero.position.y, -1, -1);
+            //texture_render(hero.texture, hero.position.x, hero.position.y, -1, -1);
 
             SDL_RenderPresent(app.renderer);
         }
