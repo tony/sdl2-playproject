@@ -6,7 +6,6 @@ void hero_callback(SDL_Event* e);
 void hero_throttle_alter(SDL_Point* velocity, int x, int y);
 void hero_calculate_position(SDL_Rect* position, SDL_Point* velocity);
 void hero_throttle_acceleration(SDL_Point* velocity);
-void texture_render(SDL_Texture* texture, int x, int y, int w, int h);
 SDL_Texture* texture_load(const char* path);
 
 enum HeroState {

@@ -54,20 +54,6 @@ texture_load(const char* path)
     return newTexture;
 }
 
-void
-texture_render(SDL_Texture* texture, int x, int y, int w, int h)
-{
-    if (w < 1 || h < 1) {
-        SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-    }
-    SDL_Rect srcRect = { 0, 30, 30, 30 };
-    SDL_Rect renderQuad = { x, y, 30, 30 };
-
-    SDL_RenderCopy(app.renderer, texture, &srcRect, &renderQuad);
-    //SDL_RenderCopy(app.renderer, texture, NULL, &renderQuad);
-}
-
-
 bool
 app_load_textures(void)
 {
