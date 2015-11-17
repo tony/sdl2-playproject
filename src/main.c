@@ -109,56 +109,29 @@ hero_callback(SDL_Event* e)
     if (e->type == SDL_KEYDOWN) {
         switch(e->key.keysym.sym) {
         case SDLK_UP:
-            hero_throttle_alter(&hero.velocity, 0, -1);
             hero.state = HERO_STATE_WALK_UP;
+            hero.position.y--;
             break;
 
         case SDLK_DOWN:
-            hero_throttle_alter(&hero.velocity, 0, 1);
             hero.state = HERO_STATE_WALK_DOWN;
+            hero.position.y++;
             break;
 
         case SDLK_LEFT:
-            hero_throttle_alter(&hero.velocity, -1, 0);
             hero.state = HERO_STATE_WALK_LEFT;
+            hero.position.x--;
             break;
 
         case SDLK_RIGHT:
-            hero_throttle_alter(&hero.velocity, 1, 0);
             hero.state = HERO_STATE_WALK_RIGHT;
+            hero.position.x++;
+            break;
+
+        default:
             break;
         }
     }
-
-    hero_throttle_acceleration(&hero.velocity);
-    hero_calculate_position(&hero.position, &hero.velocity);
-}
-
-void hero_throttle_alter(SDL_Point* velocity, int x, int y) {
-    if (abs((*velocity).x + x) <= MAX_HERO_MOVEMENT) {
-        (*velocity).x += x;
-    }
-
-    if (abs((*velocity).y + y) <= MAX_HERO_MOVEMENT) {
-        (*velocity).y += y;
-    }
-}
-
-void hero_throttle_acceleration(SDL_Point* velocity)
-{
-    if (abs((*velocity).x) > MAX_HERO_MOVEMENT) {
-        (*velocity).x = (*velocity).x > 0 ? (*velocity).x-- : (*velocity).x++;
-    }
-    if (abs((*velocity).y) > MAX_HERO_MOVEMENT) {
-        (*velocity).y = (*velocity).y > 0 ? (*velocity).y-- : (*velocity).y++;
-    }
-}
-
-void
-hero_calculate_position(SDL_Rect* position, SDL_Point* velocity)
-{
-    (*position).x += (*velocity).x;
-    (*position).y += (*velocity).y;
 }
 
 bool

@@ -3,9 +3,6 @@ bool hero_load_textures(void);
 void app_close(void);
 void app_callback(SDL_Event* e, bool* quit);
 void hero_callback(SDL_Event* e);
-void hero_throttle_alter(SDL_Point* velocity, int x, int y);
-void hero_calculate_position(SDL_Rect* position, SDL_Point* velocity);
-void hero_throttle_acceleration(SDL_Point* velocity);
 SDL_Texture* texture_load(const char* path);
 
 enum HeroState {
