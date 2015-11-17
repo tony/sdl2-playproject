@@ -179,27 +179,29 @@ bool
 hero_load_textures(void)
 {
     bool success = true;
+
     hero.texture = texture_load("resources/elliot/spritesheet.png");
-    hero.HeroState[ HERO_STATE_DEFAULT ].x = 0;
-    hero.HeroState[ HERO_STATE_DEFAULT ].y = 0;
-    hero.HeroState[ HERO_STATE_DEFAULT ].w = 30;
-    hero.HeroState[ HERO_STATE_DEFAULT ].h = 30;
-    hero.HeroState[ HERO_STATE_WALK_UP ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_UP ].y = 1010;
-    hero.HeroState[ HERO_STATE_WALK_UP ].w = 30;
-    hero.HeroState[ HERO_STATE_WALK_UP ].h = 30;
-    hero.HeroState[ HERO_STATE_WALK_DOWN ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_DOWN ].y = 0;
-    hero.HeroState[ HERO_STATE_WALK_DOWN ].w = 30;
-    hero.HeroState[ HERO_STATE_WALK_DOWN ].h = 30;
-    hero.HeroState[ HERO_STATE_WALK_LEFT ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_LEFT ].y = 505;
-    hero.HeroState[ HERO_STATE_WALK_LEFT ].w = 30;
-    hero.HeroState[ HERO_STATE_WALK_LEFT ].h = 30;
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ].x = 0;
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ].y = 720;
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ].w = 30;
-    hero.HeroState[ HERO_STATE_WALK_RIGHT ].h = 30;
+
+    hero.HeroState[HERO_STATE_DEFAULT].x = 0;
+    hero.HeroState[HERO_STATE_DEFAULT].y = 0;
+    hero.HeroState[HERO_STATE_DEFAULT].w = 30;
+    hero.HeroState[HERO_STATE_DEFAULT].h = 30;
+    hero.HeroState[HERO_STATE_WALK_UP].x = 0;
+    hero.HeroState[HERO_STATE_WALK_UP].y = 1010;
+    hero.HeroState[HERO_STATE_WALK_UP].w = 30;
+    hero.HeroState[HERO_STATE_WALK_UP].h = 30;
+    hero.HeroState[HERO_STATE_WALK_DOWN].x = 0;
+    hero.HeroState[HERO_STATE_WALK_DOWN].y = 0;
+    hero.HeroState[HERO_STATE_WALK_DOWN].w = 30;
+    hero.HeroState[HERO_STATE_WALK_DOWN].h = 30;
+    hero.HeroState[HERO_STATE_WALK_LEFT].x = 0;
+    hero.HeroState[HERO_STATE_WALK_LEFT].y = 505;
+    hero.HeroState[HERO_STATE_WALK_LEFT].w = 30;
+    hero.HeroState[HERO_STATE_WALK_LEFT].h = 30;
+    hero.HeroState[HERO_STATE_WALK_RIGHT].x = 0;
+    hero.HeroState[HERO_STATE_WALK_RIGHT].y = 720;
+    hero.HeroState[HERO_STATE_WALK_RIGHT].w = 30;
+    hero.HeroState[HERO_STATE_WALK_RIGHT].h = 30;
 
     if (hero.texture == NULL) {
         printf("Failed to load hero spritesheet!\n");
@@ -250,7 +252,7 @@ int main(void) {
             app_callback(&e, &quit);
             hero_callback(&e);
         }
-        SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[ hero.state ], &hero.position);
+        SDL_RenderCopy(app.renderer, hero.texture, &hero.HeroState[hero.state], &hero.position);
 
         SDL_RenderPresent(app.renderer);
     }
