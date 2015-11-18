@@ -40,7 +40,7 @@ texture_load(const char* path)
     SDL_Surface* loadedSurface = IMG_Load(path);
 
     if (loadedSurface == NULL) {
-        fatal("Unable to load iamge %s! SDL_image Error: %s\n", path, IMG_GetError());
+        fatal("Unable to load image %s! SDL_image Error: %s\n", path, IMG_GetError());
     } else {
         SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
@@ -73,6 +73,9 @@ app_close(void)
 {
     SDL_DestroyTexture(app.bgTexture);
     app.bgTexture = NULL;
+
+    SDL_DestroyTexture(hero.spriteSheet);
+    hero.spriteSheet = NULL;
 
     app.renderer = NULL;
     app.window = NULL;
@@ -183,12 +186,12 @@ int main(void) {
     }
 
     SDL_CreateWindowAndRenderer(
-            SCREEN_WIDTH,
-            SCREEN_HEIGHT,
-            SDL_WINDOW_SHOWN,
-            &app.window,
-            &app.renderer
-   );
+        SCREEN_WIDTH,
+        SCREEN_HEIGHT,
+        SDL_WINDOW_SHOWN,
+        &app.window,
+        &app.renderer
+    );
 
     if (app.window == NULL) {
         fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
