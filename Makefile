@@ -21,7 +21,7 @@ debug_ninja: mkdir_build
 	ninja -C build
 
 run:
-	./build/aerobiz
+	./build/game
 
 
 .PHONY: mkdir_build

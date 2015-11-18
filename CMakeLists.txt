@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
-project(aerobiz)
+project(game)
 
 # Use our modified FindSDL2* modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${aerobiz_SOURCE_DIR}/cmake")
-set(BIN_DIR ${aerobiz_SOURCE_DIR}/bin)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${game_SOURCE_DIR}/cmake")
+set(BIN_DIR ${game_SOURCE_DIR}/bin)
 
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
@@ -28,6 +28,6 @@ file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
 file (GLOB MY_PROJECT_GFX_ELLIOT_RESOURCES resources/elliot/*.png)
 file (COPY ${MY_PROJECT_GFX_ELLIOT_RESOURCES} DESTINATION resources/elliot)
 
-add_executable(aerobiz src/main.c)
-target_link_libraries(aerobiz ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
-install(TARGETS aerobiz RUNTIME DESTINATION ${BIN_DIR})
+add_executable(game src/main.c)
+target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
+install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
