@@ -53,7 +53,7 @@ app_close(void)
 }
 
 void
-app_callback(SDL_Event* e, bool* quit) 
+app_callback(const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
         *quit = true;

@@ -8,7 +8,7 @@ extern int SCREEN_HEIGHT;
 extern int SCREEN_WIDTH;
 
 void
-hero_callback(SDL_Event* e)
+hero_callback(const SDL_Event* e)
 {
     if (e->type == SDL_KEYDOWN) {
         switch(e->key.keysym.sym) {
@@ -33,7 +33,7 @@ hero_callback(SDL_Event* e)
             break;
 
         case SDLK_SPACE:
-            boomerang_create(hero.state, hero.position);
+            boomerang_create(&hero.state, &hero.position);
             break;
         }
     }
@@ -62,13 +62,13 @@ boomerangs_draw(SDL_Renderer* renderer)
 }
 
 void
-boomerang_create(enum HeroState hero_state, SDL_Rect hero_position)
+boomerang_create(const enum HeroState* hero_state, const SDL_Rect* hero_position)
 {
     Boomerang boomerang = boomerangs.array[0];
-    boomerang.position = hero_position;
+    boomerang.position = *hero_position;
     boomerang.texture = texture_load("resources/boomerang.png");
 
-    switch(hero_state) {
+    switch(*hero_state) {
         case HERO_STATE_WALK_UP:
             boomerang.velocity.x = 0;
             boomerang.velocity.y = -1;

@@ -3,8 +3,8 @@
 bool app_load_textures(void);
 bool hero_load_textures(void);
 void app_close(void);
-void app_callback(SDL_Event* e, bool* quit);
-void hero_callback(SDL_Event* e);
+void app_callback(const SDL_Event* e, bool* quit);
+void hero_callback(const SDL_Event* e);
 SDL_Texture* texture_load(const char* path);
 
 enum HeroState {
@@ -25,7 +25,7 @@ typedef struct Hero {
 } Hero;
 
 typedef struct Boomerang {
-    SDL_Texture* texture; // sprite sheet
+    SDL_Texture* texture;
     SDL_Rect position;
     SDL_Point velocity;
 } Boomerang;
@@ -36,9 +36,9 @@ typedef struct Boomerangs {
 } Boomerangs;
 
 void boomerangs_init();
-void boomerang_create(enum HeroState hero_state, SDL_Rect hero_position);
+void boomerang_create(const enum HeroState* hero_state, const SDL_Rect* hero_position);
 void boomerangs_update();
-void boomerangs_draw();
+void boomerangs_draw(SDL_Renderer* renderer);
 
 
 /**
