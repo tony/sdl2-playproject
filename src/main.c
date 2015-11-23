@@ -18,6 +18,8 @@ App app = {
     .window = NULL,
 };
 
+Boomerangs boomerangs;
+
 bool
 app_load_textures(void)
 {
@@ -105,6 +107,8 @@ int main(void) {
 
     SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
+    boomerangs_init();
+
     while (!quit) {
         SDL_RenderClear(app.renderer);
         SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
@@ -112,6 +116,8 @@ int main(void) {
             app_callback(&e, &quit);
             hero_callback(&e);
         }
+        boomerangs_update();
+        boomerangs_draw(app.renderer);
         SDL_RenderCopy(app.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
         SDL_RenderPresent(app.renderer);

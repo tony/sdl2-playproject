@@ -3,6 +3,7 @@
 #include "main.h"
 
 extern Hero hero;
+extern Boomerangs boomerangs;
 extern int SCREEN_HEIGHT;
 extern int SCREEN_WIDTH;
 
@@ -30,8 +31,42 @@ hero_callback(SDL_Event* e)
             hero.state = HERO_STATE_WALK_RIGHT;
             hero.position.x += SCREEN_WIDTH * 0.05;
             break;
+
+        case SDLK_SPACE:
+            boomerang_create(&hero.state, &hero.position);
+            break;
         }
     }
+}
+
+void
+boomerangs_init()
+{
+    boomerangs.len = 0;
+}
+
+void boomerangs_update()
+{
+
+}
+
+void
+boomerangs_draw(SDL_Renderer* renderer)
+{
+    for (int i = 0; i < boomerangs.len; i++) {
+        Boomerang* boomerang = &boomerangs.array[i];
+        SDL_RenderCopy(renderer, boomerang->texture, NULL, &boomerang->position);
+    }
+}
+
+void
+boomerang_create(enum HeroState* hero_state, SDL_Rect* hero_position)
+{
+    Boomerang boomerang;
+    boomerang.position = *hero_position;
+    boomerang.texture = texture_load("resources/boomerang.png");
+    boomerangs.array[0] = boomerang;
+    boomerangs.len++;
 }
 
 bool

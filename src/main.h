@@ -24,6 +24,23 @@ typedef struct Hero {
     enum HeroState state;
 } Hero;
 
+typedef struct Boomerang {
+    SDL_Texture* texture; // sprite sheet
+    SDL_Rect position;
+    SDL_Point velocity;
+} Boomerang;
+
+typedef struct Boomerangs {
+    Boomerang array[10];
+    int len;
+} Boomerangs;
+
+void boomerangs_init();
+void boomerang_create(enum HeroState* hero_state, SDL_Rect* hero_position);
+void boomerangs_update();
+void boomerangs_draw();
+
+
 /**
  * Namespace for global objects (window, renderer, etc.)
  */
