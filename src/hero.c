@@ -30,9 +30,6 @@ hero_callback(SDL_Event* e)
             hero.state = HERO_STATE_WALK_RIGHT;
             hero.position.x += SCREEN_WIDTH * 0.05;
             break;
-
-        default:
-            break;
         }
     }
 }
