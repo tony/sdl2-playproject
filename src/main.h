@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 bool app_load_textures(void);
 bool hero_load_textures(void);
 void app_close(void);
@@ -38,3 +41,5 @@ typedef struct App {
 
 /* Fatal errors. */
 __dead void fatal(const char *msg, ...);
+
+#endif /* MAIN_H */

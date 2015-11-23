@@ -28,6 +28,9 @@ file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
 file (GLOB MY_PROJECT_GFX_ELLIOT_RESOURCES resources/elliot/*.png)
 file (COPY ${MY_PROJECT_GFX_ELLIOT_RESOURCES} DESTINATION resources/elliot)
 
-add_executable(game src/main.c)
+include_directories("./src")
+file (GLOB game_SOURCES src/*.c)
+
+add_executable(game ${game_SOURCES})
 target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
