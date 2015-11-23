@@ -3,6 +3,8 @@
 #include "main.h"
 
 extern Hero hero;
+extern int SCREEN_HEIGHT;
+extern int SCREEN_WIDTH;
 
 void
 hero_callback(SDL_Event* e)
@@ -11,22 +13,22 @@ hero_callback(SDL_Event* e)
         switch(e->key.keysym.sym) {
         case SDLK_UP:
             hero.state = HERO_STATE_WALK_UP;
-            hero.position.y--;
+            hero.position.y -= SCREEN_HEIGHT * 0.05;
             break;
 
         case SDLK_DOWN:
             hero.state = HERO_STATE_WALK_DOWN;
-            hero.position.y++;
+            hero.position.y += SCREEN_HEIGHT * 0.05;
             break;
 
         case SDLK_LEFT:
             hero.state = HERO_STATE_WALK_LEFT;
-            hero.position.x--;
+            hero.position.x -= SCREEN_WIDTH * 0.05;
             break;
 
         case SDLK_RIGHT:
             hero.state = HERO_STATE_WALK_RIGHT;
-            hero.position.x++;
+            hero.position.x += SCREEN_WIDTH * 0.05;
             break;
 
         default:
