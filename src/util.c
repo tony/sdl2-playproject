@@ -20,7 +20,7 @@ fatal(const char *msg, ...)
 }
 
 SDL_Texture*
-texture_load(const char* path)
+texture_load(const char* path, SDL_Renderer* renderer)
 {
     SDL_Texture* newTexture = NULL;
     SDL_Surface* loadedSurface = IMG_Load(path);
@@ -30,7 +30,7 @@ texture_load(const char* path)
     } else {
         SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
-        newTexture = SDL_CreateTextureFromSurface(app.renderer, loadedSurface);
+        newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
         if (newTexture == NULL) {
             fatal("Unable to create texture %s! SDL Error: %s\n", path, SDL_GetError());
         }

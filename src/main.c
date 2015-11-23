@@ -8,25 +8,13 @@ const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
-Hero hero = {
-    .spriteSheet = NULL,
-    .position = { 0, 0, 30, 30 },
-    .state = HERO_STATE_DEFAULT
-};
-
-App app = {
-    .window = NULL,
-};
-
-Boomerangs boomerangs;
-
 bool
-app_load_textures(void)
+app_load_textures(App* app, SDL_Renderer* renderer)
 {
     bool success = true;
 
-    app.bgTexture = texture_load("resources/continents.png");
-    if (app.bgTexture == NULL) {
+    app->bgTexture = texture_load("resources/continents.png", renderer);
+    if (app->bgTexture == NULL) {
         printf("Failed to load image!\n");
         success = false;
     }
@@ -35,25 +23,22 @@ app_load_textures(void)
 }
 
 void 
-app_close(void) 
+app_close(App* app) 
 {
-    SDL_DestroyTexture(app.bgTexture);
-    app.bgTexture = NULL;
+    SDL_DestroyTexture(app->bgTexture);
+    app->bgTexture = NULL;
 
-    SDL_DestroyTexture(hero.spriteSheet);
-    hero.spriteSheet = NULL;
-
-    app.renderer = NULL;
-    app.window = NULL;
-    SDL_DestroyRenderer(app.renderer);
-    SDL_DestroyWindow(app.window);
+    app->renderer = NULL;
+    app->window = NULL;
+    SDL_DestroyRenderer(app->renderer);
+    SDL_DestroyWindow(app->window);
 
     IMG_Quit();
     SDL_Quit();
 }
 
 void
-app_callback(const SDL_Event* e, bool* quit) 
+app_callback(App* app, const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
         *quit = true;
@@ -77,6 +62,19 @@ int main(void) {
     int imgFlags = IMG_INIT_PNG;
     SDL_Event e;
 
+    Hero hero = {
+        .spriteSheet = NULL,
+        .position = { 0, 0, 30, 30 },
+        .state = HERO_STATE_DEFAULT
+    };
+    App app = {
+        .window = NULL,
+    };
+
+    Boomerangs boomerangs;
+
+
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     }
@@ -99,31 +97,33 @@ int main(void) {
         fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
-    if(!app_load_textures()) {
+    if(!app_load_textures(&app, app.renderer)) {
         fatal("Failed to load media!\n");
-    } else if(!hero_load_textures()) {
+    } else if(!hero_load_textures(&hero, app.renderer)) {
         fatal("Failed to hero media!\n");
     }
 
     SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
-    boomerangs_init();
+    boomerangs_init(&boomerangs, app.renderer);
 
     while (!quit) {
         SDL_RenderClear(app.renderer);
         SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
-            app_callback(&e, &quit);
-            hero_callback(&e);
+            app_callback(&app, &e, &quit);
+            hero_callback(&hero, &boomerangs, &e);
         }
-        boomerangs_update();
-        boomerangs_draw(app.renderer);
+        boomerangs_update(&boomerangs);
+        boomerangs_draw(&boomerangs, app.renderer);
         SDL_RenderCopy(app.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
         SDL_RenderPresent(app.renderer);
         SDL_Delay(16);
     }
 
-    app_close();
+    hero_delete(&hero);
+    app_close(&app);
+
     return 0;
 }
