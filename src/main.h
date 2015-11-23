@@ -36,7 +36,7 @@ typedef struct Boomerangs {
 } Boomerangs;
 
 void boomerangs_init();
-void boomerang_create(enum HeroState* hero_state, SDL_Rect* hero_position);
+void boomerang_create(enum HeroState hero_state, SDL_Rect hero_position);
 void boomerangs_update();
 void boomerangs_draw();
 

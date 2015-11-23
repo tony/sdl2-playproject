@@ -33,7 +33,7 @@ hero_callback(SDL_Event* e)
             break;
 
         case SDLK_SPACE:
-            boomerang_create(&hero.state, &hero.position);
+            boomerang_create(hero.state, hero.position);
             break;
         }
     }
@@ -55,17 +55,44 @@ boomerangs_draw(SDL_Renderer* renderer)
 {
     for (int i = 0; i < boomerangs.len; i++) {
         Boomerang* boomerang = &boomerangs.array[i];
+        boomerang->position.x += boomerang->velocity.x;
+        boomerang->position.y += boomerang->velocity.y;
         SDL_RenderCopy(renderer, boomerang->texture, NULL, &boomerang->position);
     }
 }
 
 void
-boomerang_create(enum HeroState* hero_state, SDL_Rect* hero_position)
+boomerang_create(enum HeroState hero_state, SDL_Rect hero_position)
 {
-    Boomerang boomerang;
-    boomerang.position = *hero_position;
+    Boomerang boomerang = boomerangs.array[0];
+    boomerang.position = hero_position;
     boomerang.texture = texture_load("resources/boomerang.png");
+
+    switch(hero_state) {
+        case HERO_STATE_WALK_UP:
+            boomerang.velocity.x = 0;
+            boomerang.velocity.y = -1;
+            break;
+        case HERO_STATE_WALK_DOWN:
+            boomerang.velocity.x = 0;
+            boomerang.velocity.y = 1;
+            break;
+        case HERO_STATE_WALK_LEFT:
+            boomerang.velocity.x = -1;
+            boomerang.velocity.y = 0;
+            break;
+        case HERO_STATE_WALK_RIGHT:
+            boomerang.velocity.x = 1;
+            boomerang.velocity.y = 0;
+            break;
+        default:
+            break;
+    }
+
     boomerangs.array[0] = boomerang;
+
+
+
     boomerangs.len++;
 }
 

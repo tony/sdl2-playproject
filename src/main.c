@@ -121,6 +121,7 @@ int main(void) {
         SDL_RenderCopy(app.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
         SDL_RenderPresent(app.renderer);
+        SDL_Delay(16);
     }
 
     app_close();
