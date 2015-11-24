@@ -15,7 +15,6 @@ app_load_textures(App* app, SDL_Renderer* renderer)
 
     app->bgTexture = texture_load("resources/continents.png", renderer);
     if (app->bgTexture == NULL) {
-        printf("Failed to load image!\n");
         success = false;
     }
 
@@ -101,11 +100,11 @@ int main(void) {
         fatal("Failed to load media!\n");
     } else if(!hero_load_textures(&hero, app.renderer)) {
         fatal("Failed to load hero media!\n");
+    } else if(!boomerangs_init(&boomerangs, app.renderer)) {
+        fatal("Failed to load boomerang media!\n");
     }
 
     SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-    boomerangs_init(&boomerangs, app.renderer);
 
     while (!quit) {
         SDL_RenderClear(app.renderer);

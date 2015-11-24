@@ -40,11 +40,19 @@ hero_callback(Hero* hero, Boomerangs *boomerangs, const SDL_Event* e)
     }
 }
 
-void
+bool
 boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer)
 {
+    bool success = true;
+
     boomerangs->len = 0;
     boomerangs->texture = texture_load("resources/boomerang.png", renderer);
+
+    if(boomerangs->texture == NULL) {
+        success = false;
+    }
+
+    return success;
 }
 
 void
