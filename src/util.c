@@ -4,8 +4,6 @@
 #include <SDL_image.h>
 #include "main.h"
 
-extern App app;
-
 /* Log a critical error with error string and die. */
 __dead void
 fatal(const char *msg, ...)

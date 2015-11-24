@@ -9,12 +9,12 @@ const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
 bool
-app_load_textures(App* app, SDL_Renderer* renderer)
+game_load_textures(Game* game, SDL_Renderer* renderer)
 {
     bool success = true;
 
-    app->bgTexture = texture_load("resources/continents.png", renderer);
-    if (app->bgTexture == NULL) {
+    game->bgTexture = texture_load("resources/continents.png", renderer);
+    if (game->bgTexture == NULL) {
         success = false;
     }
 
@@ -22,22 +22,22 @@ app_load_textures(App* app, SDL_Renderer* renderer)
 }
 
 void 
-app_close(App* app) 
+game_close(Game* game) 
 {
-    SDL_DestroyTexture(app->bgTexture);
-    app->bgTexture = NULL;
+    SDL_DestroyTexture(game->bgTexture);
+    game->bgTexture = NULL;
 
-    app->renderer = NULL;
-    app->window = NULL;
-    SDL_DestroyRenderer(app->renderer);
-    SDL_DestroyWindow(app->window);
+    game->renderer = NULL;
+    game->window = NULL;
+    SDL_DestroyRenderer(game->renderer);
+    SDL_DestroyWindow(game->window);
 
     IMG_Quit();
     SDL_Quit();
 }
 
 void
-app_callback(App* app, const SDL_Event* e, bool* quit) 
+game_callback(Game* game, const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
         *quit = true;
@@ -66,13 +66,11 @@ int main(void) {
         .position = { 0, 0, 30, 30 },
         .state = HERO_STATE_DEFAULT
     };
-    App app = {
+    Game game = {
         .window = NULL,
     };
 
     Boomerangs boomerangs;
-
-
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -86,43 +84,43 @@ int main(void) {
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN,
-        &app.window,
-        &app.renderer
+        &game.window,
+        &game.renderer
     );
 
-    if (app.window == NULL) {
+    if (game.window == NULL) {
         fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
-    } else if (app.renderer == NULL) {
+    } else if (game.renderer == NULL) {
         fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
-    if(!app_load_textures(&app, app.renderer)) {
+    if(!game_load_textures(&game, game.renderer)) {
         fatal("Failed to load media!\n");
-    } else if(!hero_load_textures(&hero, app.renderer)) {
+    } else if(!hero_load_textures(&hero, game.renderer)) {
         fatal("Failed to load hero media!\n");
-    } else if(!boomerangs_init(&boomerangs, app.renderer)) {
+    } else if(!boomerangs_init(&boomerangs, game.renderer)) {
         fatal("Failed to load boomerang media!\n");
     }
 
-    SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(game.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
     while (!quit) {
-        SDL_RenderClear(app.renderer);
-        SDL_RenderCopy(app.renderer, app.bgTexture, NULL, NULL);
+        SDL_RenderClear(game.renderer);
+        SDL_RenderCopy(game.renderer, game.bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
-            app_callback(&app, &e, &quit);
+            game_callback(&game, &e, &quit);
             hero_callback(&hero, &boomerangs, &e);
         }
         boomerangs_update(&boomerangs);
-        boomerangs_draw(&boomerangs, app.renderer);
-        SDL_RenderCopy(app.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
+        boomerangs_draw(&boomerangs, game.renderer);
+        SDL_RenderCopy(game.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
-        SDL_RenderPresent(app.renderer);
+        SDL_RenderPresent(game.renderer);
         SDL_Delay(16);
     }
 
     hero_delete(&hero);
-    app_close(&app);
+    game_close(&game);
 
     return 0;
 }
