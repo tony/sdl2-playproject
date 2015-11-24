@@ -7,6 +7,7 @@
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
+const int SHOOTING_DELAY = 200;
 
 bool
 game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer)

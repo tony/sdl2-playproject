@@ -1,5 +1,7 @@
 #pragma once
 
+#define MAX_BOOMERANGS 10
+
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 
 enum HeroState {
@@ -25,8 +27,6 @@ typedef struct Boomerang {
     SDL_Rect position;
     SDL_Point velocity;
 } Boomerang;
-
-#define MAX_BOOMERANGS 10
 
 typedef struct Boomerangs {
     Boomerang array[MAX_BOOMERANGS];

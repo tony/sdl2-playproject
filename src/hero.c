@@ -2,45 +2,41 @@
 #include <SDL.h>
 #include "main.h"
 
-extern Hero hero;
-extern Boomerangs boomerangs;
-extern int SCREEN_HEIGHT;
-extern int SCREEN_WIDTH;
-
-#define SHOOTING_DELAY 200
+extern const int SCREEN_HEIGHT;
+extern const int SCREEN_WIDTH;
+extern const int SHOOTING_DELAY;
 
 void
 hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
 {
+    if (currentKeyStates[SDL_SCANCODE_UP]) {
+        hero->state = HERO_STATE_WALK_UP;
+        hero->position.y -= SCREEN_HEIGHT * 0.01;
+    }
 
-        if (currentKeyStates[SDL_SCANCODE_UP]) {
-            hero->state = HERO_STATE_WALK_UP;
-            hero->position.y -= SCREEN_HEIGHT * 0.01;
+    if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+        hero->state = HERO_STATE_WALK_DOWN;
+        hero->position.y += SCREEN_HEIGHT * 0.01;
+    }
+
+    if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+        hero->state = HERO_STATE_WALK_LEFT;
+        hero->position.x -= SCREEN_WIDTH * 0.01;
+    }
+
+    if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+        hero->state = HERO_STATE_WALK_RIGHT;
+        hero->position.x += SCREEN_WIDTH * 0.01;
+    }
+
+    if (currentKeyStates[SDL_SCANCODE_SPACE]) {
+        Uint32 now = SDL_GetTicks();
+        if (now - boomerangs->last_shot >= SHOOTING_DELAY) {
+            boomerang_create(boomerangs, &hero->state, &hero->position);
+            boomerangs->last_shot = now;
         }
 
-        if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-            hero->state = HERO_STATE_WALK_DOWN;
-            hero->position.y += SCREEN_HEIGHT * 0.01;
-        }
-
-        if (currentKeyStates[SDL_SCANCODE_LEFT]) {
-            hero->state = HERO_STATE_WALK_LEFT;
-            hero->position.x -= SCREEN_WIDTH * 0.01;
-        }
-
-        if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
-            hero->state = HERO_STATE_WALK_RIGHT;
-            hero->position.x += SCREEN_WIDTH * 0.01;
-        }
-
-        if (currentKeyStates[SDL_SCANCODE_SPACE]) {
-            Uint32 now = SDL_GetTicks();
-            if (now - boomerangs->last_shot >= SHOOTING_DELAY) {
-                boomerang_create(boomerangs, &hero->state, &hero->position);
-                boomerangs->last_shot = now;
-            }
-
-        }
+    }
 }
 
 bool
@@ -66,15 +62,16 @@ boomerangs_update(Boomerangs* boomerangs)
     int boomerangs_deleted = 0;
     for (int i = 0; i < boomerangs->len; i++) {
         Boomerang* boomerang = &boomerangs->array[i];
-        boomerang->position.x += boomerang->velocity.x;
-        boomerang->position.y += boomerang->velocity.y;
+		SDL_Rect* position = &boomerang->position;
+        position->x += boomerang->velocity.x;
+        position->y += boomerang->velocity.y;
 
-        if (boomerang->position.x > SCREEN_WIDTH ||
-            boomerang->position.w > SCREEN_WIDTH ||
-            boomerang->position.x < 0 ||
-            boomerang->position.y > SCREEN_HEIGHT ||
-            boomerang->position.h > SCREEN_HEIGHT ||
-            boomerang->position.y < 0
+        if (position->x > SCREEN_WIDTH ||
+            position->w > SCREEN_WIDTH ||
+            position->x < 0 ||
+            position->y > SCREEN_HEIGHT ||
+            position->h > SCREEN_HEIGHT ||
+            position->y < 0
             ) {
             int remaining_len = boomerangs->len - i - 1;
             memmove(boomerangs->array + i, boomerangs->array + i + 1, remaining_len * sizeof(Boomerang));
@@ -83,13 +80,6 @@ boomerangs_update(Boomerangs* boomerangs)
 
         }
     }
-}
-
-static const Boomerang NullBoomerang;
-
-void
-boomerang_delete(Boomerang* boomerang)
-{
 }
 
 void
