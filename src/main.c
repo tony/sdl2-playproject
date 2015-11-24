@@ -9,11 +9,11 @@ const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
 bool
-game_load_textures(SDL_Texture* bgTexture, SDL_Renderer* renderer)
+game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer)
 {
     bool success = true;
 
-    bgTexture = texture_load("resources/continents.png", renderer);
+    *bgTexture = texture_load("resources/continents.png", renderer);
     if (bgTexture == NULL) {
         success = false;
     }
@@ -68,7 +68,7 @@ int main(void) {
     };
     SDL_Renderer* renderer;
     SDL_Window* window;
-    SDL_Texture* bgTexture;
+    SDL_Texture* bgTexture = NULL;
 
     Boomerangs boomerangs;
 
@@ -94,7 +94,7 @@ int main(void) {
         fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
-    if(!game_load_textures(bgTexture, renderer)) {
+    if(!game_load_textures(&bgTexture, renderer)) {
         fatal("Failed to load media!\n");
     } else if(!hero_load_textures(&hero, renderer)) {
         fatal("Failed to load hero media!\n");

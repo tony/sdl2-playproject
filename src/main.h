@@ -44,7 +44,7 @@ void boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, 
 void boomerang_delete(Boomerang* boomerang);
 
 
-bool game_load_textures(SDL_Texture* bgTexture, SDL_Renderer* renderer);
+bool game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer);
 void game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window);
 void game_callback(const SDL_Event* e, bool* quit);
 
