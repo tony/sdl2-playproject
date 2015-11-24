@@ -22,15 +22,15 @@ game_load_textures(Game* game, SDL_Renderer* renderer)
 }
 
 void 
-game_close(Game* game) 
+game_close(Game* game, SDL_Renderer* renderer, SDL_Window* window) 
 {
     SDL_DestroyTexture(game->bgTexture);
     game->bgTexture = NULL;
 
-    game->renderer = NULL;
-    game->window = NULL;
-    SDL_DestroyRenderer(game->renderer);
-    SDL_DestroyWindow(game->window);
+    renderer = NULL;
+    window = NULL;
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
 
     IMG_Quit();
     SDL_Quit();
@@ -66,9 +66,9 @@ int main(void) {
         .position = { 0, 0, 30, 30 },
         .state = HERO_STATE_DEFAULT
     };
-    Game game = {
-        .window = NULL,
-    };
+    Game game;
+    SDL_Renderer* renderer;
+    SDL_Window* window;
 
     Boomerangs boomerangs;
 
@@ -84,43 +84,43 @@ int main(void) {
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
         SDL_WINDOW_SHOWN,
-        &game.window,
-        &game.renderer
+        &window,
+        &renderer
     );
 
-    if (game.window == NULL) {
+    if (window == NULL) {
         fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
-    } else if (game.renderer == NULL) {
+    } else if (renderer == NULL) {
         fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
-    if(!game_load_textures(&game, game.renderer)) {
+    if(!game_load_textures(&game, renderer)) {
         fatal("Failed to load media!\n");
-    } else if(!hero_load_textures(&hero, game.renderer)) {
+    } else if(!hero_load_textures(&hero, renderer)) {
         fatal("Failed to load hero media!\n");
-    } else if(!boomerangs_init(&boomerangs, game.renderer)) {
+    } else if(!boomerangs_init(&boomerangs, renderer)) {
         fatal("Failed to load boomerang media!\n");
     }
 
-    SDL_SetRenderDrawColor(game.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 
     while (!quit) {
-        SDL_RenderClear(game.renderer);
-        SDL_RenderCopy(game.renderer, game.bgTexture, NULL, NULL);
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, game.bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&game, &e, &quit);
             hero_callback(&hero, &boomerangs, &e);
         }
         boomerangs_update(&boomerangs);
-        boomerangs_draw(&boomerangs, game.renderer);
-        SDL_RenderCopy(game.renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
+        boomerangs_draw(&boomerangs, renderer);
+        SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
 
-        SDL_RenderPresent(game.renderer);
+        SDL_RenderPresent(renderer);
         SDL_Delay(16);
     }
 
     hero_delete(&hero);
-    game_close(&game);
+    game_close(&game, renderer, window);
 
     return 0;
 }

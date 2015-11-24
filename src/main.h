@@ -48,14 +48,12 @@ void boomerang_delete(Boomerang* boomerang);
  * Namespace for global objects (window, renderer, etc.)
  */
 typedef struct Game {
-    SDL_Window* window;
     Hero* hero;
-    SDL_Renderer* renderer;
     SDL_Texture* bgTexture;
 } Game;
 
 bool game_load_textures(Game* game, SDL_Renderer* renderer);
-void game_close(Game* game);
+void game_close(Game* game, SDL_Renderer* renderer, SDL_Window* window);
 void game_callback(Game* game, const SDL_Event* e, bool* quit);
 
 
