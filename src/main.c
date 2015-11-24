@@ -9,12 +9,12 @@ const int SCREEN_HEIGHT = 480;
 const int MAX_HERO_MOVEMENT = 5;
 
 bool
-game_load_textures(Game* game, SDL_Renderer* renderer)
+game_load_textures(SDL_Texture* bgTexture, SDL_Renderer* renderer)
 {
     bool success = true;
 
-    game->bgTexture = texture_load("resources/continents.png", renderer);
-    if (game->bgTexture == NULL) {
+    bgTexture = texture_load("resources/continents.png", renderer);
+    if (bgTexture == NULL) {
         success = false;
     }
 
@@ -22,10 +22,10 @@ game_load_textures(Game* game, SDL_Renderer* renderer)
 }
 
 void 
-game_close(Game* game, SDL_Renderer* renderer, SDL_Window* window) 
+game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window) 
 {
-    SDL_DestroyTexture(game->bgTexture);
-    game->bgTexture = NULL;
+    SDL_DestroyTexture(bgTexture);
+    bgTexture = NULL;
 
     renderer = NULL;
     window = NULL;
@@ -37,7 +37,7 @@ game_close(Game* game, SDL_Renderer* renderer, SDL_Window* window)
 }
 
 void
-game_callback(Game* game, const SDL_Event* e, bool* quit) 
+game_callback(const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
         *quit = true;
@@ -66,9 +66,9 @@ int main(void) {
         .position = { 0, 0, 30, 30 },
         .state = HERO_STATE_DEFAULT
     };
-    Game game;
     SDL_Renderer* renderer;
     SDL_Window* window;
+    SDL_Texture* bgTexture;
 
     Boomerangs boomerangs;
 
@@ -94,7 +94,7 @@ int main(void) {
         fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
     }
 
-    if(!game_load_textures(&game, renderer)) {
+    if(!game_load_textures(bgTexture, renderer)) {
         fatal("Failed to load media!\n");
     } else if(!hero_load_textures(&hero, renderer)) {
         fatal("Failed to load hero media!\n");
@@ -106,9 +106,9 @@ int main(void) {
 
     while (!quit) {
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, game.bgTexture, NULL, NULL);
+        SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
-            game_callback(&game, &e, &quit);
+            game_callback(&e, &quit);
             hero_callback(&hero, &boomerangs, &e);
         }
         boomerangs_update(&boomerangs);
@@ -120,7 +120,7 @@ int main(void) {
     }
 
     hero_delete(&hero);
-    game_close(&game, renderer, window);
+    game_close(bgTexture, renderer, window);
 
     return 0;
 }

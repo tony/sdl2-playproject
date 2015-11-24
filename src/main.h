@@ -44,17 +44,9 @@ void boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, 
 void boomerang_delete(Boomerang* boomerang);
 
 
-/**
- * Namespace for global objects (window, renderer, etc.)
- */
-typedef struct Game {
-    Hero* hero;
-    SDL_Texture* bgTexture;
-} Game;
-
-bool game_load_textures(Game* game, SDL_Renderer* renderer);
-void game_close(Game* game, SDL_Renderer* renderer, SDL_Window* window);
-void game_callback(Game* game, const SDL_Event* e, bool* quit);
+bool game_load_textures(SDL_Texture* bgTexture, SDL_Renderer* renderer);
+void game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window);
+void game_callback(const SDL_Event* e, bool* quit);
 
 
 #ifndef __dead
