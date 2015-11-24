@@ -33,7 +33,7 @@ typedef struct Boomerangs {
     SDL_Texture* texture;
 } Boomerangs;
 
-void hero_callback(Hero* hero, Boomerangs* boomerangs, const SDL_Event* e);
+void hero_callback(Hero* hero, Boomerangs* boomerangs, const Uint8* currentKeyStates);
 bool hero_load_textures(Hero* hero, SDL_Renderer* renderer);
 void hero_delete(Hero* hero);
 

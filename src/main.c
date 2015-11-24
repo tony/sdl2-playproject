@@ -109,8 +109,9 @@ int main(void) {
         SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&e, &quit);
-            hero_callback(&hero, &boomerangs, &e);
         }
+        const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+        hero_callback(&hero, &boomerangs, currentKeyStates);
         boomerangs_update(&boomerangs);
         boomerangs_draw(&boomerangs, renderer);
         SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);

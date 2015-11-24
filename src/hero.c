@@ -9,35 +9,32 @@ extern int SCREEN_WIDTH;
 
 
 void
-hero_callback(Hero* hero, Boomerangs *boomerangs, const SDL_Event* e)
+hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
 {
-    if (e->type == SDL_KEYDOWN) {
-        switch(e->key.keysym.sym) {
-        case SDLK_UP:
+
+        if (currentKeyStates[SDL_SCANCODE_UP]) {
             hero->state = HERO_STATE_WALK_UP;
-            hero->position.y -= SCREEN_HEIGHT * 0.05;
-            break;
-
-        case SDLK_DOWN:
-            hero->state = HERO_STATE_WALK_DOWN;
-            hero->position.y += SCREEN_HEIGHT * 0.05;
-            break;
-
-        case SDLK_LEFT:
-            hero->state = HERO_STATE_WALK_LEFT;
-            hero->position.x -= SCREEN_WIDTH * 0.05;
-            break;
-
-        case SDLK_RIGHT:
-            hero->state = HERO_STATE_WALK_RIGHT;
-            hero->position.x += SCREEN_WIDTH * 0.05;
-            break;
-
-        case SDLK_SPACE:
-            boomerang_create(boomerangs, &hero->state, &hero->position);
-            break;
+            hero->position.y -= SCREEN_HEIGHT * 0.01;
         }
-    }
+
+        if (currentKeyStates[SDL_SCANCODE_DOWN]) {
+            hero->state = HERO_STATE_WALK_DOWN;
+            hero->position.y += SCREEN_HEIGHT * 0.01;
+        }
+
+        if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+            hero->state = HERO_STATE_WALK_LEFT;
+            hero->position.x -= SCREEN_WIDTH * 0.01;
+        }
+
+        if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+            hero->state = HERO_STATE_WALK_RIGHT;
+            hero->position.x += SCREEN_WIDTH * 0.01;
+        }
+
+        if (currentKeyStates[SDL_SCANCODE_SPACE]) {
+            boomerang_create(boomerangs, &hero->state, &hero->position);
+        }
 }
 
 bool
