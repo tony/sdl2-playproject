@@ -100,7 +100,7 @@ int main(void) {
     if(!app_load_textures(&app, app.renderer)) {
         fatal("Failed to load media!\n");
     } else if(!hero_load_textures(&hero, app.renderer)) {
-        fatal("Failed to hero media!\n");
+        fatal("Failed to load hero media!\n");
     }
 
     SDL_SetRenderDrawColor(app.renderer, 0xFF, 0xFF, 0xFF, 0xFF);
