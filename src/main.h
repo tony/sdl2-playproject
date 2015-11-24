@@ -22,15 +22,17 @@ typedef struct Hero {
 
 
 typedef struct Boomerang {
-    SDL_Texture* texture;
     SDL_Rect position;
     SDL_Point velocity;
 } Boomerang;
 
+#define MAX_BOOMERANGS 10
+
 typedef struct Boomerangs {
-    Boomerang array[10];
+    Boomerang array[MAX_BOOMERANGS];
     int len;
     SDL_Texture* texture;
+    Uint32 last_shot;
 } Boomerangs;
 
 void hero_callback(Hero* hero, Boomerangs* boomerangs, const Uint8* currentKeyStates);

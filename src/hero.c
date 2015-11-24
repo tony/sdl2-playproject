@@ -7,6 +7,7 @@ extern Boomerangs boomerangs;
 extern int SCREEN_HEIGHT;
 extern int SCREEN_WIDTH;
 
+#define SHOOTING_DELAY 200
 
 void
 hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
@@ -33,7 +34,12 @@ hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
         }
 
         if (currentKeyStates[SDL_SCANCODE_SPACE]) {
-            boomerang_create(boomerangs, &hero->state, &hero->position);
+            Uint32 now = SDL_GetTicks();
+            if (now - boomerangs->last_shot >= SHOOTING_DELAY) {
+                boomerang_create(boomerangs, &hero->state, &hero->position);
+                boomerangs->last_shot = now;
+            }
+
         }
 }
 
@@ -61,25 +67,29 @@ boomerangs_update(Boomerangs* boomerangs)
         boomerang->position.y += boomerang->velocity.y;
 
         if (boomerang->position.x > SCREEN_WIDTH ||
-                boomerang->position.x < 0) {
-
-            boomerang_delete(boomerang);
-        }
-        if (boomerang->position.y > SCREEN_HEIGHT ||
-                boomerang->position.y < 0) {
-            boomerang_delete(boomerang);
+            boomerang->position.w > SCREEN_WIDTH ||
+            boomerang->position.x < 0 ||
+            boomerang->position.y > SCREEN_HEIGHT ||
+            boomerang->position.h > SCREEN_HEIGHT ||
+            boomerang->position.y < 0
+            ) {
+            boomerangs->array[i].position.h = 0;
+            boomerangs->array[i].position.w = 0;
+            boomerangs->array[i].position.x = 0;
+            boomerangs->array[i].position.y = 0;
+            boomerangs->array[i].velocity.x = 0;
+            boomerangs->array[i].velocity.y = 0;
+            free(&boomerangs->array[i]);
+            boomerangs->len += -1;
         }
     }
 }
 
+static const Boomerang NullBoomerang;
+
 void
 boomerang_delete(Boomerang* boomerang)
 {
-    boomerang->position.x = 0;
-    boomerang->position.y = 0;
-    boomerang->texture = NULL;
-    boomerang->velocity.x = 0;
-    boomerang->velocity.y = 0;
 }
 
 void
@@ -87,41 +97,45 @@ boomerangs_draw(Boomerangs* boomerangs, SDL_Renderer* renderer)
 {
     for (int i = 0; i < boomerangs->len; i++) {
         Boomerang* boomerang = &boomerangs->array[i];
-        SDL_RenderCopy(renderer, boomerang->texture, NULL, &boomerang->position);
+
+        if (boomerangs->texture) {
+            SDL_RenderCopy(renderer, boomerangs->texture, NULL, &boomerang->position);
+        }
     }
 }
 
 void
 boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, const SDL_Rect* hero_position)
 {
-    Boomerang boomerang = boomerangs->array[0];
-    boomerang.position = *hero_position;
-    boomerang.texture = boomerangs->texture;
+    if (boomerangs->len < MAX_BOOMERANGS) {
+        Boomerang boomerang = boomerangs->array[boomerangs->len];
+        printf("creating boomerang");
+        boomerang.position = *hero_position;
 
-    switch(*hero_state) {
-        case HERO_STATE_WALK_UP:
-            boomerang.velocity.x = 0;
-            boomerang.velocity.y = -1;
-            break;
-        case HERO_STATE_WALK_DOWN:
-            boomerang.velocity.x = 0;
-            boomerang.velocity.y = 1;
-            break;
-        case HERO_STATE_WALK_LEFT:
-            boomerang.velocity.x = -1;
-            boomerang.velocity.y = 0;
-            break;
-        case HERO_STATE_WALK_RIGHT:
-            boomerang.velocity.x = 1;
-            boomerang.velocity.y = 0;
-            break;
-        default:
-            break;
+        switch(*hero_state) {
+            case HERO_STATE_WALK_UP:
+                boomerang.velocity.x = 0;
+                boomerang.velocity.y = -1;
+                break;
+            case HERO_STATE_WALK_DOWN:
+                boomerang.velocity.x = 0;
+                boomerang.velocity.y = 1;
+                break;
+            case HERO_STATE_WALK_LEFT:
+                boomerang.velocity.x = -1;
+                boomerang.velocity.y = 0;
+                break;
+            case HERO_STATE_WALK_RIGHT:
+                boomerang.velocity.x = 1;
+                boomerang.velocity.y = 0;
+                break;
+            default:
+                break;
+        }
+        boomerangs->array[boomerangs->len] = boomerang;
+        boomerangs->len += 1;
     }
 
-    boomerangs->array[0] = boomerang;
-
-    boomerangs->len++;
 }
 
 bool
