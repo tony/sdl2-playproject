@@ -58,9 +58,12 @@ boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer)
     return success;
 }
 
+
+
 void
 boomerangs_update(Boomerangs* boomerangs)
 {
+    int boomerangs_deleted = 0;
     for (int i = 0; i < boomerangs->len; i++) {
         Boomerang* boomerang = &boomerangs->array[i];
         boomerang->position.x += boomerang->velocity.x;
@@ -73,14 +76,11 @@ boomerangs_update(Boomerangs* boomerangs)
             boomerang->position.h > SCREEN_HEIGHT ||
             boomerang->position.y < 0
             ) {
-            boomerangs->array[i].position.h = 0;
-            boomerangs->array[i].position.w = 0;
-            boomerangs->array[i].position.x = 0;
-            boomerangs->array[i].position.y = 0;
-            boomerangs->array[i].velocity.x = 0;
-            boomerangs->array[i].velocity.y = 0;
-            free(&boomerangs->array[i]);
-            boomerangs->len += -1;
+            int remaining_len = boomerangs->len - i - 1;
+            memmove(boomerangs->array + i, boomerangs->array + i + 1, remaining_len * sizeof(Boomerang));
+            i -= 1;
+            boomerangs->len -= 1;
+
         }
     }
 }
@@ -109,7 +109,6 @@ boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, const
 {
     if (boomerangs->len < MAX_BOOMERANGS) {
         Boomerang boomerang = boomerangs->array[boomerangs->len];
-        printf("creating boomerang");
         boomerang.position = *hero_position;
 
         switch(*hero_state) {
