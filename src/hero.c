@@ -54,8 +54,6 @@ boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer)
     return success;
 }
 
-
-
 void
 boomerangs_update(Boomerangs* boomerangs)
 {
@@ -124,7 +122,6 @@ boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, const
         boomerangs->array[boomerangs->len] = boomerang;
         boomerangs->len += 1;
     }
-
 }
 
 bool
