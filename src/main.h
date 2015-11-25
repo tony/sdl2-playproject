@@ -1,6 +1,11 @@
 #pragma once
 
 #define MAX_BOOMERANGS 10
+#define HERO_SPRITE_W 30
+#define HERO_SPRITE_H 30
+#define MIN(x, y) ((x) < (y) ? (x) : (y))
+#define MAX(x, y) ((x) > (y) ? (x) : (y))
+#define CLAMP(v, min, max) (MAX(MIN(v, max), min))
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 
