@@ -12,6 +12,13 @@ const int BOTTOM_VIEWPORT_Y = SCREEN_HEIGHT * .9;
 const int BOTTOM_VIEWPORT_W = SCREEN_WIDTH;
 const int BOTTOM_VIEWPORT_H = SCREEN_HEIGHT * .1;
 
+const SDL_Rect BOTTOM_VIEWPORT_RECT = {
+    .x = BOTTOM_VIEWPORT_X,
+    .y = BOTTOM_VIEWPORT_Y,
+    .w = BOTTOM_VIEWPORT_W,
+    .h = BOTTOM_VIEWPORT_H
+};
+
 const int MAIN_VIEWPORT_X = 0;
 const int MAIN_VIEWPORT_Y = 0;
 const int MAIN_VIEWPORT_W = SCREEN_WIDTH;
@@ -51,6 +58,20 @@ game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window)
 }
 
 void
+draw_button(SDL_Renderer* renderer)
+{
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+    SDL_Rect rectangle;
+
+    rectangle.x = 0;
+    rectangle.y = 0;
+    rectangle.w = 50;
+    rectangle.h = 50;
+    SDL_RenderFillRect(renderer, &rectangle);
+    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+}
+
+void
 game_callback(const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
@@ -71,7 +92,7 @@ game_callback(const SDL_Event* e, bool* quit)
 }
 
 void
-viewports_init(SDL_Renderer* renderer)
+bottom_viewport_init(SDL_Renderer* renderer)
 {
     SDL_Rect bottomViewPort;
     bottomViewPort.x = BOTTOM_VIEWPORT_X;
@@ -79,8 +100,12 @@ viewports_init(SDL_Renderer* renderer)
     bottomViewPort.w = BOTTOM_VIEWPORT_W;
     bottomViewPort.h = BOTTOM_VIEWPORT_H;
 
-    SDL_RenderSetViewport(renderer, &bottomViewPort);
+    SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
+}
 
+void
+main_viewport_init(SDL_Renderer* renderer)
+{
     SDL_Rect mainViewPort;
     mainViewPort.x = MAIN_VIEWPORT_X;
     mainViewPort.y = MAIN_VIEWPORT_Y;
@@ -140,7 +165,9 @@ int main(void) {
 
     while (!quit) {
         SDL_RenderClear(renderer);
-        viewports_init(renderer);
+        bottom_viewport_init(renderer);
+        draw_button(renderer);
+        main_viewport_init(renderer);
         SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&e, &quit);
