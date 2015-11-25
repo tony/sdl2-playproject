@@ -11,12 +11,12 @@ hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
 {
     if (currentKeyStates[SDL_SCANCODE_UP]) {
         hero->state = HERO_STATE_WALK_UP;
-        hero->position.y = CLAMP(hero->position.y - SCREEN_HEIGHT * 0.01, 0, SCREEN_HEIGHT - HERO_SPRITE_H);
+        hero->position.y = CLAMP(hero->position.y - MAIN_VIEWPORT_H * 0.01, 0, MAIN_VIEWPORT_H - HERO_SPRITE_H);
     }
 
     if (currentKeyStates[SDL_SCANCODE_DOWN]) {
         hero->state = HERO_STATE_WALK_DOWN;
-        hero->position.y = CLAMP(hero->position.y + SCREEN_HEIGHT * 0.01, 0, SCREEN_HEIGHT - HERO_SPRITE_H);
+        hero->position.y = CLAMP(hero->position.y + MAIN_VIEWPORT_H * 0.01, 0, MAIN_VIEWPORT_H - HERO_SPRITE_H);
     }
 
     if (currentKeyStates[SDL_SCANCODE_LEFT]) {
@@ -64,18 +64,17 @@ boomerangs_update(Boomerangs* boomerangs)
         position->x += boomerang->velocity.x;
         position->y += boomerang->velocity.y;
 
-        if (position->x > SCREEN_WIDTH ||
-            position->w > SCREEN_WIDTH ||
+        if (position->x > MAIN_VIEWPORT_W ||
+            position->w > MAIN_VIEWPORT_W ||
             position->x < 0 ||
-            position->y > SCREEN_HEIGHT ||
-            position->h > SCREEN_HEIGHT ||
+            position->y > MAIN_VIEWPORT_H ||
+            position->h > MAIN_VIEWPORT_H ||
             position->y < 0
             ) {
             int remaining_len = boomerangs->len - i - 1;
             memmove(boomerangs->array + i, boomerangs->array + i + 1, remaining_len * sizeof(Boomerang));
             i -= 1;
             boomerangs->len -= 1;
-
         }
     }
 }

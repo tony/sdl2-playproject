@@ -57,6 +57,26 @@ game_callback(const SDL_Event* e, bool* quit)
     }
 }
 
+void
+viewports_init(SDL_Renderer* renderer)
+{
+    SDL_Rect bottomViewPort;
+    bottomViewPort.x = BOTTOM_VIEWPORT_X;
+    bottomViewPort.y = BOTTOM_VIEWPORT_Y;
+    bottomViewPort.w = BOTTOM_VIEWPORT_W;
+    bottomViewPort.h = BOTTOM_VIEWPORT_H;
+
+    SDL_RenderSetViewport(renderer, &bottomViewPort);
+
+    SDL_Rect mainViewPort;
+    mainViewPort.x = MAIN_VIEWPORT_X;
+    mainViewPort.y = MAIN_VIEWPORT_Y;
+    mainViewPort.w = MAIN_VIEWPORT_W;
+    mainViewPort.h = MAIN_VIEWPORT_H;
+
+    SDL_RenderSetViewport(renderer, &mainViewPort);
+}
+
 int main(void) {
     bool quit = false;
     int imgFlags = IMG_INIT_PNG;
@@ -107,6 +127,7 @@ int main(void) {
 
     while (!quit) {
         SDL_RenderClear(renderer);
+        viewports_init(renderer);
         SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&e, &quit);

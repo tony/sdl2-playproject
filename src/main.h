@@ -6,6 +6,15 @@
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
+#define BOTTOM_VIEWPORT_X 0
+#define BOTTOM_VIEWPORT_Y SCREEN_HEIGHT * .9
+#define BOTTOM_VIEWPORT_W SCREEN_WIDTH
+#define BOTTOM_VIEWPORT_H SCREEN_HEIGHT * .1
+
+#define MAIN_VIEWPORT_X 0
+#define MAIN_VIEWPORT_Y 0
+#define MAIN_VIEWPORT_W SCREEN_WIDTH
+#define MAIN_VIEWPORT_H SCREEN_HEIGHT * .9
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 
