@@ -1,20 +1,23 @@
 #pragma once
 
-#define MAX_BOOMERANGS 10
-#define HERO_SPRITE_W 30
-#define HERO_SPRITE_H 30
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
-#define BOTTOM_VIEWPORT_X 0
-#define BOTTOM_VIEWPORT_Y SCREEN_HEIGHT * .9
-#define BOTTOM_VIEWPORT_W SCREEN_WIDTH
-#define BOTTOM_VIEWPORT_H SCREEN_HEIGHT * .1
 
-#define MAIN_VIEWPORT_X 0
-#define MAIN_VIEWPORT_Y 0
-#define MAIN_VIEWPORT_W SCREEN_WIDTH
-#define MAIN_VIEWPORT_H SCREEN_HEIGHT * .9
+#define HERO_MAX_BOOMERANGS 10
+
+const int HERO_SPRITE_W;
+const int HERO_SPRITE_H;
+
+const int BOTTOM_VIEWPORT_X;
+const int BOTTOM_VIEWPORT_Y;
+const int BOTTOM_VIEWPORT_W;
+const int BOTTOM_VIEWPORT_H;
+
+const int MAIN_VIEWPORT_X;
+const int MAIN_VIEWPORT_Y;
+const int MAIN_VIEWPORT_W;
+const int MAIN_VIEWPORT_H;
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 
@@ -43,7 +46,7 @@ typedef struct Boomerang {
 } Boomerang;
 
 typedef struct Boomerangs {
-    Boomerang array[MAX_BOOMERANGS];
+    Boomerang array[HERO_MAX_BOOMERANGS];
     int len;
     SDL_Texture* texture;
     Uint32 last_shot;

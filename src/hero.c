@@ -94,7 +94,7 @@ boomerangs_draw(Boomerangs* boomerangs, SDL_Renderer* renderer)
 void
 boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, const SDL_Rect* hero_position)
 {
-    if (boomerangs->len < MAX_BOOMERANGS) {
+    if (boomerangs->len < HERO_MAX_BOOMERANGS) {
         Boomerang boomerang = boomerangs->array[boomerangs->len];
         boomerang.position = *hero_position;
 

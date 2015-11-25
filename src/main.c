@@ -6,8 +6,21 @@
 
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
-const int MAX_HERO_MOVEMENT = 5;
+
+const int BOTTOM_VIEWPORT_X = 0;
+const int BOTTOM_VIEWPORT_Y = SCREEN_HEIGHT * .9;
+const int BOTTOM_VIEWPORT_W = SCREEN_WIDTH;
+const int BOTTOM_VIEWPORT_H = SCREEN_HEIGHT * .1;
+
+const int MAIN_VIEWPORT_X = 0;
+const int MAIN_VIEWPORT_Y = 0;
+const int MAIN_VIEWPORT_W = SCREEN_WIDTH;
+const int MAIN_VIEWPORT_H = SCREEN_HEIGHT * .9;
+
 const int SHOOTING_DELAY = 200;
+
+const int HERO_SPRITE_W = 30;
+const int HERO_SPRITE_H = 30;
 
 bool
 game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer)
