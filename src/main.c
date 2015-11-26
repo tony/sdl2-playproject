@@ -24,6 +24,13 @@ const int MAIN_VIEWPORT_Y = 0;
 const int MAIN_VIEWPORT_W = SCREEN_WIDTH;
 const int MAIN_VIEWPORT_H = SCREEN_HEIGHT * .9;
 
+const SDL_Rect MAIN_VIEWPORT_RECT = {
+    .x = MAIN_VIEWPORT_X,
+    .y = MAIN_VIEWPORT_Y,
+    .w = MAIN_VIEWPORT_W,
+    .h = MAIN_VIEWPORT_H
+};
+
 const int SHOOTING_DELAY = 200;
 
 const int HERO_SPRITE_W = 30;
@@ -91,31 +98,8 @@ game_callback(const SDL_Event* e, bool* quit)
     }
 }
 
-void
-bottom_viewport_init(SDL_Renderer* renderer)
-{
-    SDL_Rect bottomViewPort;
-    bottomViewPort.x = BOTTOM_VIEWPORT_X;
-    bottomViewPort.y = BOTTOM_VIEWPORT_Y;
-    bottomViewPort.w = BOTTOM_VIEWPORT_W;
-    bottomViewPort.h = BOTTOM_VIEWPORT_H;
-
-    SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
-}
-
-void
-main_viewport_init(SDL_Renderer* renderer)
-{
-    SDL_Rect mainViewPort;
-    mainViewPort.x = MAIN_VIEWPORT_X;
-    mainViewPort.y = MAIN_VIEWPORT_Y;
-    mainViewPort.w = MAIN_VIEWPORT_W;
-    mainViewPort.h = MAIN_VIEWPORT_H;
-
-    SDL_RenderSetViewport(renderer, &mainViewPort);
-}
-
-int main(void) {
+int
+main(void) {
     bool quit = false;
     int imgFlags = IMG_INIT_PNG;
     SDL_Event e;
@@ -165,9 +149,9 @@ int main(void) {
 
     while (!quit) {
         SDL_RenderClear(renderer);
-        bottom_viewport_init(renderer);
+        SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
         draw_button(renderer);
-        main_viewport_init(renderer);
+        SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
         SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&e, &quit);
