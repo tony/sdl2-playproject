@@ -74,7 +74,23 @@ draw_button(SDL_Renderer* renderer)
     rectangle.y = 0;
     rectangle.w = 50;
     rectangle.h = 50;
+
+    const int button_unit = rectangle.w * 0.05;
     SDL_RenderFillRect(renderer, &rectangle);
+
+    SDL_Rect blackPoints[] = {
+        {1, 0, rectangle.w - 1, 1 * button_unit},
+        {2, 0, rectangle.w - 2, 10 * button_unit}
+    };
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // black
+    SDL_RenderDrawRects(renderer, blackPoints, 2);
+    SDL_RenderDrawLine(renderer, 0, 1, 2, 1);
+    SDL_RenderDrawLine(renderer, rectangle.w - 2, 1, 2, 1);
+
+    SDL_SetRenderDrawColor(renderer, 137, 78, 0, 255);  // gold
+    SDL_RenderDrawLine(renderer, 3, 1, rectangle.w -3, 1);
+
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
