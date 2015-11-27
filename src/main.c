@@ -68,28 +68,32 @@ void
 draw_button(SDL_Renderer* renderer)
 {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_Rect rectangle;
+    SDL_Rect button = {
+        .x = 0,
+        .y = 0,
+        .w = 50,
+        .h = 50
+    };
 
-    rectangle.x = 0;
-    rectangle.y = 0;
-    rectangle.w = 50;
-    rectangle.h = 50;
+    const int button_unit = button.w * 0.05;
 
-    const int button_unit = rectangle.w * 0.05;
-    SDL_RenderFillRect(renderer, &rectangle);
+    SDL_RenderFillRect(renderer, &button);
 
-    SDL_Rect blackPoints[] = {
-        {1, 0, rectangle.w - 1, 1 * button_unit},
-        {2, 0, rectangle.w - 2, 10 * button_unit}
+    SDL_Rect blackFills[] = {
+        {0, 0, button.w - 1, 1 * button_unit},
+        {0, 1 * button_unit, button.w - 2, 1 * button_unit}
+    };
+
+    SDL_Rect goldFills[] = {
+        {0, 0, button.w - 1, 1 * button_unit},
+        {0, 1 * button_unit, button.w - 2, 1 * button_unit}
     };
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // black
-    SDL_RenderDrawRects(renderer, blackPoints, 2);
-    SDL_RenderDrawLine(renderer, 0, 1, 2, 1);
-    SDL_RenderDrawLine(renderer, rectangle.w - 2, 1, 2, 1);
+    SDL_RenderFillRects(renderer, blackFills, 2);
 
     SDL_SetRenderDrawColor(renderer, 137, 78, 0, 255);  // gold
-    SDL_RenderDrawLine(renderer, 3, 1, rectangle.w -3, 1);
+    SDL_RenderFillRects(renderer, goldFills, 2);
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
@@ -172,7 +176,7 @@ main(void) {
         while (SDL_PollEvent(&e) != 0) {
             game_callback(&e, &quit);
         }
-        const Uint8* currentKeyStates = SDL_GetKeyboardState( NULL );
+        const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
         hero_callback(&hero, &boomerangs, currentKeyStates);
         boomerangs_update(&boomerangs);
         boomerangs_draw(&boomerangs, renderer);
