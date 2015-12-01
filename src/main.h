@@ -9,15 +9,8 @@
 const int HERO_SPRITE_W;
 const int HERO_SPRITE_H;
 
-const int BOTTOM_VIEWPORT_X;
-const int BOTTOM_VIEWPORT_Y;
-const int BOTTOM_VIEWPORT_W;
-const int BOTTOM_VIEWPORT_H;
-
-const int MAIN_VIEWPORT_X;
-const int MAIN_VIEWPORT_Y;
-const int MAIN_VIEWPORT_W;
-const int MAIN_VIEWPORT_H;
+const SDL_Rect MAIN_VIEWPORT_RECT;
+const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 

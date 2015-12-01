@@ -7,28 +7,18 @@
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
 
-const int BOTTOM_VIEWPORT_X = 0;
-const int BOTTOM_VIEWPORT_Y = SCREEN_HEIGHT * .9;
-const int BOTTOM_VIEWPORT_W = SCREEN_WIDTH;
-const int BOTTOM_VIEWPORT_H = SCREEN_HEIGHT * .1;
-
 const SDL_Rect BOTTOM_VIEWPORT_RECT = {
-    .x = BOTTOM_VIEWPORT_X,
-    .y = BOTTOM_VIEWPORT_Y,
-    .w = BOTTOM_VIEWPORT_W,
-    .h = BOTTOM_VIEWPORT_H
+    .x = 0,
+    .y = SCREEN_HEIGHT * .9,
+    .w = SCREEN_WIDTH,
+    .h = SCREEN_HEIGHT * .1
 };
 
-const int MAIN_VIEWPORT_X = 0;
-const int MAIN_VIEWPORT_Y = 0;
-const int MAIN_VIEWPORT_W = SCREEN_WIDTH;
-const int MAIN_VIEWPORT_H = SCREEN_HEIGHT * .9;
-
 const SDL_Rect MAIN_VIEWPORT_RECT = {
-    .x = MAIN_VIEWPORT_X,
-    .y = MAIN_VIEWPORT_Y,
-    .w = MAIN_VIEWPORT_W,
-    .h = MAIN_VIEWPORT_H
+    .x = 0,
+    .y = 0,
+    .w = SCREEN_WIDTH,
+    .h = SCREEN_HEIGHT * .9 
 };
 
 const int SHOOTING_DELAY = 200;
