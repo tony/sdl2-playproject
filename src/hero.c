@@ -80,13 +80,11 @@ boomerangs_update(Boomerangs* boomerangs)
 }
 
 void
-boomerangs_draw(Boomerangs* boomerangs, SDL_Renderer* renderer)
+boomerangs_draw(const Boomerangs* boomerangs, SDL_Renderer* renderer)
 {
     for (int i = 0; i < boomerangs->len; i++) {
-        Boomerang* boomerang = &boomerangs->array[i];
-
         if (boomerangs->texture) {
-            SDL_RenderCopy(renderer, boomerangs->texture, NULL, &boomerang->position);
+            SDL_RenderCopy(renderer, boomerangs->texture, NULL, &boomerangs->array[i].position);
         }
     }
 }

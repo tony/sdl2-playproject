@@ -51,7 +51,7 @@ void hero_delete(Hero* hero);
 
 bool boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer);
 void boomerangs_update(Boomerangs* boomerangs);
-void boomerangs_draw(Boomerangs* boomerangs, SDL_Renderer* renderer);
+void boomerangs_draw(const Boomerangs* boomerangs, SDL_Renderer* renderer);
 void boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state, const SDL_Rect* hero_position);
 void boomerang_delete(Boomerang* boomerang);
 
