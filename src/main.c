@@ -55,40 +55,6 @@ game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window)
 }
 
 void
-draw_button(SDL_Renderer* renderer)
-{
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    SDL_Rect button = {
-        .x = 0,
-        .y = 0,
-        .w = 50,
-        .h = 50
-    };
-
-    const int button_unit = button.w * 0.05;
-
-    SDL_RenderFillRect(renderer, &button);
-
-    SDL_Rect blackFills[] = {
-        {0, 0, button.w - 1, 1 * button_unit},
-        {0, 1 * button_unit, button.w - 2, 1 * button_unit}
-    };
-
-    SDL_Rect goldFills[] = {
-        {0, 0, button.w - 1, 1 * button_unit},
-        {0, 1 * button_unit, button.w - 2, 1 * button_unit}
-    };
-
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // black
-    SDL_RenderFillRects(renderer, blackFills, 2);
-
-    SDL_SetRenderDrawColor(renderer, 137, 78, 0, 255);  // gold
-    SDL_RenderFillRects(renderer, goldFills, 2);
-
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
-}
-
-void
 game_callback(const SDL_Event* e, bool* quit) 
 {
     if(e->type == SDL_QUIT) {
@@ -159,8 +125,6 @@ main(void) {
 
     while (!quit) {
         SDL_RenderClear(renderer);
-        SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
-        draw_button(renderer);
         SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
         SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
         while (SDL_PollEvent(&e) != 0) {
