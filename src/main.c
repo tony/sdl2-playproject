@@ -99,12 +99,18 @@ main(void) {
         fatal("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
     }
 
-    SDL_CreateWindowAndRenderer(
+    window = SDL_CreateWindow(
+        "sdl2-playproject",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
         SCREEN_WIDTH,
         SCREEN_HEIGHT,
-        SDL_WINDOW_SHOWN,
-        &window,
-        &renderer
+        SDL_WINDOW_RESIZABLE
+    );
+
+    renderer = SDL_CreateRenderer(window,
+        -1,
+        SDL_RENDERER_ACCELERATED
     );
 
     if (window == NULL) {
