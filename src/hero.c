@@ -9,22 +9,22 @@ extern const int SHOOTING_DELAY;
 void
 hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
 {
-    if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W]) {
+    if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W] || currentKeyStates[SDL_SCANCODE_K]) {
         hero->state = HERO_STATE_WALK_UP;
         hero->position.y = CLAMP(hero->position.y - MAIN_VIEWPORT_RECT.h * 0.01, 0, MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
     }
 
-    if (currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_S]) {
+    if (currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_S] || currentKeyStates[SDL_SCANCODE_J]) {
         hero->state = HERO_STATE_WALK_DOWN;
         hero->position.y = CLAMP(hero->position.y + MAIN_VIEWPORT_RECT.h * 0.01, 0, MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
     }
 
-    if (currentKeyStates[SDL_SCANCODE_LEFT] || currentKeyStates[SDL_SCANCODE_A]) {
+    if (currentKeyStates[SDL_SCANCODE_LEFT] || currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_H]) {
         hero->state = HERO_STATE_WALK_LEFT;
         hero->position.x = CLAMP(hero->position.x - SCREEN_WIDTH * 0.01, 0, SCREEN_WIDTH - HERO_SPRITE_W);
     }
 
-    if (currentKeyStates[SDL_SCANCODE_RIGHT] || currentKeyStates[SDL_SCANCODE_D]) {
+    if (currentKeyStates[SDL_SCANCODE_RIGHT] || currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_L]) {
         hero->state = HERO_STATE_WALK_RIGHT;
         hero->position.x = CLAMP(hero->position.x + SCREEN_WIDTH * 0.01, 0, SCREEN_WIDTH - HERO_SPRITE_W);
     }
@@ -57,7 +57,6 @@ boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer)
 void
 boomerangs_update(Boomerangs* boomerangs)
 {
-    int boomerangs_deleted = 0;
     for (int i = 0; i < boomerangs->len; i++) {
         Boomerang* boomerang = &boomerangs->array[i];
 		SDL_Rect* position = &boomerang->position;
