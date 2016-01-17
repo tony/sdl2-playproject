@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include "main.h"
 
 const int SCREEN_WIDTH = 630;
@@ -25,6 +26,8 @@ const int SHOOTING_DELAY = 200;
 
 const int HERO_SPRITE_W = 30;
 const int HERO_SPRITE_H = 30;
+
+TTF_Font *font = NULL;
 
 bool
 game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer)
@@ -126,6 +129,14 @@ main(void) {
         fatal("Failed to load hero media!\n");
     } else if(!boomerangs_init(&boomerangs, renderer)) {
         fatal("Failed to load boomerang media!\n");
+    } else if ( TTF_Init() == -1 ) {
+        fatal("Font engine failed to initialize.\n");
+    }
+
+    // load fonts
+    font = TTF_OpenFont("resources/fonts/TerminusTTF-Bold-4.39.ttf", 48);
+    if (font == NULL) {
+        fatal("Error loading font");
     }
 
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -142,6 +153,7 @@ main(void) {
         boomerangs_update(&boomerangs);
         boomerangs_draw(&boomerangs, renderer);
         SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
+        draw_text("hero", 0, 0, font, renderer);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
