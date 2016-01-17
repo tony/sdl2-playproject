@@ -29,6 +29,7 @@ enum HeroState {
 };
 
 typedef struct Stats {
+    int current_hp;
     int hp;
     int strength;
     int intelligence;

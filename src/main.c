@@ -84,7 +84,7 @@ main(void) {
         .spriteSheet = NULL,
         .position = { 0, 0, 30, 30 },
         .state = HERO_STATE_DEFAULT,
-        .stats = { 100, 8, 8 }
+        .stats = { 100, 100, 8, 8 }
     };
     SDL_Renderer* renderer;
     SDL_Window* window;
@@ -131,7 +131,7 @@ main(void) {
     }
 
     // load fonts
-    font = TTF_OpenFont("resources/fonts/TerminusTTF-Bold-4.39.ttf", 48);
+    font = TTF_OpenFont("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
     if (font == NULL) {
         fatal("Error loading font");
     }
@@ -150,7 +150,9 @@ main(void) {
         boomerangs_update(&boomerangs);
         boomerangs_draw(&boomerangs, renderer);
         SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
-        draw_text("hero", 0, 0, font, renderer);
+        char* herotext;
+        sprintf(herotext, "health %d / %d", hero.stats.current_hp, hero.stats.hp);
+        draw_text(herotext, 0, 0, font, renderer);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
