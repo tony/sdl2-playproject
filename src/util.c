@@ -1,8 +1,5 @@
 #include <stdbool.h>
 #include <errno.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include "main.h"
 
 /* Log a critical error with error string and die. */
@@ -19,7 +16,7 @@ fatal(const char *msg, ...)
 }
 
 void
-draw_text(const char* text, const int x, const int y, const TTF_Font* font, SDL_Renderer* renderer) 
+draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Renderer* renderer) 
 {
     const SDL_Color textForegroundColor = { 255, 255, 255 };
     const SDL_Color textShadowColor = { 0, 0, 0 };
@@ -35,7 +32,6 @@ draw_text(const char* text, const int x, const int y, const TTF_Font* font, SDL_
 
     SDL_RenderCopy(renderer, message_texture_shadow, NULL, &(SDL_Rect){ 2, 2, message_shadow->w, message_shadow->h });
     SDL_RenderCopy(renderer, message_texture, NULL, &(SDL_Rect){ 0, 0, message->w, message->h });
-
 }
 
 

@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <SDL.h>
 #include "main.h"
 
 extern const int SCREEN_HEIGHT;

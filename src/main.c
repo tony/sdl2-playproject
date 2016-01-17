@@ -1,8 +1,5 @@
 #include <assert.h>
 #include <stdbool.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
 #include "main.h"
 
 const int SCREEN_WIDTH = 630;
@@ -27,7 +24,7 @@ const int SHOOTING_DELAY = 200;
 const int HERO_SPRITE_W = 30;
 const int HERO_SPRITE_H = 30;
 
-TTF_Font *font = NULL;
+TTF_Font* font = NULL;
 
 bool
 game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer)

@@ -1,5 +1,9 @@
 #pragma once
 
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
@@ -13,6 +17,7 @@ const SDL_Rect MAIN_VIEWPORT_RECT;
 const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
+void draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Renderer* renderer);
 
 enum HeroState {
     HERO_STATE_DEFAULT,
