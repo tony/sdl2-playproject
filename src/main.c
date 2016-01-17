@@ -44,12 +44,15 @@ game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer, SDL_Window* window)
 {
     SDL_DestroyTexture(bgTexture);
     bgTexture = NULL;
+    TTF_CloseFont(font);
+    font = NULL;
 
     renderer = NULL;
     window = NULL;
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
 
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
@@ -150,7 +153,7 @@ main(void) {
         boomerangs_update(&boomerangs);
         boomerangs_draw(&boomerangs, renderer);
         SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
-        char* herotext;
+        char herotext[32];
         sprintf(herotext, "health %d / %d", hero.stats.current_hp, hero.stats.hp);
         draw_text(herotext, 0, 0, font, renderer);
 

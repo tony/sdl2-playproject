@@ -32,6 +32,9 @@ draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Render
 
     SDL_RenderCopy(renderer, message_texture_shadow, NULL, &(SDL_Rect){ 2, 2, message_shadow->w, message_shadow->h });
     SDL_RenderCopy(renderer, message_texture, NULL, &(SDL_Rect){ 0, 0, message->w, message->h });
+
+    SDL_FreeSurface(message);
+    SDL_FreeSurface(message_shadow);
 }
 
 
