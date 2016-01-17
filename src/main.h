@@ -23,15 +23,21 @@ enum HeroState {
     HERO_STATE_TOTAL
 };
 
+typedef struct Stats {
+    int hp;
+    int strength;
+    int intelligence;
+} Stats;
+
+
 typedef struct Hero {
     SDL_Rect HeroState[HERO_STATE_TOTAL];
     SDL_Texture* spriteSheet; // sprite sheet
     SDL_Rect position;
     SDL_Point velocity;
+    Stats stats;
     enum HeroState state;
 } Hero;
-
-
 
 typedef struct Boomerang {
     SDL_Rect position;

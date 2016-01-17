@@ -35,7 +35,6 @@ hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)
             boomerang_create(boomerangs, &hero->state, &hero->position);
             boomerangs->last_shot = now;
         }
-
     }
 }
 

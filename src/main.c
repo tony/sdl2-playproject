@@ -83,7 +83,8 @@ main(void) {
     Hero hero = {
         .spriteSheet = NULL,
         .position = { 0, 0, 30, 30 },
-        .state = HERO_STATE_DEFAULT
+        .state = HERO_STATE_DEFAULT,
+        .stats = { 100, 8, 8 }
     };
     SDL_Renderer* renderer;
     SDL_Window* window;
