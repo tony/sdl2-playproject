@@ -154,7 +154,7 @@ main(void) {
         boomerangs_draw(&boomerangs, renderer);
         SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state], &hero.position);
         char herotext[32];
-        sprintf(herotext, "health %d / %d", hero.stats.current_hp, hero.stats.hp);
+        snprintf(herotext, sizeof(herotext), "health %d / %d", hero.stats.current_hp, hero.stats.hp);
         draw_text(herotext, 0, 0, font, renderer);
 
         SDL_RenderPresent(renderer);
