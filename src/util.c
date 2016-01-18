@@ -35,6 +35,12 @@ draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Render
 
     SDL_FreeSurface(message);
     SDL_FreeSurface(message_shadow);
+    SDL_DestroyTexture(message_texture);
+    SDL_DestroyTexture(message_texture_shadow);
+    message = NULL;
+    message_shadow = NULL;
+    message_texture = NULL;
+    message_texture_shadow = NULL;
 }
 
 
