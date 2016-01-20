@@ -10,11 +10,11 @@
 
 #define HERO_MAX_BOOMERANGS 10
 
-const int HERO_SPRITE_W;
-const int HERO_SPRITE_H;
+extern const int HERO_SPRITE_W;
+extern const int HERO_SPRITE_H;
 
-const SDL_Rect MAIN_VIEWPORT_RECT;
-const SDL_Rect BOTTOM_VIEWPORT_RECT;
+extern const SDL_Rect MAIN_VIEWPORT_RECT;
+extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 void draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Renderer* renderer);
