@@ -22,7 +22,10 @@ class GCore {
 };
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
-void draw_text(const char* text, int x, int y, TTF_Font* font,
+void draw_text(const char* text,
+               int x,
+               int y,
+               TTF_Font* font,
                SDL_Renderer* renderer);
 
 enum HeroState {
@@ -64,7 +67,8 @@ typedef struct Boomerangs {
   Uint32 last_shot;
 } Boomerangs;
 
-void hero_callback(Hero* hero, Boomerangs* boomerangs,
+void hero_callback(Hero* hero,
+                   Boomerangs* boomerangs,
                    const Uint8* currentKeyStates);
 bool hero_load_textures(Hero* hero, SDL_Renderer* renderer);
 void hero_delete(Hero* hero);
@@ -72,12 +76,14 @@ void hero_delete(Hero* hero);
 bool boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer);
 void boomerangs_update(Boomerangs* boomerangs);
 void boomerangs_draw(const Boomerangs* boomerangs, SDL_Renderer* renderer);
-void boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state,
+void boomerang_create(Boomerangs* boomerangs,
+                      const enum HeroState* hero_state,
                       const SDL_Rect* hero_position);
 void boomerang_delete(Boomerang* boomerang);
 
 bool game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer);
-void game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer,
+void game_close(SDL_Texture* bgTexture,
+                SDL_Renderer* renderer,
                 SDL_Window* window);
 void game_callback(const SDL_Event* e, bool* quit);
 

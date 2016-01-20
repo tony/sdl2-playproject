@@ -29,7 +29,8 @@ bool game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer) {
   return success;
 }
 
-void game_close(SDL_Texture* bgTexture, SDL_Renderer* renderer,
+void game_close(SDL_Texture* bgTexture,
+                SDL_Renderer* renderer,
                 SDL_Window* window) {
   SDL_DestroyTexture(bgTexture);
   bgTexture = NULL;

@@ -6,7 +6,8 @@ extern const double SCREEN_WIDTH;
 extern const unsigned int SHOOTING_DELAY;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-void hero_callback(Hero* hero, Boomerangs* boomerangs,
+void hero_callback(Hero* hero,
+                   Boomerangs* boomerangs,
                    const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W] ||
       currentKeyStates[SDL_SCANCODE_K]) {
@@ -87,7 +88,8 @@ void boomerangs_draw(const Boomerangs* boomerangs, SDL_Renderer* renderer) {
   }
 }
 
-void boomerang_create(Boomerangs* boomerangs, const enum HeroState* hero_state,
+void boomerang_create(Boomerangs* boomerangs,
+                      const enum HeroState* hero_state,
                       const SDL_Rect* hero_position) {
   if (boomerangs->len < HERO_MAX_BOOMERANGS) {
     Boomerang boomerang = boomerangs->array[boomerangs->len];

@@ -8,11 +8,15 @@ __dead void fatal(const char* msg, ...) {
   va_list ap;
 
   va_start(ap, msg);
-  if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1) exit(1);
+  if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1)
+    exit(1);
   exit(1);
 }
 
-void draw_text(const char* text, const int x, const int y, TTF_Font* font,
+void draw_text(const char* text,
+               const int x,
+               const int y,
+               TTF_Font* font,
                SDL_Renderer* renderer) {
   SDL_Color textForegroundColor;
   textForegroundColor.r = 255, textForegroundColor.g = 255,
@@ -70,7 +74,10 @@ SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer) {
   return newTexture;
 }
 
-void apply_surface(int x, int y, SDL_Surface* source, SDL_Surface* destination,
+void apply_surface(int x,
+                   int y,
+                   SDL_Surface* source,
+                   SDL_Surface* destination,
                    SDL_Rect* clip) {
   // Holds offsets
   SDL_Rect offset;
