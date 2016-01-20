@@ -141,7 +141,6 @@ GCore::GCore(void) {
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero.stats.current_hp, hero.stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
-    free(herotext);
 
     SDL_RenderPresent(renderer);
     SDL_Delay(16);
