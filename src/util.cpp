@@ -18,8 +18,10 @@ fatal(const char *msg, ...)
 void
 draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Renderer* renderer) 
 {
-    const SDL_Color textForegroundColor = { 255, 255, 255 };
-    const SDL_Color textShadowColor = { 0, 0, 0 };
+    SDL_Color textForegroundColor;
+    textForegroundColor.r = 255, textForegroundColor.g = 255, textForegroundColor.b = 255, textForegroundColor.a = 255;
+    SDL_Color textShadowColor;
+    textShadowColor.r = 0, textShadowColor.g = 0, textShadowColor.b = 0, textShadowColor.a = 255;
     SDL_Surface *message = NULL;
     SDL_Surface *message_shadow = NULL;
     SDL_Texture *message_texture = NULL;
@@ -30,8 +32,11 @@ draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Render
     message_texture = SDL_CreateTextureFromSurface(renderer, message);
     message_texture_shadow = SDL_CreateTextureFromSurface(renderer, message_shadow);
 
-    SDL_RenderCopy(renderer, message_texture_shadow, NULL, &(SDL_Rect){ 2, 2, message_shadow->w, message_shadow->h });
-    SDL_RenderCopy(renderer, message_texture, NULL, &(SDL_Rect){ 0, 0, message->w, message->h });
+    SDL_Rect message_shadow_rect = { x + 2, y + 2, message_shadow->w, message_shadow->h };
+    SDL_RenderCopy(renderer, message_texture_shadow, NULL, &message_shadow_rect);
+
+    SDL_Rect message_rect = { x, y, message->w, message->h };
+    SDL_RenderCopy(renderer, message_texture, NULL, &message_rect);
 
     SDL_FreeSurface(message);
     SDL_FreeSurface(message_shadow);

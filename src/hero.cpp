@@ -1,9 +1,10 @@
 #include <stdbool.h>
 #include "main.h"
 
-extern const int SCREEN_HEIGHT;
-extern const int SCREEN_WIDTH;
-extern const int SHOOTING_DELAY;
+extern const double SCREEN_HEIGHT;
+extern const double SCREEN_WIDTH;
+extern const unsigned int SHOOTING_DELAY;
+extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
 void
 hero_callback(Hero* hero, Boomerangs *boomerangs, const Uint8* currentKeyStates)

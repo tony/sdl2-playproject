@@ -16,8 +16,14 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
+class GCore
+{
+public:
+    GCore(void);
+};
+
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
-void draw_text(const char* text, const int x, const int y, TTF_Font* font, SDL_Renderer* renderer);
+void draw_text(const char* text, int x, int y, TTF_Font* font, SDL_Renderer* renderer);
 
 enum HeroState {
     HERO_STATE_DEFAULT,
@@ -36,14 +42,16 @@ typedef struct Stats {
 } Stats;
 
 
-typedef struct Hero {
+class Hero {
+public:
+    Hero(void);
     SDL_Rect HeroState[HERO_STATE_TOTAL];
     SDL_Texture* spriteSheet; // sprite sheet
     SDL_Rect position;
     SDL_Point velocity;
     Stats stats;
     enum HeroState state;
-} Hero;
+};
 
 typedef struct Boomerang {
     SDL_Rect position;

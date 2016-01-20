@@ -2,24 +2,24 @@
 #include <stdbool.h>
 #include "main.h"
 
-const int SCREEN_WIDTH = 630;
-const int SCREEN_HEIGHT = 480;
+extern const double SCREEN_WIDTH = 630;
+extern const double SCREEN_HEIGHT = 480;
 
-const SDL_Rect BOTTOM_VIEWPORT_RECT = {
-    .x = 0,
-    .y = SCREEN_HEIGHT * .9,
-    .w = SCREEN_WIDTH,
-    .h = SCREEN_HEIGHT * .1
+extern const SDL_Rect BOTTOM_VIEWPORT_RECT = {
+    0,
+    int(SCREEN_HEIGHT * .9),
+    int(SCREEN_WIDTH),
+    int(SCREEN_HEIGHT * .1)
 };
 
-const SDL_Rect MAIN_VIEWPORT_RECT = {
-    .x = 0,
-    .y = 0,
-    .w = SCREEN_WIDTH,
-    .h = SCREEN_HEIGHT * .9 
+extern const SDL_Rect MAIN_VIEWPORT_RECT = {
+    0,
+    0,
+    int(SCREEN_WIDTH),
+    int(SCREEN_HEIGHT * .9)
 };
 
-const int SHOOTING_DELAY = 200;
+extern const int SHOOTING_DELAY = 200;
 
 const int HERO_SPRITE_W = 30;
 const int HERO_SPRITE_H = 30;
@@ -77,18 +77,22 @@ game_callback(const SDL_Event* e, bool* quit)
     }
 }
 
-int
-main(void) {
+Hero::Hero(void) {
+    spriteSheet = NULL,
+    position = { 0, 0, 30, 30 };
+    state = HERO_STATE_DEFAULT;
+    stats.current_hp = 100;
+    stats.hp = 100;
+    stats.strength = 8;
+    stats.intelligence = 8;
+}
+
+GCore::GCore(void) {
     bool quit = false;
     int imgFlags = IMG_INIT_PNG;
     SDL_Event e;
 
-    Hero hero = {
-        .spriteSheet = NULL,
-        .position = { 0, 0, 30, 30 },
-        .state = HERO_STATE_DEFAULT,
-        .stats = { 100, 100, 8, 8 }
-    };
+    Hero hero;
     SDL_Renderer* renderer;
     SDL_Window* window;
     SDL_Texture* bgTexture = NULL;
@@ -164,6 +168,10 @@ main(void) {
 
     hero_delete(&hero);
     game_close(bgTexture, renderer, window);
+}
 
+int
+main(void) {
+    GCore gCore;
     return 0;
 }
