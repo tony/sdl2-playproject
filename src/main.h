@@ -16,10 +16,6 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-class GCore {
- public:
-  GCore(void);
-};
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer);
 void draw_text(const char* text,
@@ -29,43 +25,58 @@ void draw_text(const char* text,
                SDL_Renderer* renderer);
 
 enum HeroState {
-  HERO_STATE_DEFAULT,
-  HERO_STATE_WALK_UP,
-  HERO_STATE_WALK_DOWN,
-  HERO_STATE_WALK_LEFT,
-  HERO_STATE_WALK_RIGHT,
-  HERO_STATE_TOTAL
+    HERO_STATE_DEFAULT,
+    HERO_STATE_WALK_UP,
+    HERO_STATE_WALK_DOWN,
+    HERO_STATE_WALK_LEFT,
+    HERO_STATE_WALK_RIGHT,
+    HERO_STATE_TOTAL
 };
 
 typedef struct Stats {
-  int current_hp;
-  int hp;
-  int strength;
-  int intelligence;
+    int current_hp;
+    int hp;
+    int strength;
+    int intelligence;
 } Stats;
 
 class Hero {
- public:
-  Hero(void);
-  SDL_Rect HeroState[HERO_STATE_TOTAL];
-  SDL_Texture* spriteSheet;  // sprite sheet
-  SDL_Rect position;
-  SDL_Point velocity;
-  Stats stats;
-  enum HeroState state;
+   public:
+    Hero(void);
+    SDL_Rect HeroState[HERO_STATE_TOTAL];
+    SDL_Texture* spriteSheet;  // sprite sheet
+    SDL_Rect position;
+    SDL_Point velocity;
+    Stats stats;
+    enum HeroState state;
 };
 
 typedef struct Boomerang {
-  SDL_Rect position;
-  SDL_Point velocity;
+    SDL_Rect position;
+    SDL_Point velocity;
 } Boomerang;
 
 typedef struct Boomerangs {
-  Boomerang array[HERO_MAX_BOOMERANGS];
-  int len;
-  SDL_Texture* texture;
-  Uint32 last_shot;
+    Boomerang array[HERO_MAX_BOOMERANGS];
+    int len;
+    SDL_Texture* texture;
+    Uint32 last_shot;
 } Boomerangs;
+
+class GCore {
+   public:
+    GCore(void);
+    ~GCore();
+    Hero hero;
+    Boomerangs boomerangs;
+    SDL_Renderer* renderer;
+    SDL_Event e;
+    bool quit;
+    int imgFlags;
+
+    SDL_Window* window;
+    SDL_Texture* bgTexture;
+};
 
 void hero_callback(Hero* hero,
                    Boomerangs* boomerangs,

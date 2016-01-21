@@ -24,10 +24,10 @@ void draw_text(const char* text,
   SDL_Color textShadowColor;
   textShadowColor.r = 0, textShadowColor.g = 0, textShadowColor.b = 0,
   textShadowColor.a = 255;
-  SDL_Surface* message = NULL;
-  SDL_Surface* message_shadow = NULL;
-  SDL_Texture* message_texture = NULL;
-  SDL_Texture* message_texture_shadow = NULL;
+  SDL_Surface* message = nullptr;
+  SDL_Surface* message_shadow = nullptr;
+  SDL_Texture* message_texture = nullptr;
+  SDL_Texture* message_texture_shadow = nullptr;
 
   message = TTF_RenderText_Solid(font, text, textForegroundColor);
   message_shadow = TTF_RenderText_Solid(font, text, textShadowColor);
@@ -46,10 +46,10 @@ void draw_text(const char* text,
   SDL_FreeSurface(message_shadow);
   SDL_DestroyTexture(message_texture);
   SDL_DestroyTexture(message_texture_shadow);
-  message = NULL;
-  message_shadow = NULL;
-  message_texture = NULL;
-  message_texture_shadow = NULL;
+  message = nullptr;
+  message_shadow = nullptr;
+  message_texture = nullptr;
+  message_texture_shadow = nullptr;
 }
 
 SDL_Texture* texture_load(const char* path, SDL_Renderer* renderer) {

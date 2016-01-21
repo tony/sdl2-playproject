@@ -75,17 +75,10 @@ Hero::Hero(void) {
 }
 
 GCore::GCore(void) {
-  bool quit = false;
-  int imgFlags = IMG_INIT_PNG;
-  SDL_Event e;
-
-  Hero hero;
-  SDL_Renderer* renderer;
-  SDL_Window* window;
-  SDL_Texture* bgTexture = NULL;
-
-  Boomerangs boomerangs;
-
+  quit = false;
+  imgFlags = IMG_INIT_PNG;
+  bgTexture = nullptr;
+  
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   }
@@ -146,9 +139,24 @@ GCore::GCore(void) {
     SDL_RenderPresent(renderer);
     SDL_Delay(16);
   }
+}
 
+GCore::~GCore() {
   hero_delete(&hero);
-  game_close(bgTexture, renderer, window);
+
+  SDL_DestroyTexture(bgTexture);
+  bgTexture = NULL;
+  TTF_CloseFont(font);
+  font = NULL;
+
+  renderer = NULL;
+  window = NULL;
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
 }
 
 int main(void) {
