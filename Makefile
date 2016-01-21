@@ -20,6 +20,9 @@ debug_ninja: mkdir_build
 	cd build; cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
 	ninja -C build
 
+format:
+	clang-format -style=Chromium src/* -i || clang-format37 -style=Chromium src/* -i
+
 run:
 	./build/game
 
