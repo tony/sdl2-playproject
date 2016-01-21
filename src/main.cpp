@@ -78,7 +78,7 @@ GCore::GCore(void) {
   quit = false;
   imgFlags = IMG_INIT_PNG;
   bgTexture = nullptr;
-  
+
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   }
