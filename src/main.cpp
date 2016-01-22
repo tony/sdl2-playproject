@@ -1,4 +1,3 @@
-#include <memory>
 #include <assert.h>
 #include <stdbool.h>
 #include "main.h"
@@ -111,7 +110,6 @@ GCore::~GCore() {
 
   renderer = NULL;
   window = NULL;
-  SDL_DestroyRenderer(renderer.get());
   SDL_DestroyWindow(window);
 
   TTF_Quit();
