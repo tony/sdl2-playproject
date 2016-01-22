@@ -5,41 +5,48 @@ extern const double SCREEN_WIDTH;
 extern const unsigned int SHOOTING_DELAY;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-void hero_callback(Hero* hero,
-                   Boomerangs* boomerangs,
-                   const Uint8* currentKeyStates) {
+Hero::Hero(void) {
+  spriteSheet = NULL, position = {0, 0, 30, 30};
+  state = HERO_STATE_DEFAULT;
+  stats.current_hp = 100;
+  stats.hp = 100;
+  stats.strength = 8;
+  stats.intelligence = 8;
+}
+
+void Hero::loop(Boomerangs* boomerangs, const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W] ||
       currentKeyStates[SDL_SCANCODE_K]) {
-    hero->state = HERO_STATE_WALK_UP;
-    hero->position.y = CLAMP(hero->position.y - MAIN_VIEWPORT_RECT.h * 0.01, 0,
-                             MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
+    state = HERO_STATE_WALK_UP;
+    position.y = CLAMP(position.y - MAIN_VIEWPORT_RECT.h * 0.01, 0,
+                       MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
   if (currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_S] ||
       currentKeyStates[SDL_SCANCODE_J]) {
-    hero->state = HERO_STATE_WALK_DOWN;
-    hero->position.y = CLAMP(hero->position.y + MAIN_VIEWPORT_RECT.h * 0.01, 0,
-                             MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
+    state = HERO_STATE_WALK_DOWN;
+    position.y = CLAMP(position.y + MAIN_VIEWPORT_RECT.h * 0.01, 0,
+                       MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
   if (currentKeyStates[SDL_SCANCODE_LEFT] || currentKeyStates[SDL_SCANCODE_A] ||
       currentKeyStates[SDL_SCANCODE_H]) {
-    hero->state = HERO_STATE_WALK_LEFT;
-    hero->position.x = CLAMP(hero->position.x - SCREEN_WIDTH * 0.01, 0,
-                             SCREEN_WIDTH - HERO_SPRITE_W);
+    state = HERO_STATE_WALK_LEFT;
+    position.x = CLAMP(position.x - SCREEN_WIDTH * 0.01, 0,
+                       SCREEN_WIDTH - HERO_SPRITE_W);
   }
 
   if (currentKeyStates[SDL_SCANCODE_RIGHT] ||
       currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_L]) {
-    hero->state = HERO_STATE_WALK_RIGHT;
-    hero->position.x = CLAMP(hero->position.x + SCREEN_WIDTH * 0.01, 0,
-                             SCREEN_WIDTH - HERO_SPRITE_W);
+    state = HERO_STATE_WALK_RIGHT;
+    position.x = CLAMP(position.x + SCREEN_WIDTH * 0.01, 0,
+                       SCREEN_WIDTH - HERO_SPRITE_W);
   }
 
   if (currentKeyStates[SDL_SCANCODE_SPACE]) {
     Uint32 now = SDL_GetTicks();
     if (now - boomerangs->last_shot >= SHOOTING_DELAY) {
-      boomerang_create(boomerangs, &hero->state, &hero->position);
+      boomerang_create(boomerangs, &state, &position);
       boomerangs->last_shot = now;
     }
   }

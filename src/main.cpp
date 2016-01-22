@@ -29,33 +29,6 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
   return success;
 }
 
-void game_callback(const SDL_Event* e, bool* quit) {
-  if (e->type == SDL_QUIT) {
-    *quit = true;
-  } else if (e->type == SDL_KEYDOWN) {
-    switch (e->key.keysym.sym) {
-      case SDLK_ESCAPE:
-        *quit = true;
-        break;
-
-      case SDLK_c:
-        if (e->key.keysym.mod & KMOD_CTRL) {
-          *quit = true;
-        }
-        break;
-    }
-  }
-}
-
-Hero::Hero(void) {
-  spriteSheet = NULL, position = {0, 0, 30, 30};
-  state = HERO_STATE_DEFAULT;
-  stats.current_hp = 100;
-  stats.hp = 100;
-  stats.strength = 8;
-  stats.intelligence = 8;
-}
-
 GCore::GCore(void) {
   quit = false;
   imgFlags = IMG_INIT_PNG;
@@ -121,10 +94,10 @@ void GCore::loop() {
     SDL_RenderSetViewport(renderer.get(), &MAIN_VIEWPORT_RECT);
     SDL_RenderCopy(renderer.get(), bgTexture.get(), NULL, NULL);
     while (SDL_PollEvent(&e) != 0) {
-      game_callback(&e, &quit);
+      game_loop(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-    hero_callback(&hero, &boomerangs, currentKeyStates);
+    hero.loop(&boomerangs, currentKeyStates);
     boomerangs_update(&boomerangs);
     boomerangs_draw(&boomerangs, renderer);
     SDL_RenderCopy(renderer.get(), hero.spriteSheet.get(),
@@ -136,6 +109,24 @@ void GCore::loop() {
 
     SDL_RenderPresent(renderer.get());
     SDL_Delay(16);
+  }
+}
+
+void GCore::game_loop(const SDL_Event* e, bool* quit) {
+  if (e->type == SDL_QUIT) {
+    *quit = true;
+  } else if (e->type == SDL_KEYDOWN) {
+    switch (e->key.keysym.sym) {
+      case SDLK_ESCAPE:
+        *quit = true;
+        break;
+
+      case SDLK_c:
+        if (e->key.keysym.mod & KMOD_CTRL) {
+          *quit = true;
+        }
+        break;
+    }
   }
 }
 

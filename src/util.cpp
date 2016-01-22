@@ -52,8 +52,9 @@ void draw_text(const char* text,
   message_texture_shadow = nullptr;
 }
 
-std::shared_ptr<SDL_Texture> texture_load(const char* path,
-                          std::shared_ptr<SDL_Renderer> renderer) {
+std::shared_ptr<SDL_Texture> texture_load(
+    const char* path,
+    std::shared_ptr<SDL_Renderer> renderer) {
   std::shared_ptr<SDL_Texture> newTexture = nullptr;
   SDL_Surface* loadedSurface = IMG_Load(path);
 
@@ -66,8 +67,7 @@ std::shared_ptr<SDL_Texture> texture_load(const char* path,
 
     newTexture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer.get(), loadedSurface),
-        SDL_DestroyTexture
-    );
+        SDL_DestroyTexture);
     if (newTexture == NULL) {
       fatal("Unable to create texture %s! SDL Error: %s\n", path,
             SDL_GetError());

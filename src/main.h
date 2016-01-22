@@ -17,8 +17,9 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-std::shared_ptr<SDL_Texture> texture_load(const char* path,
-                          std::shared_ptr<SDL_Renderer> renderer);
+std::shared_ptr<SDL_Texture> texture_load(
+    const char* path,
+    std::shared_ptr<SDL_Renderer> renderer);
 void draw_text(const char* text,
                int x,
                int y,
@@ -41,17 +42,6 @@ typedef struct Stats {
   int intelligence;
 } Stats;
 
-class Hero {
- public:
-  Hero(void);
-  SDL_Rect HeroState[HERO_STATE_TOTAL];
-  std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
-  SDL_Rect position;
-  SDL_Point velocity;
-  Stats stats;
-  enum HeroState state;
-};
-
 typedef struct Boomerang {
   SDL_Rect position;
   SDL_Point velocity;
@@ -63,6 +53,19 @@ typedef struct Boomerangs {
   std::shared_ptr<SDL_Texture> texture;
   Uint32 last_shot;
 } Boomerangs;
+
+class Hero {
+ public:
+  Hero(void);
+  SDL_Rect HeroState[HERO_STATE_TOTAL];
+  std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
+  SDL_Rect position;
+  SDL_Point velocity;
+  Stats stats;
+  enum HeroState state;
+
+  void loop(Boomerangs* boomerangs, const Uint8* currentKeyStates);
+};
 
 class GCore {
  public:
@@ -78,14 +81,11 @@ class GCore {
   SDL_Event e;
   bool quit;
   int imgFlags;
-
+  void game_loop(const SDL_Event* e, bool* quit);
   SDL_Window* window;
   std::shared_ptr<SDL_Texture> bgTexture;
 };
 
-void hero_callback(Hero* hero,
-                   Boomerangs* boomerangs,
-                   const Uint8* currentKeyStates);
 bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer);
 
 bool boomerangs_init(Boomerangs* boomerangs,
@@ -100,7 +100,6 @@ void boomerang_delete(Boomerang* boomerang);
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         std::shared_ptr<SDL_Renderer> renderer);
-void game_callback(const SDL_Event* e, bool* quit);
 
 #ifndef __dead
 #define __dead __attribute__((__noreturn__))
