@@ -1,3 +1,4 @@
+#include <memory>
 #include <assert.h>
 #include <stdbool.h>
 #include "main.h"
@@ -18,7 +19,7 @@ const int HERO_SPRITE_H = 30;
 
 TTF_Font* font = NULL;
 
-bool game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer) {
+bool game_load_textures(SDL_Texture** bgTexture, std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
   *bgTexture = texture_load("resources/continents.png", renderer);
@@ -74,7 +75,7 @@ GCore::GCore(void) {
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             SDL_WINDOW_RESIZABLE);
 
-  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+  renderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer);
 
   if (window == NULL) {
     fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
@@ -97,7 +98,7 @@ GCore::GCore(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
-  SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_SetRenderDrawColor(renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 GCore::~GCore() {
@@ -110,7 +111,7 @@ GCore::~GCore() {
 
   renderer = NULL;
   window = NULL;
-  SDL_DestroyRenderer(renderer);
+  SDL_DestroyRenderer(renderer.get());
   SDL_DestroyWindow(window);
 
   TTF_Quit();
@@ -120,9 +121,9 @@ GCore::~GCore() {
 
 void GCore::loop() {
   while (!quit) {
-    SDL_RenderClear(renderer);
-    SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
-    SDL_RenderCopy(renderer, bgTexture, NULL, NULL);
+    SDL_RenderClear(renderer.get());
+    SDL_RenderSetViewport(renderer.get(), &MAIN_VIEWPORT_RECT);
+    SDL_RenderCopy(renderer.get(), bgTexture, NULL, NULL);
     while (SDL_PollEvent(&e) != 0) {
       game_callback(&e, &quit);
     }
@@ -130,14 +131,14 @@ void GCore::loop() {
     hero_callback(&hero, &boomerangs, currentKeyStates);
     boomerangs_update(&boomerangs);
     boomerangs_draw(&boomerangs, renderer);
-    SDL_RenderCopy(renderer, hero.spriteSheet, &hero.HeroState[hero.state],
+    SDL_RenderCopy(renderer.get(), hero.spriteSheet, &hero.HeroState[hero.state],
                    &hero.position);
     char herotext[32];
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero.stats.current_hp, hero.stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
 
-    SDL_RenderPresent(renderer);
+    SDL_RenderPresent(renderer.get());
     SDL_Delay(16);
   }
 }

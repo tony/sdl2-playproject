@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdbool.h>
 #include "main.h"
 
@@ -46,7 +47,7 @@ void hero_callback(Hero* hero,
   }
 }
 
-bool boomerangs_init(Boomerangs* boomerangs, SDL_Renderer* renderer) {
+bool boomerangs_init(Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
   boomerangs->len = 0;
@@ -79,10 +80,10 @@ void boomerangs_update(Boomerangs* boomerangs) {
   }
 }
 
-void boomerangs_draw(const Boomerangs* boomerangs, SDL_Renderer* renderer) {
+void boomerangs_draw(const Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer) {
   for (int i = 0; i < boomerangs->len; i++) {
     if (boomerangs->texture) {
-      SDL_RenderCopy(renderer, boomerangs->texture, NULL,
+      SDL_RenderCopy(renderer.get(), boomerangs->texture, NULL,
                      &boomerangs->array[i].position);
     }
   }
@@ -120,7 +121,7 @@ void boomerang_create(Boomerangs* boomerangs,
   }
 }
 
-bool hero_load_textures(Hero* hero, SDL_Renderer* renderer) {
+bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
   hero->spriteSheet =
