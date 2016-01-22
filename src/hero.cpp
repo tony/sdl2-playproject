@@ -46,7 +46,8 @@ void hero_callback(Hero* hero,
   }
 }
 
-bool boomerangs_init(Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer) {
+bool boomerangs_init(Boomerangs* boomerangs,
+                     std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
   boomerangs->len = 0;
@@ -79,7 +80,8 @@ void boomerangs_update(Boomerangs* boomerangs) {
   }
 }
 
-void boomerangs_draw(const Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer) {
+void boomerangs_draw(const Boomerangs* boomerangs,
+                     std::shared_ptr<SDL_Renderer> renderer) {
   for (int i = 0; i < boomerangs->len; i++) {
     if (boomerangs->texture) {
       SDL_RenderCopy(renderer.get(), boomerangs->texture, NULL,

@@ -18,7 +18,8 @@ const int HERO_SPRITE_H = 30;
 
 TTF_Font* font = NULL;
 
-bool game_load_textures(SDL_Texture** bgTexture, std::shared_ptr<SDL_Renderer> renderer) {
+bool game_load_textures(SDL_Texture** bgTexture,
+                        std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
   *bgTexture = texture_load("resources/continents.png", renderer);
@@ -74,7 +75,9 @@ GCore::GCore(void) {
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             SDL_WINDOW_RESIZABLE);
 
-  renderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED), SDL_DestroyRenderer);
+  renderer = std::shared_ptr<SDL_Renderer>(
+      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED),
+      SDL_DestroyRenderer);
 
   if (window == NULL) {
     fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
@@ -129,8 +132,8 @@ void GCore::loop() {
     hero_callback(&hero, &boomerangs, currentKeyStates);
     boomerangs_update(&boomerangs);
     boomerangs_draw(&boomerangs, renderer);
-    SDL_RenderCopy(renderer.get(), hero.spriteSheet, &hero.HeroState[hero.state],
-                   &hero.position);
+    SDL_RenderCopy(renderer.get(), hero.spriteSheet,
+                   &hero.HeroState[hero.state], &hero.position);
     char herotext[32];
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero.stats.current_hp, hero.stats.hp);

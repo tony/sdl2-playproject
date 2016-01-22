@@ -17,7 +17,8 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-SDL_Texture* texture_load(const char* path, std::shared_ptr<SDL_Renderer> renderer);
+SDL_Texture* texture_load(const char* path,
+                          std::shared_ptr<SDL_Renderer> renderer);
 void draw_text(const char* text,
                int x,
                int y,
@@ -88,15 +89,18 @@ void hero_callback(Hero* hero,
 bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer);
 void hero_delete(Hero* hero);
 
-bool boomerangs_init(Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer);
+bool boomerangs_init(Boomerangs* boomerangs,
+                     std::shared_ptr<SDL_Renderer> renderer);
 void boomerangs_update(Boomerangs* boomerangs);
-void boomerangs_draw(const Boomerangs* boomerangs, std::shared_ptr<SDL_Renderer> renderer);
+void boomerangs_draw(const Boomerangs* boomerangs,
+                     std::shared_ptr<SDL_Renderer> renderer);
 void boomerang_create(Boomerangs* boomerangs,
                       const enum HeroState* hero_state,
                       const SDL_Rect* hero_position);
 void boomerang_delete(Boomerang* boomerang);
 
-bool game_load_textures(SDL_Texture** bgTexture, std::shared_ptr<SDL_Renderer> renderer);
+bool game_load_textures(SDL_Texture** bgTexture,
+                        std::shared_ptr<SDL_Renderer> renderer);
 void game_close(SDL_Texture* bgTexture,
                 std::shared_ptr<SDL_Renderer> renderer,
                 SDL_Window* window);

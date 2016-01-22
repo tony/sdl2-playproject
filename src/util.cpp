@@ -37,7 +37,8 @@ void draw_text(const char* text,
 
   SDL_Rect message_shadow_rect = {x + 2, y + 2, message_shadow->w,
                                   message_shadow->h};
-  SDL_RenderCopy(renderer.get(), message_texture_shadow, NULL, &message_shadow_rect);
+  SDL_RenderCopy(renderer.get(), message_texture_shadow, NULL,
+                 &message_shadow_rect);
 
   SDL_Rect message_rect = {x, y, message->w, message->h};
   SDL_RenderCopy(renderer.get(), message_texture, NULL, &message_rect);
@@ -52,7 +53,8 @@ void draw_text(const char* text,
   message_texture_shadow = nullptr;
 }
 
-SDL_Texture* texture_load(const char* path, std::shared_ptr<SDL_Renderer> renderer) {
+SDL_Texture* texture_load(const char* path,
+                          std::shared_ptr<SDL_Renderer> renderer) {
   SDL_Texture* newTexture = NULL;
   SDL_Surface* loadedSurface = IMG_Load(path);
 
