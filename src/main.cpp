@@ -17,11 +17,11 @@ const int HERO_SPRITE_H = 30;
 
 TTF_Font* font = NULL;
 
-bool game_load_textures(SDL_Texture** bgTexture,
+bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         std::shared_ptr<SDL_Renderer> renderer) {
   bool success = true;
 
-  *bgTexture = texture_load("resources/continents.png", renderer);
+  bgTexture = texture_load("resources/continents.png", renderer);
   if (bgTexture == NULL) {
     success = false;
   }
@@ -84,7 +84,7 @@ GCore::GCore(void) {
     fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
   }
 
-  if (!game_load_textures(&bgTexture, renderer)) {
+  if (!game_load_textures(bgTexture, renderer)) {
     fatal("Failed to load media!\n");
   } else if (!hero_load_textures(&hero, renderer)) {
     fatal("Failed to load hero media!\n");
@@ -103,10 +103,6 @@ GCore::GCore(void) {
 }
 
 GCore::~GCore() {
-  hero_delete(&hero);
-
-  SDL_DestroyTexture(bgTexture);
-  bgTexture = NULL;
   TTF_CloseFont(font);
   font = NULL;
 
@@ -123,7 +119,7 @@ void GCore::loop() {
   while (!quit) {
     SDL_RenderClear(renderer.get());
     SDL_RenderSetViewport(renderer.get(), &MAIN_VIEWPORT_RECT);
-    SDL_RenderCopy(renderer.get(), bgTexture, NULL, NULL);
+    SDL_RenderCopy(renderer.get(), bgTexture.get(), NULL, NULL);
     while (SDL_PollEvent(&e) != 0) {
       game_callback(&e, &quit);
     }
@@ -131,7 +127,7 @@ void GCore::loop() {
     hero_callback(&hero, &boomerangs, currentKeyStates);
     boomerangs_update(&boomerangs);
     boomerangs_draw(&boomerangs, renderer);
-    SDL_RenderCopy(renderer.get(), hero.spriteSheet,
+    SDL_RenderCopy(renderer.get(), hero.spriteSheet.get(),
                    &hero.HeroState[hero.state], &hero.position);
     char herotext[32];
     snprintf(herotext, sizeof(herotext), "health %d / %d",

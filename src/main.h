@@ -17,7 +17,7 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-SDL_Texture* texture_load(const char* path,
+std::shared_ptr<SDL_Texture> texture_load(const char* path,
                           std::shared_ptr<SDL_Renderer> renderer);
 void draw_text(const char* text,
                int x,
@@ -45,7 +45,7 @@ class Hero {
  public:
   Hero(void);
   SDL_Rect HeroState[HERO_STATE_TOTAL];
-  SDL_Texture* spriteSheet;  // sprite sheet
+  std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
   SDL_Rect position;
   SDL_Point velocity;
   Stats stats;
@@ -60,7 +60,7 @@ typedef struct Boomerang {
 typedef struct Boomerangs {
   Boomerang array[HERO_MAX_BOOMERANGS];
   int len;
-  SDL_Texture* texture;
+  std::shared_ptr<SDL_Texture> texture;
   Uint32 last_shot;
 } Boomerangs;
 
@@ -80,14 +80,13 @@ class GCore {
   int imgFlags;
 
   SDL_Window* window;
-  SDL_Texture* bgTexture;
+  std::shared_ptr<SDL_Texture> bgTexture;
 };
 
 void hero_callback(Hero* hero,
                    Boomerangs* boomerangs,
                    const Uint8* currentKeyStates);
 bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer);
-void hero_delete(Hero* hero);
 
 bool boomerangs_init(Boomerangs* boomerangs,
                      std::shared_ptr<SDL_Renderer> renderer);
@@ -99,11 +98,8 @@ void boomerang_create(Boomerangs* boomerangs,
                       const SDL_Rect* hero_position);
 void boomerang_delete(Boomerang* boomerang);
 
-bool game_load_textures(SDL_Texture** bgTexture,
+bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         std::shared_ptr<SDL_Renderer> renderer);
-void game_close(SDL_Texture* bgTexture,
-                std::shared_ptr<SDL_Renderer> renderer,
-                SDL_Window* window);
 void game_callback(const SDL_Event* e, bool* quit);
 
 #ifndef __dead

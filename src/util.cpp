@@ -52,9 +52,9 @@ void draw_text(const char* text,
   message_texture_shadow = nullptr;
 }
 
-SDL_Texture* texture_load(const char* path,
+std::shared_ptr<SDL_Texture> texture_load(const char* path,
                           std::shared_ptr<SDL_Renderer> renderer) {
-  SDL_Texture* newTexture = NULL;
+  std::shared_ptr<SDL_Texture> newTexture = nullptr;
   SDL_Surface* loadedSurface = IMG_Load(path);
 
   if (loadedSurface == NULL) {
@@ -64,7 +64,10 @@ SDL_Texture* texture_load(const char* path,
     SDL_SetColorKey(loadedSurface, SDL_TRUE,
                     SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
-    newTexture = SDL_CreateTextureFromSurface(renderer.get(), loadedSurface);
+    newTexture = std::shared_ptr<SDL_Texture>(
+        SDL_CreateTextureFromSurface(renderer.get(), loadedSurface),
+        SDL_DestroyTexture
+    );
     if (newTexture == NULL) {
       fatal("Unable to create texture %s! SDL Error: %s\n", path,
             SDL_GetError());

@@ -83,7 +83,7 @@ void boomerangs_draw(const Boomerangs* boomerangs,
                      std::shared_ptr<SDL_Renderer> renderer) {
   for (int i = 0; i < boomerangs->len; i++) {
     if (boomerangs->texture) {
-      SDL_RenderCopy(renderer.get(), boomerangs->texture, NULL,
+      SDL_RenderCopy(renderer.get(), boomerangs->texture.get(), NULL,
                      &boomerangs->array[i].position);
     }
   }
@@ -153,9 +153,4 @@ bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer) {
     success = false;
   }
   return success;
-}
-
-void hero_delete(Hero* hero) {
-  SDL_DestroyTexture(hero->spriteSheet);
-  hero->spriteSheet = NULL;
 }
