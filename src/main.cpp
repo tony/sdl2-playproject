@@ -29,24 +29,6 @@ bool game_load_textures(SDL_Texture** bgTexture, SDL_Renderer* renderer) {
   return success;
 }
 
-void game_close(SDL_Texture* bgTexture,
-                SDL_Renderer* renderer,
-                SDL_Window* window) {
-  SDL_DestroyTexture(bgTexture);
-  bgTexture = NULL;
-  TTF_CloseFont(font);
-  font = NULL;
-
-  renderer = NULL;
-  window = NULL;
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-
-  TTF_Quit();
-  IMG_Quit();
-  SDL_Quit();
-}
-
 void game_callback(const SDL_Event* e, bool* quit) {
   if (e->type == SDL_QUIT) {
     *quit = true;
