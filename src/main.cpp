@@ -97,9 +97,28 @@ GCore::GCore(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
-
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+}
 
+GCore::~GCore() {
+  hero_delete(&hero);
+
+  SDL_DestroyTexture(bgTexture);
+  bgTexture = NULL;
+  TTF_CloseFont(font);
+  font = NULL;
+
+  renderer = NULL;
+  window = NULL;
+  SDL_DestroyRenderer(renderer);
+  SDL_DestroyWindow(window);
+
+  TTF_Quit();
+  IMG_Quit();
+  SDL_Quit();
+}
+
+void GCore::loop() {
   while (!quit) {
     SDL_RenderClear(renderer);
     SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
@@ -123,25 +142,8 @@ GCore::GCore(void) {
   }
 }
 
-GCore::~GCore() {
-  hero_delete(&hero);
-
-  SDL_DestroyTexture(bgTexture);
-  bgTexture = NULL;
-  TTF_CloseFont(font);
-  font = NULL;
-
-  renderer = NULL;
-  window = NULL;
-  SDL_DestroyRenderer(renderer);
-  SDL_DestroyWindow(window);
-
-  TTF_Quit();
-  IMG_Quit();
-  SDL_Quit();
-}
-
 int main(void) {
   GCore gCore;
+  gCore.loop();
   return 0;
 }

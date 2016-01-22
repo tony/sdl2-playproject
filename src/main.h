@@ -66,6 +66,7 @@ class GCore {
  public:
   GCore(void);
   ~GCore();
+  void loop();
 
  private:
   Hero hero;
