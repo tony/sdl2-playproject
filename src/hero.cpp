@@ -2,8 +2,11 @@
 
 extern const double SCREEN_HEIGHT;
 extern const double SCREEN_WIDTH;
-extern const unsigned int SHOOTING_DELAY;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
+
+const int SHOOTING_DELAY = 200;
+const int HERO_SPRITE_W = 30;
+const int HERO_SPRITE_H = 30;
 
 Hero::Hero(void) {
   spriteSheet = NULL, position = {0, 0, 30, 30};

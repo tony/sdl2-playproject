@@ -10,11 +10,6 @@ extern const SDL_Rect BOTTOM_VIEWPORT_RECT = {
 extern const SDL_Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
                                             int(SCREEN_HEIGHT * .9)};
 
-extern const int SHOOTING_DELAY = 200;
-
-const int HERO_SPRITE_W = 30;
-const int HERO_SPRITE_H = 30;
-
 TTF_Font* font = NULL;
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
