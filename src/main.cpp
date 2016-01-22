@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <stdbool.h>
 #include "main.h"
 
 extern const double SCREEN_WIDTH = 630;

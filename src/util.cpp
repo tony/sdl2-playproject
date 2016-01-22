@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <errno.h>
 #include "main.h"
 
