@@ -89,6 +89,7 @@ GCore::~GCore() {
 }
 
 void GCore::loop() {
+  char herotext[32];
   while (!quit) {
     SDL_RenderClear(renderer.get());
     SDL_RenderSetViewport(renderer.get(), &MAIN_VIEWPORT_RECT);
@@ -102,7 +103,6 @@ void GCore::loop() {
     boomerangs_draw(&boomerangs, renderer);
     SDL_RenderCopy(renderer.get(), hero.spriteSheet.get(),
                    &hero.HeroState[hero.state], &hero.position);
-    char herotext[32];
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero.stats.current_hp, hero.stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
