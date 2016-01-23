@@ -43,13 +43,12 @@ typedef struct Stats {
 } Stats;
 
 class Boomerang {
- private:
+ public:
   SDL_Renderer* renderer;
   SDL_Rect position;
   SDL_Point velocity;
   std::shared_ptr<SDL_Texture> texture;
 
- public:
   Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
   ~Boomerang();
   void loop();

@@ -1,4 +1,5 @@
 #include "main.h"
+#include <iostream>
 
 extern const double SCREEN_HEIGHT;
 extern const double SCREEN_WIDTH;
@@ -49,9 +50,14 @@ void Hero::loop(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_SPACE]) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      // CreateBoomerang();
+      CreateBoomerang();
       last_shot = now;
     }
+  }
+  for (auto& boomerang : boomerangs) {
+    std::cout << "update boomerang, position x/y: " << boomerang->position.x
+              << "/" << boomerang->position.y << std::endl;
+    boomerang->loop();
   }
 }
 
@@ -80,6 +86,7 @@ void Hero::CreateBoomerang(void) {
         break;
     }
     boomerangs.push_back(new Boomerang(renderer, position, velocity));
+    std::cout << "Created new boomerang" << std::endl;
   }
 }
 
