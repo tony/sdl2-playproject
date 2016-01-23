@@ -52,12 +52,12 @@ GCore::GCore(void) {
     fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
   }
 
+  hero = new Hero(renderer);
+
   if (!game_load_textures(bgTexture, renderer)) {
     fatal("Failed to load media!\n");
-  } else if (!hero_load_textures(&hero, renderer)) {
+  } else if (!hero->load_textures()) {
     fatal("Failed to load hero media!\n");
-  } else if (!boomerangs_init(&boomerangs, renderer)) {
-    fatal("Failed to load boomerang media!\n");
   } else if (TTF_Init() == -1) {
     fatal("Font engine failed to initialize.\n");
   }
@@ -93,14 +93,12 @@ void GCore::loop() {
       game_loop(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-    hero.loop(&boomerangs, currentKeyStates);
-    boomerangs_update(&boomerangs);
-    boomerangs_draw(&boomerangs, renderer);
-    SDL_RenderCopy(renderer.get(), hero.spriteSheet.get(),
-                   &hero.HeroState[hero.state], &hero.position);
-    snprintf(herotext, sizeof(herotext), "health %d / %d",
-             hero.stats.current_hp, hero.stats.hp);
-    draw_text(herotext, 0, 0, font, renderer);
+    hero->loop(currentKeyStates);
+    SDL_RenderCopy(renderer.get(), hero->spriteSheet.get(),
+                   &hero->HeroState[hero->state], &hero->position);
+    //snprintf(herotext, sizeof(herotext), "health %d / %d",
+     //        hero->stats.current_hp, hero->stats.hp);
+    //draw_text(herotext, 0, 0, font, renderer);
 
     SDL_RenderPresent(renderer.get());
     SDL_Delay(16);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -42,29 +43,36 @@ typedef struct Stats {
   int intelligence;
 } Stats;
 
-typedef struct Boomerang {
+class Boomerang {
+
+ private:
+  std::shared_ptr<SDL_Renderer> renderer;
   SDL_Rect position;
   SDL_Point velocity;
-} Boomerang;
-
-typedef struct Boomerangs {
-  Boomerang array[HERO_MAX_BOOMERANGS];
-  int len;
   std::shared_ptr<SDL_Texture> texture;
-  Uint32 last_shot;
-} Boomerangs;
+ public:
+  Boomerang(std::shared_ptr<SDL_Renderer> renderer, SDL_Rect position, SDL_Point velocity);
+  ~Boomerang();
+  void loop();
+};
 
 class Hero {
  public:
-  Hero(void);
+  Hero(std::shared_ptr<SDL_Renderer> renderer);
+  ~Hero();
   SDL_Rect HeroState[HERO_STATE_TOTAL];
   std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
   SDL_Rect position;
   SDL_Point velocity;
   Stats stats;
   enum HeroState state;
+  std::shared_ptr<SDL_Renderer> renderer;
+  std::vector<Boomerang*> boomerangs;
+  Uint32 last_shot;
+  void CreateBoomerang(void);
 
-  void loop(Boomerangs* boomerangs, const Uint8* currentKeyStates);
+  void loop(const Uint8* currentKeyStates);
+  bool load_textures(void);
 };
 
 class GCore {
@@ -75,8 +83,7 @@ class GCore {
   std::shared_ptr<SDL_Renderer> renderer;
 
  private:
-  Hero hero;
-  Boomerangs boomerangs;
+  Hero* hero;
 
   SDL_Event e;
   bool quit;
@@ -85,18 +92,6 @@ class GCore {
   SDL_Window* window;
   std::shared_ptr<SDL_Texture> bgTexture;
 };
-
-bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer);
-
-bool boomerangs_init(Boomerangs* boomerangs,
-                     std::shared_ptr<SDL_Renderer> renderer);
-void boomerangs_update(Boomerangs* boomerangs);
-void boomerangs_draw(const Boomerangs* boomerangs,
-                     std::shared_ptr<SDL_Renderer> renderer);
-void boomerang_create(Boomerangs* boomerangs,
-                      const enum HeroState* hero_state,
-                      const SDL_Rect* hero_position);
-void boomerang_delete(Boomerang* boomerang);
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         std::shared_ptr<SDL_Renderer> renderer);
