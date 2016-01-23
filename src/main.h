@@ -45,8 +45,8 @@ typedef struct Stats {
 class Boomerang {
  public:
   SDL_Renderer* renderer;
-  SDL_Rect position;
-  SDL_Point velocity;
+  SDL_Rect* position;
+  SDL_Point* velocity;
   std::shared_ptr<SDL_Texture> texture;
 
   Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
