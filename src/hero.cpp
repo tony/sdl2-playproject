@@ -55,8 +55,8 @@ void Hero::loop(const Uint8* currentKeyStates) {
     }
   }
   for (auto& boomerang : boomerangs) {
-    std::cout << "update boomerang, position x/y: " << boomerang->position->x
-            << "/" << boomerang->position->y << std::endl;
+    std::cout << "update boomerang, position x/y: " << boomerang->position.x
+            << "/" << boomerang->position.y << std::endl;
     boomerang->loop();
   }
 }
@@ -128,29 +128,29 @@ Boomerang::Boomerang(SDL_Renderer* renderer,
                      SDL_Rect p,
                      SDL_Point v) {
   texture = texture_load("resources/boomerang.png", renderer);
-  position = &p;
-  velocity = &v;
-  std::cout << "Breated new boomerang velocity x/y: " << velocity->x << "/";
-  std::cout << velocity->y << " position x/y: " << position->x << "/"
-            << position->y << std::endl;
+  position = p;
+  velocity = v;
+  std::cout << "Breated new boomerang velocity x/y: " << velocity.x << "/";
+  std::cout << velocity.y << " position x/y: " << position.x << "/"
+            << position.y << std::endl;
 }
 
 void Boomerang::loop() {
-  std::cout << "Lreated new boomerang velocity x/y: " << velocity->x << "/";
-  std::cout << velocity->y << " position x/y: " << position->x << "/"
-            << position->y << std::endl;
-  position->x += velocity->x;
-  position->y += velocity->y;
-  std::cout << "Areated new boomerang velocity x/y: " << velocity->x << "/";
-  std::cout << velocity->y << " position x/y: " << position->x << "/"
-            << position->y << std::endl;
-  if (position->x > MAIN_VIEWPORT_RECT.w || position->w > MAIN_VIEWPORT_RECT.w ||
-      position->x < 0 || position->y > MAIN_VIEWPORT_RECT.h ||
-      position->h > MAIN_VIEWPORT_RECT.h || position->y < 0) {
+  std::cout << "Lreated new boomerang velocity x/y: " << velocity.x << "/";
+  std::cout << velocity.y << " position x/y: " << position.x << "/"
+            << position.y << std::endl;
+  position.x += velocity.x;
+  position.y += velocity.y;
+  std::cout << "Areated new boomerang ";
+  std::cout << "velocity x/y: " << velocity.x << "/" << velocity.y;
+  std::cout << " position x/y: " << position.x << "/" << position.y << std::endl;
+  if (position.x > MAIN_VIEWPORT_RECT.w || position.w > MAIN_VIEWPORT_RECT.w ||
+      position.x < 0 || position.y > MAIN_VIEWPORT_RECT.h ||
+      position.h > MAIN_VIEWPORT_RECT.h || position.y < 0) {
     std::cout << "deleted" << std::endl;
     // delete boomerange
   }
   if (texture) {
-    SDL_RenderCopy(renderer, texture.get(), NULL, position);
+    SDL_RenderCopy(renderer, texture.get(), NULL, &position);
   }
 }
