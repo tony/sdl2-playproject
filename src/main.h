@@ -18,14 +18,13 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-std::shared_ptr<SDL_Texture> texture_load(
-    const char* path,
-    std::shared_ptr<SDL_Renderer> renderer);
+std::shared_ptr<SDL_Texture> texture_load(const char* path,
+                                          SDL_Renderer* renderer);
 void draw_text(const char* text,
-               int x,
-               int y,
+               const int x,
+               const int y,
                TTF_Font* font,
-               std::shared_ptr<SDL_Renderer> renderer);
+               SDL_Renderer* renderer);
 
 enum HeroState {
   HERO_STATE_DEFAULT,
@@ -44,21 +43,21 @@ typedef struct Stats {
 } Stats;
 
 class Boomerang {
-
  private:
-  std::shared_ptr<SDL_Renderer> renderer;
+  SDL_Renderer* renderer;
   SDL_Rect position;
   SDL_Point velocity;
   std::shared_ptr<SDL_Texture> texture;
+
  public:
-  Boomerang(std::shared_ptr<SDL_Renderer> renderer, SDL_Rect position, SDL_Point velocity);
+  Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
   ~Boomerang();
   void loop();
 };
 
 class Hero {
  public:
-  Hero(std::shared_ptr<SDL_Renderer> renderer);
+  Hero(SDL_Renderer* renderer);
   ~Hero();
   SDL_Rect HeroState[HERO_STATE_TOTAL];
   std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
@@ -66,7 +65,7 @@ class Hero {
   SDL_Point velocity;
   Stats stats;
   enum HeroState state;
-  std::shared_ptr<SDL_Renderer> renderer;
+  SDL_Renderer* renderer;
   std::vector<Boomerang*> boomerangs;
   Uint32 last_shot;
   void CreateBoomerang(void);
@@ -80,11 +79,11 @@ class GCore {
   GCore(void);
   ~GCore();
   void loop();
-  std::shared_ptr<SDL_Renderer> renderer;
+  SDL_Renderer* renderer;
 
  private:
   Hero* hero;
-
+  TTF_Font* font;
   SDL_Event e;
   bool quit;
   int imgFlags;
@@ -94,7 +93,7 @@ class GCore {
 };
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-                        std::shared_ptr<SDL_Renderer> renderer);
+                        SDL_Renderer* renderer);
 
 #ifndef __dead
 #define __dead __attribute__((__noreturn__))

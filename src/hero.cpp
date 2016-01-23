@@ -8,7 +8,7 @@ const int SHOOTING_DELAY = 200;
 const int HERO_SPRITE_W = 30;
 const int HERO_SPRITE_H = 30;
 
-Hero::Hero(std::shared_ptr<SDL_Renderer> renderer) {
+Hero::Hero(SDL_Renderer* renderer) : renderer(renderer) {
   spriteSheet = NULL, position = {0, 0, 30, 30};
   state = HERO_STATE_DEFAULT;
   stats.current_hp = 100;
@@ -49,7 +49,7 @@ void Hero::loop(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_SPACE]) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      //CreateBoomerang();
+      // CreateBoomerang();
       last_shot = now;
     }
   }
@@ -57,7 +57,6 @@ void Hero::loop(const Uint8* currentKeyStates) {
 
 void Hero::CreateBoomerang(void) {
   if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
-
     SDL_Point velocity;
 
     switch (state) {
@@ -87,8 +86,7 @@ void Hero::CreateBoomerang(void) {
 bool Hero::load_textures(void) {
   bool success = true;
 
-  spriteSheet =
-      texture_load("resources/elliot/spritesheet.png", renderer);
+  spriteSheet = texture_load("resources/elliot/spritesheet.png", renderer);
 
   HeroState[HERO_STATE_DEFAULT].x = 0;
   HeroState[HERO_STATE_DEFAULT].y = 0;
@@ -118,8 +116,9 @@ bool Hero::load_textures(void) {
   return success;
 }
 
-
-Boomerang::Boomerang(std::shared_ptr<SDL_Renderer> renderer, SDL_Rect position, SDL_Point velocity) {
+Boomerang::Boomerang(SDL_Renderer* renderer,
+                     SDL_Rect position,
+                     SDL_Point velocity) {
   texture = texture_load("resources/boomerang.png", renderer);
   position = position;
   velocity = velocity;
@@ -129,12 +128,11 @@ void Boomerang::loop() {
   position.x += velocity.x;
   position.y += velocity.y;
 
-  if (position.x > MAIN_VIEWPORT_RECT.w ||
-      position.w > MAIN_VIEWPORT_RECT.w || position.x < 0 ||
-      position.y > MAIN_VIEWPORT_RECT.h ||
+  if (position.x > MAIN_VIEWPORT_RECT.w || position.w > MAIN_VIEWPORT_RECT.w ||
+      position.x < 0 || position.y > MAIN_VIEWPORT_RECT.h ||
       position.h > MAIN_VIEWPORT_RECT.h || position.y < 0) {
     // delete boomerange
   } else if (texture) {
-    SDL_RenderCopy(renderer.get(), texture.get(), NULL, &position);
+    SDL_RenderCopy(renderer, texture.get(), NULL, &position);
   }
 }
