@@ -101,7 +101,9 @@ void GCore::loop() {
         std::cout << "update boomerang, position x/y: " << boomerang->position.x
                   << "/" << boomerang->position.y << std::endl;
         boomerang->loop();
-        boomerang->draw(renderer);
+        boomerang->draw();
+        SDL_assert(renderer == hero->renderer);
+        SDL_assert(renderer == boomerang->renderer);
       }
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero->stats.current_hp, hero->stats.hp);

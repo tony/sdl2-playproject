@@ -119,7 +119,7 @@ bool Hero::load_textures(void) {
   return success;
 }
 
-Boomerang::Boomerang(SDL_Renderer* renderer, SDL_Rect p, SDL_Point v) {
+Boomerang::Boomerang(SDL_Renderer* renderer, SDL_Rect p, SDL_Point v): renderer(renderer) {
   texture = texture_load("resources/boomerang.png", renderer);
   position = p;
   velocity = v;
@@ -152,9 +152,9 @@ void Boomerang::loop() {
   }
 }
 
-void Boomerang::draw(SDL_Renderer* rR) {
+void Boomerang::draw() {
 
     std::cout << "before rendercopy" << std::endl;
-    SDL_RenderCopy(rR, texture.get(), nullptr, &position);
+    SDL_RenderCopy(renderer, texture.get(), nullptr, &position);
     std::cout << "rendercopy done" << std::endl;
 }
