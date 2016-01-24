@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_ttf.h>
@@ -17,14 +18,13 @@ extern const int HERO_SPRITE_H;
 extern const SDL_Rect MAIN_VIEWPORT_RECT;
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
 
-std::shared_ptr<SDL_Texture> texture_load(
-    const char* path,
-    std::shared_ptr<SDL_Renderer> renderer);
+std::shared_ptr<SDL_Texture> texture_load(const char* path,
+                                          SDL_Renderer* renderer);
 void draw_text(const char* text,
-               int x,
-               int y,
+               const int x,
+               const int y,
                TTF_Font* font,
-               std::shared_ptr<SDL_Renderer> renderer);
+               SDL_Renderer* renderer);
 
 enum HeroState {
   HERO_STATE_DEFAULT,
@@ -42,42 +42,57 @@ typedef struct Stats {
   int intelligence;
 } Stats;
 
-typedef struct Boomerang {
+class Boomerang {
+ public:
+  SDL_Renderer* renderer;
   SDL_Rect position;
   SDL_Point velocity;
-} Boomerang;
 
-typedef struct Boomerangs {
-  Boomerang array[HERO_MAX_BOOMERANGS];
-  int len;
+  Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
+  ~Boomerang();
+  void loop();
+  SDL_Rect getPosition() const { return position; };
+  int getPositionX() const { return position.x; };
+  int getPositionY() const { return position.y; };
+  SDL_Point getVelocity() const { return velocity; };
+  int getVelocityX() const { return velocity.x; };
+  int getVelocityY() const { return velocity.y; };
+  bool outOfBounds();
+  void draw();
+
+ private:
   std::shared_ptr<SDL_Texture> texture;
-  Uint32 last_shot;
-} Boomerangs;
+};
 
 class Hero {
  public:
-  Hero(void);
+  Hero(SDL_Renderer* renderer);
+  ~Hero();
   SDL_Rect HeroState[HERO_STATE_TOTAL];
   std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
   SDL_Rect position;
   SDL_Point velocity;
   Stats stats;
   enum HeroState state;
+  SDL_Renderer* renderer;
+  std::vector<Boomerang*> boomerangs;
+  Uint32 last_shot;
+  void CreateBoomerang(void);
 
-  void loop(Boomerangs* boomerangs, const Uint8* currentKeyStates);
+  void loop(const Uint8* currentKeyStates);
+  bool load_textures(void);
 };
 
-class GCore {
+class Game {
  public:
-  GCore(void);
-  ~GCore();
+  Game(void);
+  ~Game();
   void loop();
-  std::shared_ptr<SDL_Renderer> renderer;
+  SDL_Renderer* renderer;
 
  private:
-  Hero hero;
-  Boomerangs boomerangs;
-
+  Hero* hero;
+  TTF_Font* font;
   SDL_Event e;
   bool quit;
   int imgFlags;
@@ -86,20 +101,8 @@ class GCore {
   std::shared_ptr<SDL_Texture> bgTexture;
 };
 
-bool hero_load_textures(Hero* hero, std::shared_ptr<SDL_Renderer> renderer);
-
-bool boomerangs_init(Boomerangs* boomerangs,
-                     std::shared_ptr<SDL_Renderer> renderer);
-void boomerangs_update(Boomerangs* boomerangs);
-void boomerangs_draw(const Boomerangs* boomerangs,
-                     std::shared_ptr<SDL_Renderer> renderer);
-void boomerang_create(Boomerangs* boomerangs,
-                      const enum HeroState* hero_state,
-                      const SDL_Rect* hero_position);
-void boomerang_delete(Boomerang* boomerang);
-
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-                        std::shared_ptr<SDL_Renderer> renderer);
+                        SDL_Renderer* renderer);
 
 #ifndef __dead
 #define __dead __attribute__((__noreturn__))

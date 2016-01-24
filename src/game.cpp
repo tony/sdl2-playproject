@@ -1,5 +1,6 @@
+#include <iostream>
 #include <assert.h>
-#include "main.h"
+#include "game.h"
 
 extern const double SCREEN_WIDTH = 630;
 extern const double SCREEN_HEIGHT = 480;
@@ -13,7 +14,7 @@ extern const SDL_Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
 TTF_Font* font = NULL;
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-                        std::shared_ptr<SDL_Renderer> renderer) {
+                        SDL_Renderer* renderer) {
   bool success = true;
 
   bgTexture = texture_load("resources/continents.png", renderer);
@@ -24,7 +25,7 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
   return success;
 }
 
-GCore::GCore(void) {
+Game::Game(void) {
   quit = false;
   imgFlags = IMG_INIT_PNG;
   bgTexture = nullptr;
@@ -42,9 +43,7 @@ GCore::GCore(void) {
                             SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
                             SDL_WINDOW_RESIZABLE);
 
-  renderer = std::shared_ptr<SDL_Renderer>(
-      SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED),
-      SDL_DestroyRenderer);
+  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   if (window == NULL) {
     fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
@@ -52,12 +51,12 @@ GCore::GCore(void) {
     fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
   }
 
+  hero = new Hero(renderer);
+
   if (!game_load_textures(bgTexture, renderer)) {
     fatal("Failed to load media!\n");
-  } else if (!hero_load_textures(&hero, renderer)) {
+  } else if (!hero->load_textures()) {
     fatal("Failed to load hero media!\n");
-  } else if (!boomerangs_init(&boomerangs, renderer)) {
-    fatal("Failed to load boomerang media!\n");
   } else if (TTF_Init() == -1) {
     fatal("Font engine failed to initialize.\n");
   }
@@ -67,14 +66,15 @@ GCore::GCore(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
-  SDL_SetRenderDrawColor(renderer.get(), 0xFF, 0xFF, 0xFF, 0xFF);
+  SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
-GCore::~GCore() {
+Game::~Game() {
   TTF_CloseFont(font);
   font = NULL;
 
   renderer = NULL;
+  SDL_DestroyRenderer(renderer);
   window = NULL;
   SDL_DestroyWindow(window);
 
@@ -83,31 +83,42 @@ GCore::~GCore() {
   SDL_Quit();
 }
 
-void GCore::loop() {
+void Game::loop() {
   char herotext[32];
   while (!quit) {
-    SDL_RenderClear(renderer.get());
-    SDL_RenderSetViewport(renderer.get(), &MAIN_VIEWPORT_RECT);
-    SDL_RenderCopy(renderer.get(), bgTexture.get(), NULL, NULL);
+    SDL_RenderClear(renderer);
+    SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
+    SDL_RenderCopy(renderer, bgTexture.get(), NULL, NULL);
     while (SDL_PollEvent(&e) != 0) {
       game_loop(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-    hero.loop(&boomerangs, currentKeyStates);
-    boomerangs_update(&boomerangs);
-    boomerangs_draw(&boomerangs, renderer);
-    SDL_RenderCopy(renderer.get(), hero.spriteSheet.get(),
-                   &hero.HeroState[hero.state], &hero.position);
+    hero->loop(currentKeyStates);
+    SDL_RenderCopy(renderer, hero->spriteSheet.get(),
+                   &hero->HeroState[hero->state], &hero->position);
+
+    hero->boomerangs.erase(
+        std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
+                       [](Boomerang* i) { return i->outOfBounds(); }),
+        hero->boomerangs.end());
+    for (auto& boomerang : hero->boomerangs) {
+      boomerang->loop();
+      if (!boomerang->outOfBounds()) {
+        boomerang->draw();
+      }
+      SDL_assert(renderer == hero->renderer);
+      SDL_assert(renderer == boomerang->renderer);
+    }
     snprintf(herotext, sizeof(herotext), "health %d / %d",
-             hero.stats.current_hp, hero.stats.hp);
+             hero->stats.current_hp, hero->stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
 
-    SDL_RenderPresent(renderer.get());
+    SDL_RenderPresent(renderer);
     SDL_Delay(16);
   }
 }
 
-void GCore::game_loop(const SDL_Event* e, bool* quit) {
+void Game::game_loop(const SDL_Event* e, bool* quit) {
   if (e->type == SDL_QUIT) {
     *quit = true;
   } else if (e->type == SDL_KEYDOWN) {
@@ -126,7 +137,7 @@ void GCore::game_loop(const SDL_Event* e, bool* quit) {
 }
 
 int main(void) {
-  GCore gCore;
-  gCore.loop();
+  Game game;
+  game.loop();
   return 0;
 }

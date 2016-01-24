@@ -28,6 +28,8 @@ file (GLOB MY_PROJECT_GFX_RESOURCES resources/*.png)
 file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
 file (GLOB MY_PROJECT_GFX_ELLIOT_RESOURCES resources/elliot/*.png)
 file (COPY ${MY_PROJECT_GFX_ELLIOT_RESOURCES} DESTINATION resources/elliot)
+file (GLOB MY_PROJECT_FONT_RESOURCES resources/fonts/*)
+file (COPY ${MY_PROJECT_FONT_RESOURCES} DESTINATION resources/fonts)
 
 include_directories("./src")
 file (GLOB game_SOURCES src/*.cpp)
