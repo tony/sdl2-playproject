@@ -48,7 +48,6 @@ class Boomerang {
   SDL_Rect position;
   SDL_Point velocity;
 
-
   Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
   ~Boomerang();
   void loop();

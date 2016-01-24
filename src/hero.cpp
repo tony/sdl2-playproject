@@ -119,13 +119,11 @@ bool Hero::load_textures(void) {
   return success;
 }
 
-Boomerang::Boomerang(SDL_Renderer* renderer, SDL_Rect p, SDL_Point v): renderer(renderer) {
+Boomerang::Boomerang(SDL_Renderer* renderer, SDL_Rect p, SDL_Point v)
+    : renderer(renderer) {
   texture = texture_load("resources/boomerang.png", renderer);
   position = p;
   velocity = v;
-  std::cout << "Breated new boomerang velocity x/y: " << velocity.x << "/";
-  std::cout << velocity.y << " position x/y: " << position.x << "/"
-            << position.y << std::endl;
 }
 
 bool Boomerang::outOfBounds() {
@@ -136,25 +134,10 @@ bool Boomerang::outOfBounds() {
 }
 
 void Boomerang::loop() {
-  std::cout << "Lreated new boomerang velocity x/y: " << velocity.x << "/";
-  std::cout << velocity.y << " position x/y: " << position.x << "/"
-            << position.y << std::endl;
   position.x += velocity.x;
   position.y += velocity.y;
-  std::cout << "Areated new boomerang ";
-  std::cout << "velocity x/y: " << velocity.x << "/" << velocity.y;
-  std::cout << " position x/y: " << position.x << "/" << position.y
-            << std::endl;
-  if (outOfBounds()) {
-    std::cout << "deleted" << std::endl;
-  } else {
-    std::cout << "not deleted" << std::endl;
-  }
 }
 
 void Boomerang::draw() {
-
-    std::cout << "before rendercopy" << std::endl;
-    SDL_RenderCopy(renderer, texture.get(), nullptr, &position);
-    std::cout << "rendercopy done" << std::endl;
+  SDL_RenderCopy(renderer, texture.get(), nullptr, &position);
 }

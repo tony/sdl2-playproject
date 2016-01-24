@@ -97,14 +97,18 @@ void GCore::loop() {
     SDL_RenderCopy(renderer, hero->spriteSheet.get(),
                    &hero->HeroState[hero->state], &hero->position);
 
-      for (auto& boomerang : hero->boomerangs) {
-        std::cout << "update boomerang, position x/y: " << boomerang->position.x
-                  << "/" << boomerang->position.y << std::endl;
-        boomerang->loop();
+    hero->boomerangs.erase(
+        std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
+                       [](Boomerang* i) { return i->outOfBounds(); }),
+        hero->boomerangs.end());
+    for (auto& boomerang : hero->boomerangs) {
+      boomerang->loop();
+      if (!boomerang->outOfBounds()) {
         boomerang->draw();
-        SDL_assert(renderer == hero->renderer);
-        SDL_assert(renderer == boomerang->renderer);
       }
+      SDL_assert(renderer == hero->renderer);
+      SDL_assert(renderer == boomerang->renderer);
+    }
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero->stats.current_hp, hero->stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
