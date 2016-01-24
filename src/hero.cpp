@@ -54,11 +54,6 @@ void Hero::loop(const Uint8* currentKeyStates) {
       last_shot = now;
     }
   }
-  for (auto& boomerang : boomerangs) {
-    std::cout << "update boomerang, position x/y: " << boomerang->position.x
-            << "/" << boomerang->position.y << std::endl;
-    boomerang->loop();
-  }
 }
 
 void Hero::CreateBoomerang(void) {
@@ -124,15 +119,20 @@ bool Hero::load_textures(void) {
   return success;
 }
 
-Boomerang::Boomerang(SDL_Renderer* renderer,
-                     SDL_Rect p,
-                     SDL_Point v) {
+Boomerang::Boomerang(SDL_Renderer* renderer, SDL_Rect p, SDL_Point v) {
   texture = texture_load("resources/boomerang.png", renderer);
   position = p;
   velocity = v;
   std::cout << "Breated new boomerang velocity x/y: " << velocity.x << "/";
   std::cout << velocity.y << " position x/y: " << position.x << "/"
             << position.y << std::endl;
+}
+
+bool Boomerang::outOfBounds() {
+  return (position.x > MAIN_VIEWPORT_RECT.w ||
+          position.w > MAIN_VIEWPORT_RECT.w || position.x < 0 ||
+          position.y > MAIN_VIEWPORT_RECT.h ||
+          position.h > MAIN_VIEWPORT_RECT.h || position.y < 0);
 }
 
 void Boomerang::loop() {
@@ -143,14 +143,18 @@ void Boomerang::loop() {
   position.y += velocity.y;
   std::cout << "Areated new boomerang ";
   std::cout << "velocity x/y: " << velocity.x << "/" << velocity.y;
-  std::cout << " position x/y: " << position.x << "/" << position.y << std::endl;
-  if (position.x > MAIN_VIEWPORT_RECT.w || position.w > MAIN_VIEWPORT_RECT.w ||
-      position.x < 0 || position.y > MAIN_VIEWPORT_RECT.h ||
-      position.h > MAIN_VIEWPORT_RECT.h || position.y < 0) {
+  std::cout << " position x/y: " << position.x << "/" << position.y
+            << std::endl;
+  if (outOfBounds()) {
     std::cout << "deleted" << std::endl;
-    // delete boomerange
+  } else {
+    std::cout << "not deleted" << std::endl;
   }
-  if (texture) {
-    SDL_RenderCopy(renderer, texture.get(), NULL, &position);
-  }
+}
+
+void Boomerang::draw(SDL_Renderer* rR) {
+
+    std::cout << "before rendercopy" << std::endl;
+    SDL_RenderCopy(rR, texture.get(), nullptr, &position);
+    std::cout << "rendercopy done" << std::endl;
 }

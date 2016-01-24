@@ -47,11 +47,22 @@ class Boomerang {
   SDL_Renderer* renderer;
   SDL_Rect position;
   SDL_Point velocity;
-  std::shared_ptr<SDL_Texture> texture;
+
 
   Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
   ~Boomerang();
   void loop();
+  SDL_Rect getPosition() const { return position; };
+  int getPositionX() const { return position.x; };
+  int getPositionY() const { return position.y; };
+  SDL_Point getVelocity() const { return velocity; };
+  int getVelocityX() const { return velocity.x; };
+  int getVelocityY() const { return velocity.y; };
+  bool outOfBounds();
+  void draw(SDL_Renderer* rR);
+
+ private:
+  std::shared_ptr<SDL_Texture> texture;
 };
 
 class Hero {

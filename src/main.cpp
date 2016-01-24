@@ -1,3 +1,4 @@
+#include <iostream>
 #include <assert.h>
 #include "main.h"
 
@@ -95,6 +96,13 @@ void GCore::loop() {
     hero->loop(currentKeyStates);
     SDL_RenderCopy(renderer, hero->spriteSheet.get(),
                    &hero->HeroState[hero->state], &hero->position);
+
+      for (auto& boomerang : hero->boomerangs) {
+        std::cout << "update boomerang, position x/y: " << boomerang->position.x
+                  << "/" << boomerang->position.y << std::endl;
+        boomerang->loop();
+        boomerang->draw(renderer);
+      }
     snprintf(herotext, sizeof(herotext), "health %d / %d",
              hero->stats.current_hp, hero->stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
