@@ -1,5 +1,5 @@
 #include <errno.h>
-#include "main.h"
+#include "game.h"
 
 /* Log a critical error with error string and die. */
 __dead void fatal(const char* msg, ...) {

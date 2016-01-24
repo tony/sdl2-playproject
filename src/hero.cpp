@@ -1,4 +1,4 @@
-#include "main.h"
+#include "game.h"
 #include <iostream>
 
 extern const double SCREEN_HEIGHT;

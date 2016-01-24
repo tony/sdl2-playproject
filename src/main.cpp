@@ -1,6 +1,6 @@
 #include <iostream>
 #include <assert.h>
-#include "main.h"
+#include "game.h"
 
 extern const double SCREEN_WIDTH = 630;
 extern const double SCREEN_HEIGHT = 480;
@@ -25,7 +25,7 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
   return success;
 }
 
-GCore::GCore(void) {
+Game::Game(void) {
   quit = false;
   imgFlags = IMG_INIT_PNG;
   bgTexture = nullptr;
@@ -69,7 +69,7 @@ GCore::GCore(void) {
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
-GCore::~GCore() {
+Game::~Game() {
   TTF_CloseFont(font);
   font = NULL;
 
@@ -83,7 +83,7 @@ GCore::~GCore() {
   SDL_Quit();
 }
 
-void GCore::loop() {
+void Game::loop() {
   char herotext[32];
   while (!quit) {
     SDL_RenderClear(renderer);
@@ -118,7 +118,7 @@ void GCore::loop() {
   }
 }
 
-void GCore::game_loop(const SDL_Event* e, bool* quit) {
+void Game::game_loop(const SDL_Event* e, bool* quit) {
   if (e->type == SDL_QUIT) {
     *quit = true;
   } else if (e->type == SDL_KEYDOWN) {
@@ -137,7 +137,7 @@ void GCore::game_loop(const SDL_Event* e, bool* quit) {
 }
 
 int main(void) {
-  GCore gCore;
-  gCore.loop();
+  Game game;
+  game.loop();
   return 0;
 }

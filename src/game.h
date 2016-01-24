@@ -83,10 +83,10 @@ class Hero {
   bool load_textures(void);
 };
 
-class GCore {
+class Game {
  public:
-  GCore(void);
-  ~GCore();
+  Game(void);
+  ~Game();
   void loop();
   SDL_Renderer* renderer;
 
