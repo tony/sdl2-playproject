@@ -83,6 +83,15 @@ class Hero {
   bool load_textures(void);
 };
 
+class GamePanel {
+ public:
+  GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font);
+  void DrawStats();
+  Hero* hero;
+  SDL_Renderer* renderer;
+  TTF_Font* font;
+};
+
 class Game {
  public:
   Game(void);
@@ -92,6 +101,7 @@ class Game {
 
  private:
   Hero* hero;
+  GamePanel* gamepanel;
   TTF_Font* font;
   SDL_Event e;
   bool quit;

@@ -66,6 +66,7 @@ Game::Game(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
+  gamepanel = new GamePanel(hero, renderer, font);
   SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 }
 
@@ -84,7 +85,6 @@ Game::~Game() {
 }
 
 void Game::loop() {
-  char herotext[32];
   while (!quit) {
     SDL_RenderClear(renderer);
     SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
@@ -109,13 +109,25 @@ void Game::loop() {
       SDL_assert(renderer == hero->renderer);
       SDL_assert(renderer == boomerang->renderer);
     }
-    snprintf(herotext, sizeof(herotext), "health %d / %d",
-             hero->stats.current_hp, hero->stats.hp);
-    draw_text(herotext, 0, 0, font, renderer);
+    gamepanel->DrawStats();
 
     SDL_RenderPresent(renderer);
     SDL_Delay(16);
   }
+}
+
+GamePanel::GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font)
+    : hero(hero), renderer(renderer), font(font) {}
+
+void GamePanel::DrawStats() {
+  char herotext[32];
+        SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
+
+  snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
+           hero->stats.hp);
+  draw_text(herotext, 0, 0, font, renderer);
+          SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
+
 }
 
 void Game::game_loop(const SDL_Event* e, bool* quit) {
