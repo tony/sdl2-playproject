@@ -84,13 +84,13 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::loop() {
+void Game::GameLoop() {
   while (!quit) {
     SDL_RenderClear(renderer);
     SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
     SDL_RenderCopy(renderer, bgTexture.get(), NULL, NULL);
     while (SDL_PollEvent(&e) != 0) {
-      game_loop(&e, &quit);
+      SystemLoop(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     hero->loop(currentKeyStates);
@@ -121,16 +121,15 @@ GamePanel::GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font)
 
 void GamePanel::DrawStats() {
   char herotext[32];
-        SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
+  SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
 
   snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
            hero->stats.hp);
   draw_text(herotext, 0, 0, font, renderer);
-          SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
-
+  SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
 }
 
-void Game::game_loop(const SDL_Event* e, bool* quit) {
+void Game::SystemLoop(const SDL_Event* e, bool* quit) {
   if (e->type == SDL_QUIT) {
     *quit = true;
   } else if (e->type == SDL_KEYDOWN) {
@@ -150,6 +149,6 @@ void Game::game_loop(const SDL_Event* e, bool* quit) {
 
 int main(void) {
   Game game;
-  game.loop();
+  game.GameLoop();
   return 0;
 }

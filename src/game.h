@@ -96,7 +96,7 @@ class Game {
  public:
   Game(void);
   ~Game();
-  void loop();
+  void GameLoop();
   SDL_Renderer* renderer;
 
  private:
@@ -106,7 +106,7 @@ class Game {
   SDL_Event e;
   bool quit;
   int imgFlags;
-  void game_loop(const SDL_Event* e, bool* quit);
+  void SystemLoop(const SDL_Event* e, bool* quit);
   SDL_Window* window;
   std::shared_ptr<SDL_Texture> bgTexture;
 };
