@@ -10,4 +10,4 @@ windows:
   - focus: true
   - pane 
   - pane 
-  - ls src/*.{c,h} | entr make debug_ninja
+  - ls src/*.{cpp,h} | entr make debug_ninja
