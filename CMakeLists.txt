@@ -5,6 +5,9 @@ project(game)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${game_SOURCE_DIR}/cmake")
 set(BIN_DIR ${game_SOURCE_DIR}/bin)
 
+# include plugin
+include(cmake/clang-format.cmake)
+
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
@@ -33,26 +36,6 @@ file (COPY ${MY_PROJECT_FONT_RESOURCES} DESTINATION resources/fonts)
 
 include_directories("./src")
 file (GLOB game_SOURCES src/*.cpp)
-
-find_program(CLANG_FORMAT NAMES clang-format
-	clang-format39 clang-format-3.9
-	clang-format38 clang-format-3.8
-	clang-format37 clang-format-3.7
-	clang-format36 clang-format-3.6
-	clang-format35 clang-format-3.5
-	clang-format34 clang-format-3.4
-)
-
-if (CLANG_FORMAT)
-	message("ClangFormat found: ${CLANG_FORMAT}")
-	add_custom_target(
-		format
-		COMMAND ${CLANG_FORMAT}
-		-style=Chromium
-		-i
-		${game_SOURCES}
-	)
-endif()
 
 add_executable(game ${game_SOURCES})
 target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
