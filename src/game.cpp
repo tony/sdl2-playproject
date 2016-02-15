@@ -1,5 +1,4 @@
 #include <iostream>
-#include <assert.h>
 #include "game.h"
 
 extern const double SCREEN_WIDTH = 630;
@@ -17,7 +16,7 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         SDL_Renderer* renderer) {
   bool success = true;
 
-  bgTexture = texture_load("resources/continents.png", renderer);
+  bgTexture = texture_load("resources/tiles_12.png", renderer);
   if (bgTexture == NULL) {
     success = false;
   }
