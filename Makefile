@@ -26,5 +26,10 @@ format:
 run:
 	./build/game
 
+watch_debug:
+	if command -v entr > /dev/null; then find . -type f -not -path '*/\.*' | grep -i '.*[.][cpp,h]' | entr -c make debug_ninja; else make debug_ninja; echo "\nInstall entr(1) to automatically run tests on file change.\n See http://entrproject.org/"; fi
+
+watch_run:
+	if command -v entr > /dev/null; then find . -type f -not -path '*/\.*' | grep -i '.*[.][cpp,h]' | entr -c make debug_ninja run; else make debug_ninja run; echo "\nInstall entr(1) to automatically run tests on file change.\n See http://entrproject.org/"; fi
 
 .PHONY: mkdir_build
