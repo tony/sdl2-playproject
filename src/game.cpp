@@ -146,8 +146,6 @@ void Game::SystemLoop(const SDL_Event* e, bool* quit) {
           break;
       }
       break;
-    default:
-      break;
   }
 }
 
