@@ -146,6 +146,65 @@ void Game::SystemLoop(const SDL_Event* e, bool* quit) {
           break;
       }
       break;
+    case SDL_WINDOWEVENT:
+      switch (e->window.event) {
+        case SDL_WINDOWEVENT_SHOWN:
+          SDL_Log("Window %d shown", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_HIDDEN:
+          SDL_Log("Window %d hidden", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_EXPOSED:
+          SDL_Log("Window %d exposed", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_MOVED:
+          SDL_Log("Window %d moved to %d,%d",
+              e->window.windowID, e->window.data1,
+              e->window.data2);
+          break;
+        case SDL_WINDOWEVENT_RESIZED:
+          SDL_Log("Window %d resized to %dx%d",
+              e->window.windowID, e->window.data1,
+              e->window.data2);
+          break;
+        case SDL_WINDOWEVENT_SIZE_CHANGED:
+          SDL_Log("Window %d size changed to %dx%d",
+              e->window.windowID, e->window.data1,
+              e->window.data2);
+          break;
+        case SDL_WINDOWEVENT_MINIMIZED:
+          SDL_Log("Window %d minimized", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_MAXIMIZED:
+          SDL_Log("Window %d maximized", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_RESTORED:
+          SDL_Log("Window %d restored", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_ENTER:
+          SDL_Log("Mouse entered window %d",
+              e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_LEAVE:
+          SDL_Log("Mouse left window %d", e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_FOCUS_GAINED:
+          SDL_Log("Window %d gained keyboard focus",
+              e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_FOCUS_LOST:
+          SDL_Log("Window %d lost keyboard focus",
+              e->window.windowID);
+          break;
+        case SDL_WINDOWEVENT_CLOSE:
+          SDL_Log("Window %d closed", e->window.windowID);
+          break;
+        default:
+          SDL_Log("Window %d got unknown event %d",
+              e->window.windowID, e->window.event);
+          break; 
+      }
+      break;
   }
 }
 
