@@ -21,10 +21,13 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
+SET(SDL2PP_WITH_IMAGE TRUE)
+SET(SDL2PP_WITH_TTF TRUE)
+ADD_SUBDIRECTORY(vendor/libSDL2pp)
+
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
-include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR})
 
 
 file (GLOB MY_PROJECT_GFX_RESOURCES resources/*.png)
@@ -37,6 +40,7 @@ file (COPY ${MY_PROJECT_FONT_RESOURCES} DESTINATION resources/fonts)
 include_directories("./src")
 file (GLOB game_SOURCES src/*.cpp)
 
+include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 add_executable(game ${game_SOURCES})
-target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY})
+target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
