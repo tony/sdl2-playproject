@@ -13,16 +13,16 @@ __dead void fatal(const char* msg, ...) {
 }
 
 void draw_text(const char* text,
-               const int x,
-               const int y,
-               TTF_Font* font,
-               SDL_Renderer* renderer) {
+    const int x,
+    const int y,
+    TTF_Font* font,
+    SDL_Renderer* renderer) {
   SDL_Color textForegroundColor;
   textForegroundColor.r = 255, textForegroundColor.g = 255,
-  textForegroundColor.b = 255, textForegroundColor.a = 255;
+    textForegroundColor.b = 255, textForegroundColor.a = 255;
   SDL_Color textShadowColor;
   textShadowColor.r = 0, textShadowColor.g = 0, textShadowColor.b = 0,
-  textShadowColor.a = 255;
+    textShadowColor.a = 255;
   SDL_Surface* message = nullptr;
   SDL_Surface* message_shadow = nullptr;
   SDL_Texture* message_texture = nullptr;
@@ -32,10 +32,10 @@ void draw_text(const char* text,
   message_shadow = TTF_RenderText_Solid(font, text, textShadowColor);
   message_texture = SDL_CreateTextureFromSurface(renderer, message);
   message_texture_shadow =
-      SDL_CreateTextureFromSurface(renderer, message_shadow);
+    SDL_CreateTextureFromSurface(renderer, message_shadow);
 
   SDL_Rect message_shadow_rect = {x + 2, y + 2, message_shadow->w,
-                                  message_shadow->h};
+    message_shadow->h};
   SDL_RenderCopy(renderer, message_texture_shadow, NULL, &message_shadow_rect);
 
   SDL_Rect message_rect = {x, y, message->w, message->h};
@@ -51,24 +51,29 @@ void draw_text(const char* text,
   message_texture_shadow = nullptr;
 }
 
+char* get_full_path(const char* path) {
+  auto full_path = SDL_GetBasePath();
+  return strcat(full_path, path);
+}
+
 std::shared_ptr<SDL_Texture> texture_load(const char* path,
-                                          SDL_Renderer* renderer) {
+    SDL_Renderer* renderer) {
   std::shared_ptr<SDL_Texture> newTexture = nullptr;
-  SDL_Surface* loadedSurface = IMG_Load(path);
+  SDL_Surface* loadedSurface = IMG_Load(get_full_path(path));
 
   if (loadedSurface == NULL) {
     fatal("Unable to load image %s! SDL_image Error: %s\n", path,
-          IMG_GetError());
+        IMG_GetError());
   } else {
     SDL_SetColorKey(loadedSurface, SDL_TRUE,
-                    SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
+        SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
 
     newTexture = std::shared_ptr<SDL_Texture>(
         SDL_CreateTextureFromSurface(renderer, loadedSurface),
         SDL_DestroyTexture);
     if (newTexture == NULL) {
       fatal("Unable to create texture %s! SDL Error: %s\n", path,
-            SDL_GetError());
+          SDL_GetError());
     }
 
     SDL_FreeSurface(loadedSurface);
@@ -77,10 +82,10 @@ std::shared_ptr<SDL_Texture> texture_load(const char* path,
 }
 
 void apply_surface(int x,
-                   int y,
-                   SDL_Surface* source,
-                   SDL_Surface* destination,
-                   SDL_Rect* clip) {
+    int y,
+    SDL_Surface* source,
+    SDL_Surface* destination,
+    SDL_Rect* clip) {
   // Holds offsets
   SDL_Rect offset;
 

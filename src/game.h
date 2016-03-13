@@ -114,6 +114,8 @@ class Game {
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
                         SDL_Renderer* renderer);
 
+char* get_full_path(const char* path);
+
 #ifndef __dead
 #define __dead __attribute__((__noreturn__))
 #endif
