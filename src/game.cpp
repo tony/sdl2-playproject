@@ -35,22 +35,16 @@ Game::Game(void) {
       SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
       SDL_WINDOW_RESIZABLE);
 
-  SDL2pp::Renderer render(window, -1, SDL_RENDERER_ACCELERATED);
+  SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
   if (!(IMG_Init(imgFlags) & imgFlags)) {
     fatal("SDL_image could not initialize! SDL_image Error: %s\n",
         IMG_GetError());
   }
 
-  if (window.Get() == NULL) {
-    fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
-  } else if (renderer->Get() == NULL) {
-    fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
-  }
+  hero = new Hero(renderer.Get());
 
-  hero = new Hero(renderer->Get());
-
-  if (!game_load_textures(bgTexture, renderer->Get())) {
+  if (!game_load_textures(bgTexture, renderer.Get())) {
     fatal("Failed to load media!\n");
   } else if (!hero->load_textures()) {
     fatal("Failed to load hero media!\n");
@@ -63,8 +57,8 @@ Game::Game(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
-  gamepanel = new GamePanel(hero, renderer->Get(), font);
-  renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
+  gamepanel = new GamePanel(hero, renderer.Get(), font);
+  renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 Game::~Game() {
