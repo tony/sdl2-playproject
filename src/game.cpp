@@ -29,30 +29,28 @@ Game::Game(void) {
   imgFlags = IMG_INIT_PNG;
   bgTexture = nullptr;
 
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    fatal("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-  }
+  SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+
+  SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
+      SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+      SDL_WINDOW_RESIZABLE);
+
+  SDL2pp::Renderer render(window, -1, SDL_RENDERER_ACCELERATED);
 
   if (!(IMG_Init(imgFlags) & imgFlags)) {
     fatal("SDL_image could not initialize! SDL_image Error: %s\n",
         IMG_GetError());
   }
 
-  window = SDL_CreateWindow("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
-      SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-      SDL_WINDOW_RESIZABLE);
-
-  renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-  if (window == NULL) {
+  if (window.Get() == NULL) {
     fatal("Window could not be created!  SDL_Error: %s\n", SDL_GetError());
-  } else if (renderer == NULL) {
+  } else if (renderer->Get() == NULL) {
     fatal("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
   }
 
-  hero = new Hero(renderer);
+  hero = new Hero(renderer->Get());
 
-  if (!game_load_textures(bgTexture, renderer)) {
+  if (!game_load_textures(bgTexture, renderer->Get())) {
     fatal("Failed to load media!\n");
   } else if (!hero->load_textures()) {
     fatal("Failed to load hero media!\n");
@@ -65,8 +63,8 @@ Game::Game(void) {
   if (font == NULL) {
     fatal("Error loading font");
   }
-  gamepanel = new GamePanel(hero, renderer, font);
-  SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+  gamepanel = new GamePanel(hero, renderer->Get(), font);
+  renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 Game::~Game() {
@@ -74,9 +72,7 @@ Game::~Game() {
   font = NULL;
 
   renderer = NULL;
-  SDL_DestroyRenderer(renderer);
-  window = NULL;
-  SDL_DestroyWindow(window);
+  delete window;
 
   TTF_Quit();
   IMG_Quit();
@@ -85,16 +81,18 @@ Game::~Game() {
 
 void Game::GameLoop() {
   while (!quit) {
-    SDL_RenderClear(renderer);
-    SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
-    SDL_RenderCopy(renderer, bgTexture.get(), NULL, NULL);
+    renderer->Clear();
+    renderer->SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
+    auto bgTexture2 = SDL2pp::Texture(bgTexture.get());
+    renderer->Copy(bgTexture2, SDL2pp::NullOpt, SDL2pp::NullOpt);
     while (SDL_PollEvent(&e) != 0) {
       SystemLoop(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     hero->loop(currentKeyStates);
-    SDL_RenderCopy(renderer, hero->spriteSheet.get(),
-        &hero->HeroState[hero->state], &hero->position);
+    auto heroSheet = SDL2pp::Texture(hero->spriteSheet.get());
+    renderer->Copy(heroSheet,
+        SDL2pp::Rect(hero->HeroState[hero->state]), SDL2pp::Rect(hero->position));
 
     hero->boomerangs.erase(
         std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
@@ -105,12 +103,12 @@ void Game::GameLoop() {
       if (!boomerang->outOfBounds()) {
         boomerang->draw();
       }
-      SDL_assert(renderer == hero->renderer);
-      SDL_assert(renderer == boomerang->renderer);
+      SDL_assert(renderer->Get() == hero->renderer);
+      SDL_assert(renderer->Get() == boomerang->renderer);
     }
     gamepanel->DrawStats();
 
-    SDL_RenderPresent(renderer);
+    renderer->Present();
     SDL_Delay(16);
   }
 }
