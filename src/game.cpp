@@ -5,13 +5,13 @@ extern const double SCREEN_WIDTH = 630;
 extern const double SCREEN_HEIGHT = 480;
 
 extern const SDL_Rect BOTTOM_VIEWPORT_RECT = {
-    0, int(SCREEN_HEIGHT * .9), int(SCREEN_WIDTH), int(SCREEN_HEIGHT * .1)};
+  0, int(SCREEN_HEIGHT * .9), int(SCREEN_WIDTH), int(SCREEN_HEIGHT * .1)};
 
 extern const SDL_Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
-                                            int(SCREEN_HEIGHT * .9)};
+  int(SCREEN_HEIGHT * .9)};
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-                        SDL_Renderer* renderer) {
+    SDL_Renderer* renderer) {
   bool success = true;
 
   bgTexture = texture_load("resources/tiles_12.png", renderer);
@@ -31,14 +31,14 @@ Game::Game(void) {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
 
     SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
-                          SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-                          SDL_WINDOW_RESIZABLE);
+        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+        SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     if (!(IMG_Init(imgFlags) & imgFlags)) {
       fatal("SDL_image could not initialize! SDL_image Error: %s\n",
-            IMG_GetError());
+          IMG_GetError());
     }
 
     hero = new Hero(renderer.Get());
@@ -91,11 +91,11 @@ void Game::GameLoop() {
       hero->loop(currentKeyStates);
       auto heroSheet = SDL2pp::Texture(hero->spriteSheet.get());
       renderer->Copy(heroSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
-                     SDL2pp::Rect(hero->position));
+          SDL2pp::Rect(hero->position));
 
       hero->boomerangs.erase(
           std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
-                         [](Boomerang* i) { return i->outOfBounds(); }),
+            [](Boomerang* i) { return i->outOfBounds(); }),
           hero->boomerangs.end());
       for (auto& boomerang : hero->boomerangs) {
         boomerang->loop();
@@ -122,17 +122,17 @@ void Game::GameLoop() {
 }
 
 GamePanel::GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font)
-    : hero(hero), renderer(renderer), font(font) {}
+  : hero(hero), renderer(renderer), font(font) {}
 
-void GamePanel::DrawStats() {
-  char herotext[32];
-  SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
+  void GamePanel::DrawStats() {
+    char herotext[32];
+    SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
 
-  snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
-           hero->stats.hp);
-  draw_text(herotext, 0, 0, font, renderer);
-  SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
-}
+    snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
+        hero->stats.hp);
+    draw_text(herotext, 0, 0, font, renderer);
+    SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
+  }
 
 void Game::SystemLoop(const SDL_Event* e, bool* quit) {
   switch (e->type) {
@@ -165,15 +165,15 @@ void Game::SystemLoop(const SDL_Event* e, bool* quit) {
           break;
         case SDL_WINDOWEVENT_MOVED:
           SDL_Log("Window %d moved to %d,%d", e->window.windowID,
-                  e->window.data1, e->window.data2);
+              e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_RESIZED:
           SDL_Log("Window %d resized to %dx%d", e->window.windowID,
-                  e->window.data1, e->window.data2);
+              e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_SIZE_CHANGED:
           SDL_Log("Window %d size changed to %dx%d", e->window.windowID,
-                  e->window.data1, e->window.data2);
+              e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_MINIMIZED:
           SDL_Log("Window %d minimized", e->window.windowID);
@@ -201,7 +201,7 @@ void Game::SystemLoop(const SDL_Event* e, bool* quit) {
           break;
         default:
           SDL_Log("Window %d got unknown event %d", e->window.windowID,
-                  e->window.event);
+              e->window.event);
           break;
       }
       break;
