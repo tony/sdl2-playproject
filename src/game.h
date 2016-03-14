@@ -100,15 +100,16 @@ class GamePanel {
 
 class Game {
   public:
-    Game(void);
+    Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
     ~Game();
     void GameLoop();
-    SDL2pp::Renderer* renderer;
+
 
   private:
+    SDL2pp::Renderer& renderer;
     Hero* hero;
     GamePanel* gamepanel;
-    SDL2pp::Font* font;
+    SDL2pp::Font& font;
     SDL_Event e;
     bool quit;
     int imgFlags;

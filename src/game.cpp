@@ -22,19 +22,12 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
   return success;
 }
 
-Game::Game(void) {
+Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : renderer(renderer), font(font) {
   quit = false;
   imgFlags = IMG_INIT_PNG;
   bgTexture = nullptr;
 
   try {
-    SDL2pp::SDL sdl(SDL_INIT_VIDEO);
-
-    SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-        SDL_WINDOW_RESIZABLE);
-
-    SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
 
     if (!(IMG_Init(imgFlags) & imgFlags)) {
       fatal("SDL_image could not initialize! SDL_image Error: %s\n",
@@ -52,8 +45,6 @@ Game::Game(void) {
     }
 
     // load fonts
-    SDL2pp::Font font(
-        get_full_path("resources/fonts/TerminusTTF-Bold-4.39.ttf"), 36);
 
     gamepanel = new GamePanel(hero, renderer.Get(), font.Get());
     renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -68,7 +59,7 @@ Game::Game(void) {
 }
 
 Game::~Game() {
-  delete font;
+  // delete font;
 
   renderer = NULL;
   delete window;
@@ -79,18 +70,19 @@ Game::~Game() {
 }
 
 void Game::GameLoop() {
-  while (!quit) {
-    try {
-      renderer->SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
+  try {
+    while (!quit) {
+
+      renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
       auto bgTexture2 = SDL2pp::Texture(bgTexture.get());
-      renderer->Copy(bgTexture2, SDL2pp::NullOpt, SDL2pp::NullOpt);
+      renderer.Copy(bgTexture2, SDL2pp::NullOpt, SDL2pp::NullOpt);
       while (SDL_PollEvent(&e) != 0) {
         SystemLoop(&e, &quit);
       }
       const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
       hero->loop(currentKeyStates);
       auto heroSheet = SDL2pp::Texture(hero->spriteSheet.get());
-      renderer->Copy(heroSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
+      renderer.Copy(heroSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
           SDL2pp::Rect(hero->position));
 
       hero->boomerangs.erase(
@@ -102,23 +94,24 @@ void Game::GameLoop() {
         if (!boomerang->outOfBounds()) {
           boomerang->draw();
         }
-        SDL_assert(renderer->Get() == hero->renderer);
-        SDL_assert(renderer->Get() == boomerang->renderer);
+        SDL_assert(renderer.Get() == hero->renderer);
+        SDL_assert(renderer.Get() == boomerang->renderer);
       }
       gamepanel->DrawStats();
 
-      renderer->Present();
+      renderer.Present();
       SDL_Delay(16);
-    } catch (SDL2pp::Exception& e) {
-      // Exception stores SDL_GetError() result and name of function which
-      // failed
-      std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
-      std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
-    } catch (std::exception& e) {
-      // This also works (e.g. "SDL_Init failed: No available video device")
-      std::cerr << e.what() << std::endl;
     }
+  } catch (SDL2pp::Exception& e) {
+    // Exception stores SDL_GetError() result and name of function which
+    // failed
+    std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
+    std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
+  } catch (std::exception& e) {
+    // This also works (e.g. "SDL_Init failed: No available video device")
+    std::cerr << e.what() << std::endl;
   }
+
 }
 
 GamePanel::GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font)
@@ -209,7 +202,27 @@ void Game::SystemLoop(const SDL_Event* e, bool* quit) {
 }
 
 int main(void) {
-  Game game;
-  game.GameLoop();
+  try {
+    SDL2pp::SDL sdl(SDL_INIT_VIDEO);
+    SDL2pp::SDLTTF sdl_ttf;
+
+    SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+        SDL_WINDOW_RESIZABLE);
+
+    SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL2pp::Font font(
+        get_full_path("resources/fonts/TerminusTTF-Bold-4.39.ttf"), 36);
+
+    Game game(renderer, font);
+    game.GameLoop();
+  } catch (SDL2pp::Exception& e) {
+    // Exception stores SDL_GetError() result and name of function which failed
+    std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
+    std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
+  } catch (std::exception& e) {
+    // This also works (e.g. "SDL_Init failed: No available video device")
+    std::cerr << e.what() << std::endl;
+  }
   return 0;
 }
