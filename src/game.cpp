@@ -19,13 +19,17 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
     success = false;
   }
 
+
   return success;
 }
 
-Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : renderer(renderer), font(font) {
+Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
+  renderer(renderer),
+  font(font),
+  bgTexture(renderer, get_full_path("resources/tiles_12.png"))
+{
   quit = false;
   imgFlags = IMG_INIT_PNG;
-  bgTexture = nullptr;
 
   try {
 
@@ -34,17 +38,14 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : renderer(renderer),
           IMG_GetError());
     }
 
-    hero = new Hero(renderer.Get());
+    hero = new Hero(renderer);
 
-    if (!game_load_textures(bgTexture, renderer.Get())) {
-      fatal("Failed to load media!\n");
-    } else if (!hero->load_textures()) {
+    if (!hero->load_textures()) {
       fatal("Failed to load hero media!\n");
     } else if (TTF_Init() == -1) {
       fatal("Font engine failed to initialize.\n");
     }
 
-    // load fonts
 
     gamepanel = new GamePanel(hero, renderer.Get(), font.Get());
     renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -73,16 +74,14 @@ void Game::GameLoop() {
   try {
     while (!quit) {
 
-      renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
-      auto bgTexture2 = SDL2pp::Texture(bgTexture.get());
-      renderer.Copy(bgTexture2, SDL2pp::NullOpt, SDL2pp::NullOpt);
+      // renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
+      renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
       while (SDL_PollEvent(&e) != 0) {
         SystemLoop(&e, &quit);
       }
       const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
       hero->loop(currentKeyStates);
-      auto heroSheet = SDL2pp::Texture(hero->spriteSheet.get());
-      renderer.Copy(heroSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
+      renderer.Copy(hero->spriteSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
           SDL2pp::Rect(hero->position));
 
       hero->boomerangs.erase(
@@ -94,8 +93,8 @@ void Game::GameLoop() {
         if (!boomerang->outOfBounds()) {
           boomerang->draw();
         }
-        SDL_assert(renderer.Get() == hero->renderer);
-        SDL_assert(renderer.Get() == boomerang->renderer);
+        SDL_assert(renderer.Get() == hero->renderer.Get());
+        SDL_assert(renderer.Get() == boomerang->renderer.Get());
       }
       gamepanel->DrawStats();
 
@@ -205,6 +204,7 @@ int main(void) {
   try {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     SDL2pp::SDLTTF sdl_ttf;
+    SDL2pp::SDLImage image(IMG_INIT_PNG); // optional
 
     SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,

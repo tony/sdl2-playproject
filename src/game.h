@@ -50,11 +50,11 @@ typedef struct Stats {
 
 class Boomerang {
   public:
-    SDL_Renderer* renderer;
+    SDL2pp::Renderer& renderer;
     SDL_Rect position;
     SDL_Point velocity;
 
-    Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
+    Boomerang(SDL2pp::Renderer& renderer, SDL_Rect position, SDL_Point velocity);
     ~Boomerang();
     void loop();
     SDL_Rect getPosition() const { return position; };
@@ -67,20 +67,20 @@ class Boomerang {
     void draw();
 
   private:
-    std::shared_ptr<SDL_Texture> texture;
+    SDL2pp::Texture texture;
 };
 
 class Hero {
   public:
-    Hero(SDL_Renderer* renderer);
+    Hero(SDL2pp::Renderer& renderer);
     ~Hero();
     SDL_Rect HeroState[HERO_STATE_TOTAL];
-    std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
+    SDL2pp::Texture spriteSheet;
     SDL_Rect position;
     SDL_Point velocity;
     Stats stats;
     enum HeroState state;
-    SDL_Renderer* renderer;
+    SDL2pp::Renderer& renderer;
     std::vector<Boomerang*> boomerangs;
     Uint32 last_shot;
     void CreateBoomerang(void);
@@ -115,7 +115,7 @@ class Game {
     int imgFlags;
     void SystemLoop(const SDL_Event* e, bool* quit);
     SDL2pp::Window* window;
-    std::shared_ptr<SDL_Texture> bgTexture;
+    SDL2pp::Texture bgTexture;
 };
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
