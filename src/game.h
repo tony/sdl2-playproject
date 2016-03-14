@@ -109,7 +109,6 @@ class Game {
     SDL2pp::Renderer& renderer;
     Hero* hero;
     GamePanel* gamepanel;
-    SDL2pp::Font& font;
     SDL_Event e;
     bool quit;
     int imgFlags;

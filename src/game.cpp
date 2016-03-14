@@ -25,7 +25,6 @@ bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
   renderer(renderer),
-  font(font),
   bgTexture(renderer, get_full_path("resources/tiles_12.png"))
 {
   quit = false;
