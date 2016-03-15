@@ -55,10 +55,11 @@ void Game::GameLoop() {
           hero->spriteSheet, hero->HeroState[hero->state],
           hero->position);
 
-      hero->boomerangs.erase(
-          std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
-            [](Boomerang* i) { return i->outOfBounds(); }),
-          hero->boomerangs.end());
+      auto it = hero->boomerangs.begin();
+      while (it != hero->boomerangs.end()) {
+        if ((**it).outOfBounds()) it = hero->boomerangs.erase(it);
+        else ++it;
+      }
       for (auto& boomerang : hero->boomerangs) {
         boomerang->loop();
         if (!boomerang->outOfBounds()) {
