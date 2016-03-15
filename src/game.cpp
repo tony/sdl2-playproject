@@ -72,8 +72,8 @@ Game::~Game() {
 void Game::GameLoop() {
   try {
     while (!quit) {
-
-      // renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
+      renderer.Clear();
+      renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
       renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
       while (SDL_PollEvent(&e) != 0) {
         SystemLoop(&e, &quit);
