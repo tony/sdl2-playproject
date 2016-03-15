@@ -41,46 +41,35 @@ Game::~Game() {
 }
 
 void Game::GameLoop() {
-  try {
-    while (!quit) {
-      renderer.Clear();
-      renderer.SetViewport(MAIN_VIEWPORT_RECT);
-      renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
-      while (SDL_PollEvent(&e) != 0) {
-        SystemLoop(&e, &quit);
-      }
-      const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-      hero->loop(currentKeyStates);
-      renderer.Copy(
-          hero->spriteSheet, hero->HeroState[hero->state],
-          hero->position);
-
-      auto it = hero->boomerangs.begin();
-      while (it != hero->boomerangs.end()) {
-        if ((**it).outOfBounds()) it = hero->boomerangs.erase(it);
-        else ++it;
-      }
-      for (auto& boomerang : hero->boomerangs) {
-        boomerang->loop();
-        if (!boomerang->outOfBounds()) {
-          boomerang->draw();
-        }
-      }
-      gamepanel->DrawStats();
-
-      renderer.Present();
-      SDL_Delay(16);
+  while (!quit) {
+    renderer.Clear();
+    renderer.SetViewport(MAIN_VIEWPORT_RECT);
+    renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
+    while (SDL_PollEvent(&e) != 0) {
+      SystemLoop(&e, &quit);
     }
-  } catch (SDL2pp::Exception& e) {
-    // Exception stores SDL_GetError() result and name of function which
-    // failed
-    std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
-    std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
-  } catch (std::exception& e) {
-    // This also works (e.g. "SDL_Init failed: No available video device")
-    std::cerr << e.what() << std::endl;
-  }
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    hero->loop(currentKeyStates);
+    renderer.Copy(
+        hero->spriteSheet, hero->HeroState[hero->state],
+        hero->position);
 
+    auto it = hero->boomerangs.begin();
+    while (it != hero->boomerangs.end()) {
+      if ((**it).outOfBounds()) it = hero->boomerangs.erase(it);
+      else ++it;
+    }
+    for (auto& boomerang : hero->boomerangs) {
+      boomerang->loop();
+      if (!boomerang->outOfBounds()) {
+        boomerang->draw();
+      }
+    }
+    gamepanel->DrawStats();
+
+    renderer.Present();
+    SDL_Delay(16);
+  }
 }
 
 GamePanel::GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font)
