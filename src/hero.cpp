@@ -56,6 +56,20 @@ void Hero::loop(const Uint8* currentKeyStates) {
       last_shot = now;
     }
   }
+
+  // boomerang drawing and clean up
+  auto it = boomerangs.begin();
+  while (it != boomerangs.end()) {
+    if ((**it).outOfBounds()) it = boomerangs.erase(it);
+    else ++it;
+  }
+  for (auto& boomerang : boomerangs) {
+    boomerang->loop();
+    if (!boomerang->outOfBounds()) {
+      boomerang->draw();
+    }
+  }
+
 }
 
 void Hero::CreateBoomerang(void) {

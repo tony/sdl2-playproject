@@ -101,7 +101,6 @@ class Game {
     ~Game();
     void GameLoop();
 
-
   private:
     SDL2pp::Renderer& renderer;
     Hero* hero;

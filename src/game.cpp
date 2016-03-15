@@ -54,17 +54,6 @@ void Game::GameLoop() {
         hero->spriteSheet, hero->HeroState[hero->state],
         hero->position);
 
-    auto it = hero->boomerangs.begin();
-    while (it != hero->boomerangs.end()) {
-      if ((**it).outOfBounds()) it = hero->boomerangs.erase(it);
-      else ++it;
-    }
-    for (auto& boomerang : hero->boomerangs) {
-      boomerang->loop();
-      if (!boomerang->outOfBounds()) {
-        boomerang->draw();
-      }
-    }
     gamepanel->DrawStats();
 
     renderer.Present();
