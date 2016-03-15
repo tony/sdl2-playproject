@@ -25,12 +25,12 @@ extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
 std::shared_ptr<SDL_Texture> texture_load(const char* path,
-    SDL_Renderer* renderer);
+    SDL2pp::Renderer& renderer);
 void draw_text(const char* text,
     const int x,
     const int y,
     TTF_Font* font,
-    SDL_Renderer* renderer);
+    SDL2pp::Renderer& renderer);
 
 enum HeroState {
   HERO_STATE_DEFAULT,
@@ -91,10 +91,10 @@ class Hero {
 
 class GamePanel {
   public:
-    GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font);
+    GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font);
     void DrawStats();
     Hero* hero;
-    SDL_Renderer* renderer;
+    SDL2pp::Renderer& renderer;
     TTF_Font* font;
 };
 
@@ -116,9 +116,6 @@ class Game {
     SDL2pp::Window* window;
     SDL2pp::Texture bgTexture;
 };
-
-bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-    SDL_Renderer* renderer);
 
 char* get_full_path(const char* path);
 

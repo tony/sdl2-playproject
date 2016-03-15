@@ -10,19 +10,6 @@ extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
   int(SCREEN_HEIGHT * .9)};
 
-bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-    SDL_Renderer* renderer) {
-  bool success = true;
-
-  bgTexture = texture_load("resources/tiles_12.png", renderer);
-  if (bgTexture == NULL) {
-    success = false;
-  }
-
-
-  return success;
-}
-
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
   renderer(renderer),
   bgTexture(renderer, get_full_path("resources/tiles_12.png"))
@@ -46,7 +33,7 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
     }
 
 
-    gamepanel = new GamePanel(hero, renderer.Get(), font.Get());
+    gamepanel = new GamePanel(hero, renderer, font.Get());
     renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
@@ -111,17 +98,17 @@ void Game::GameLoop() {
 
 }
 
-GamePanel::GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font)
+GamePanel::GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font)
   : hero(hero), renderer(renderer), font(font) {}
 
   void GamePanel::DrawStats() {
     char herotext[32];
-    SDL_RenderSetViewport(renderer, &BOTTOM_VIEWPORT_RECT);
+    renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
     snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
         hero->stats.hp);
     draw_text(herotext, 0, 0, font, renderer);
-    SDL_RenderSetViewport(renderer, &MAIN_VIEWPORT_RECT);
+    renderer.SetViewport(MAIN_VIEWPORT_RECT);
   }
 
 void Game::SystemLoop(const SDL_Event* e, bool* quit) {

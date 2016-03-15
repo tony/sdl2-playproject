@@ -140,5 +140,5 @@ void Boomerang::loop() {
 }
 
 void Boomerang::draw() {
-  renderer.Copy(texture, SDL2pp::NullOpt, SDL2pp::Rect(position));
+  renderer.Copy(texture, SDL2pp::NullOpt, position);
 }
