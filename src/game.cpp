@@ -14,8 +14,6 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
   renderer(renderer),
   bgTexture(renderer, get_full_path("resources/tiles_12.png"))
 {
-  quit = false;
-
   try {
     hero = new Hero(renderer);
     gamepanel = new GamePanel(hero, renderer, font.Get());

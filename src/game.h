@@ -106,7 +106,7 @@ class Game {
     Hero* hero;
     GamePanel* gamepanel;
     SDL_Event e;
-    bool quit;
+    bool quit = false;
     void BubbleGlobalEvent(const SDL_Event* e, bool* quit);
     SDL2pp::Window* window;
     SDL2pp::Texture bgTexture;
