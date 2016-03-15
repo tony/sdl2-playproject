@@ -15,15 +15,8 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
   bgTexture(renderer, get_full_path("resources/tiles_12.png"))
 {
   quit = false;
-  imgFlags = IMG_INIT_PNG;
 
   try {
-
-    if (!(IMG_Init(imgFlags) & imgFlags)) {
-      fatal("SDL_image could not initialize! SDL_image Error: %s\n",
-          IMG_GetError());
-    }
-
     hero = new Hero(renderer);
     gamepanel = new GamePanel(hero, renderer, font.Get());
 

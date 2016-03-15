@@ -108,7 +108,6 @@ class Game {
     GamePanel* gamepanel;
     SDL_Event e;
     bool quit;
-    int imgFlags;
     void SystemLoop(const SDL_Event* e, bool* quit);
     SDL2pp::Window* window;
     SDL2pp::Texture bgTexture;
