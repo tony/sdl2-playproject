@@ -45,8 +45,8 @@ void Game::GameLoop() {
     renderer.Clear();
     renderer.SetViewport(MAIN_VIEWPORT_RECT);
     renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
-    while (SDL_PollEvent(&e) != 0) {
-      SystemLoop(&e, &quit);
+    if (SDL_PollEvent(&e) != 0) {
+      BubbleGlobalEvent(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     hero->loop(currentKeyStates);
@@ -85,7 +85,7 @@ GamePanel::GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font)
     renderer.SetViewport(MAIN_VIEWPORT_RECT);
   }
 
-void Game::SystemLoop(const SDL_Event* e, bool* quit) {
+void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
   switch (e->type) {
     case SDL_QUIT:
       *quit = true;

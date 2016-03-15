@@ -108,7 +108,7 @@ class Game {
     GamePanel* gamepanel;
     SDL_Event e;
     bool quit;
-    void SystemLoop(const SDL_Event* e, bool* quit);
+    void BubbleGlobalEvent(const SDL_Event* e, bool* quit);
     SDL2pp::Window* window;
     SDL2pp::Texture bgTexture;
 };
