@@ -46,9 +46,7 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
 }
 
 Game::~Game() {
-  // delete font;
-
-  renderer = NULL;
+  renderer = nullptr;
   delete window;
 
   TTF_Quit();
@@ -196,8 +194,7 @@ int main(void) {
         SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-    SDL2pp::Font font(
-        get_full_path("resources/fonts/TerminusTTF-Bold-4.39.ttf"), 36);
+    SDL2pp::Font font(get_full_path("resources/fonts/TerminusTTF-Bold-4.39.ttf"), 36);
 
     Game game(renderer, font);
     game.GameLoop();
