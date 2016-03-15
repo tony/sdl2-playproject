@@ -122,10 +122,10 @@ bool Hero::load_textures(void) {
 
 Boomerang::Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v) :
   renderer(renderer),
-  texture(renderer, get_full_path("resources/boomerang.png")) {
-    position = p;
-    velocity = v;
-  }
+  position(p),
+  velocity(v),
+  texture(renderer, get_full_path("resources/boomerang.png"))
+{}
 
 bool Boomerang::outOfBounds() {
   return (position.x > MAIN_VIEWPORT_RECT.w ||
