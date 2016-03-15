@@ -11,6 +11,7 @@ const int HERO_SPRITE_H = 30;
 
 Hero::Hero(SDL2pp::Renderer& renderer) :
   spriteSheet(renderer, get_full_path("resources/elliot/spritesheet.png")),
+  boomerangSprite(renderer, get_full_path("resources/boomerang.png")),
   renderer(renderer)
 {
   HeroState[HERO_STATE_DEFAULT] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
@@ -95,15 +96,15 @@ void Hero::CreateBoomerang(void) {
         velocity.y = 0;
         break;
     }
-    boomerangs.push_back(new Boomerang(renderer, position, velocity));
+    boomerangs.push_back(new Boomerang(this, renderer, position, velocity));
   }
 }
 
-Boomerang::Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v) :
+Boomerang::Boomerang(Hero* hero, SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v) :
   renderer(renderer),
   position(p),
   velocity(v),
-  texture(renderer, get_full_path("resources/boomerang.png"))
+  hero(hero)
 {}
 
 bool Boomerang::outOfBounds() {
@@ -117,6 +118,6 @@ void Boomerang::loop() {
   position.x += velocity.x;
   position.y += velocity.y;
   if (!outOfBounds()) {
-    renderer.Copy(texture, SDL2pp::NullOpt, position);
+    renderer.Copy(hero->boomerangSprite, SDL2pp::NullOpt, position);
   }
 }

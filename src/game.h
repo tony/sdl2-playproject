@@ -24,8 +24,6 @@ extern const int HERO_SPRITE_H;
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
-std::shared_ptr<SDL_Texture> texture_load(const char* path,
-    SDL2pp::Renderer& renderer);
 void draw_text(const char* text,
     const int x,
     const int y,
@@ -48,13 +46,16 @@ typedef struct Stats {
   int intelligence = 8;
 } Stats;
 
+class Hero;
+
 class Boomerang {
   public:
     SDL2pp::Renderer& renderer;
     SDL2pp::Rect position;
     SDL2pp::Point velocity;
 
-    Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect position, SDL2pp::Point velocity);
+    Boomerang(Hero* hero, SDL2pp::Renderer& renderer, SDL2pp::Rect position, SDL2pp::Point velocity);
+    Hero* hero;
     void loop();
     SDL2pp::Rect getPosition() const { return position; };
     int getPositionX() const { return position.x; };
@@ -64,8 +65,6 @@ class Boomerang {
     int getVelocityY() const { return velocity.y; };
     bool outOfBounds();
 
-  private:
-    SDL2pp::Texture texture;
 };
 
 class Hero {
@@ -73,6 +72,7 @@ class Hero {
     Hero(SDL2pp::Renderer& renderer);
     SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
     SDL2pp::Texture spriteSheet;
+    SDL2pp::Texture boomerangSprite;
     SDL2pp::Rect position = {0, 0, 30, 30};
     SDL2pp::Point velocity;
     Stats stats;
