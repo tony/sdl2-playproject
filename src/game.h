@@ -55,7 +55,6 @@ class Boomerang {
     SDL2pp::Point velocity;
 
     Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect position, SDL2pp::Point velocity);
-    ~Boomerang();
     void loop();
     SDL2pp::Rect getPosition() const { return position; };
     int getPositionX() const { return position.x; };
@@ -73,7 +72,6 @@ class Boomerang {
 class Hero {
   public:
     Hero(SDL2pp::Renderer& renderer);
-    ~Hero();
     SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
     SDL2pp::Texture spriteSheet;
     SDL2pp::Rect position;
