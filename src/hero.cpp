@@ -3,7 +3,7 @@
 
 extern const double SCREEN_HEIGHT;
 extern const double SCREEN_WIDTH;
-extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
+extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
 const int SHOOTING_DELAY = 200;
 const int HERO_SPRITE_W = 30;
@@ -61,7 +61,7 @@ void Hero::loop(const Uint8* currentKeyStates) {
 
 void Hero::CreateBoomerang(void) {
   if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
-    SDL_Point velocity;
+    SDL2pp::Point velocity;
 
     switch (state) {
       case HERO_STATE_WALK_UP:
@@ -120,7 +120,7 @@ bool Hero::load_textures(void) {
   return success;
 }
 
-Boomerang::Boomerang(SDL2pp::Renderer& renderer, SDL_Rect p, SDL_Point v) :
+Boomerang::Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v) :
   renderer(renderer),
   texture(renderer, get_full_path("resources/boomerang.png")) {
     position = p;

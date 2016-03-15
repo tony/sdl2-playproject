@@ -4,10 +4,10 @@
 extern const double SCREEN_WIDTH = 630;
 extern const double SCREEN_HEIGHT = 480;
 
-extern const SDL_Rect BOTTOM_VIEWPORT_RECT = {
+extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
   0, int(SCREEN_HEIGHT * .9), int(SCREEN_WIDTH), int(SCREEN_HEIGHT * .1)};
 
-extern const SDL_Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
+extern const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
   int(SCREEN_HEIGHT * .9)};
 
 bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
@@ -92,8 +92,6 @@ void Game::GameLoop() {
         if (!boomerang->outOfBounds()) {
           boomerang->draw();
         }
-        SDL_assert(renderer.Get() == hero->renderer.Get());
-        SDL_assert(renderer.Get() == boomerang->renderer.Get());
       }
       gamepanel->DrawStats();
 
