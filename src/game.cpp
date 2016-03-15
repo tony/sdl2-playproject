@@ -73,15 +73,16 @@ void Game::GameLoop() {
   try {
     while (!quit) {
       renderer.Clear();
-      renderer.SetViewport(SDL2pp::Rect(MAIN_VIEWPORT_RECT));
+      renderer.SetViewport(MAIN_VIEWPORT_RECT);
       renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
       while (SDL_PollEvent(&e) != 0) {
         SystemLoop(&e, &quit);
       }
       const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
       hero->loop(currentKeyStates);
-      renderer.Copy(hero->spriteSheet, SDL2pp::Rect(hero->HeroState[hero->state]),
-          SDL2pp::Rect(hero->position));
+      renderer.Copy(
+          hero->spriteSheet, hero->HeroState[hero->state],
+          hero->position);
 
       hero->boomerangs.erase(
           std::remove_if(hero->boomerangs.begin(), hero->boomerangs.end(),
