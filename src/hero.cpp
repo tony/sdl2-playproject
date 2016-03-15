@@ -14,8 +14,8 @@ Hero::Hero(SDL2pp::Renderer& renderer) :
   boomerangSprite(nullptr),
   renderer(renderer)
 {
-  spriteSheet = SDL2pp::Texture(renderer, get_full_path("resources/elliot/spritesheet.png"));
-  boomerangSprite = SDL2pp::Texture(renderer, get_full_path("resources/boomerang.png"));
+  spriteSheet = SDL2pp::Texture(renderer, "resources/elliot/spritesheet.png");
+  boomerangSprite = SDL2pp::Texture(renderer, "resources/boomerang.png");
 
   HeroState[HERO_STATE_DEFAULT] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
   HeroState[HERO_STATE_WALK_UP] = SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
