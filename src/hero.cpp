@@ -65,9 +65,6 @@ void Hero::loop(const Uint8* currentKeyStates) {
   }
   for (auto& boomerang : boomerangs) {
     boomerang->loop();
-    if (!boomerang->outOfBounds()) {
-      boomerang->draw();
-    }
   }
 
 }
@@ -119,8 +116,7 @@ bool Boomerang::outOfBounds() {
 void Boomerang::loop() {
   position.x += velocity.x;
   position.y += velocity.y;
-}
-
-void Boomerang::draw() {
-  renderer.Copy(texture, SDL2pp::NullOpt, position);
+  if (!outOfBounds()) {
+    renderer.Copy(texture, SDL2pp::NullOpt, position);
+  }
 }

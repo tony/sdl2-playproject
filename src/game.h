@@ -63,7 +63,6 @@ class Boomerang {
     int getVelocityX() const { return velocity.x; };
     int getVelocityY() const { return velocity.y; };
     bool outOfBounds();
-    void draw();
 
   private:
     SDL2pp::Texture texture;
