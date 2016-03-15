@@ -42,10 +42,10 @@ enum HeroState {
 };
 
 typedef struct Stats {
-  int current_hp;
-  int hp;
-  int strength;
-  int intelligence;
+  int current_hp = 100;
+  int hp = 100;
+  int strength = 8;
+  int intelligence = 8;
 } Stats;
 
 class Boomerang {
@@ -74,17 +74,16 @@ class Hero {
     Hero(SDL2pp::Renderer& renderer);
     SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
     SDL2pp::Texture spriteSheet;
-    SDL2pp::Rect position;
+    SDL2pp::Rect position = {0, 0, 30, 30};
     SDL2pp::Point velocity;
     Stats stats;
-    enum HeroState state;
+    enum HeroState state = HERO_STATE_DEFAULT;
     SDL2pp::Renderer& renderer;
     std::vector<Boomerang*> boomerangs;
     Uint32 last_shot;
     void CreateBoomerang(void);
 
     void loop(const Uint8* currentKeyStates);
-    bool load_textures(void);
 };
 
 class GamePanel {

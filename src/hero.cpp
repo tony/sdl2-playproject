@@ -13,12 +13,11 @@ Hero::Hero(SDL2pp::Renderer& renderer) :
   spriteSheet(renderer, get_full_path("resources/elliot/spritesheet.png")),
   renderer(renderer)
 {
-  position = {0, 0, 30, 30};
-  state = HERO_STATE_DEFAULT;
-  stats.current_hp = 100;
-  stats.hp = 100;
-  stats.strength = 8;
-  stats.intelligence = 8;
+  HeroState[HERO_STATE_DEFAULT] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
+  HeroState[HERO_STATE_WALK_UP] = SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
+  HeroState[HERO_STATE_WALK_DOWN] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
+  HeroState[HERO_STATE_WALK_LEFT] = SDL2pp::Rect(0, 505, HERO_SPRITE_W, HERO_SPRITE_H);
+  HeroState[HERO_STATE_WALK_RIGHT] = SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 
 void Hero::loop(const Uint8* currentKeyStates) {
@@ -87,37 +86,6 @@ void Hero::CreateBoomerang(void) {
     }
     boomerangs.push_back(new Boomerang(renderer, position, velocity));
   }
-}
-
-bool Hero::load_textures(void) {
-  bool success = true;
-
-  HeroState[HERO_STATE_DEFAULT].x = 0;
-  HeroState[HERO_STATE_DEFAULT].y = 0;
-  HeroState[HERO_STATE_DEFAULT].w = HERO_SPRITE_W;
-  HeroState[HERO_STATE_DEFAULT].h = HERO_SPRITE_H;
-  HeroState[HERO_STATE_WALK_UP].x = 0;
-  HeroState[HERO_STATE_WALK_UP].y = 1010;
-  HeroState[HERO_STATE_WALK_UP].w = HERO_SPRITE_W;
-  HeroState[HERO_STATE_WALK_UP].h = HERO_SPRITE_H;
-  HeroState[HERO_STATE_WALK_DOWN].x = 0;
-  HeroState[HERO_STATE_WALK_DOWN].y = 0;
-  HeroState[HERO_STATE_WALK_DOWN].w = HERO_SPRITE_W;
-  HeroState[HERO_STATE_WALK_DOWN].h = HERO_SPRITE_H;
-  HeroState[HERO_STATE_WALK_LEFT].x = 0;
-  HeroState[HERO_STATE_WALK_LEFT].y = 505;
-  HeroState[HERO_STATE_WALK_LEFT].w = HERO_SPRITE_W;
-  HeroState[HERO_STATE_WALK_LEFT].h = HERO_SPRITE_H;
-  HeroState[HERO_STATE_WALK_RIGHT].x = 0;
-  HeroState[HERO_STATE_WALK_RIGHT].y = 720;
-  HeroState[HERO_STATE_WALK_RIGHT].w = HERO_SPRITE_W;
-  HeroState[HERO_STATE_WALK_RIGHT].h = HERO_SPRITE_H;
-
-  if (spriteSheet.Get() == nullptr) {
-    printf("Failed to load hero spritesheet!\n");
-    success = false;
-  }
-  return success;
 }
 
 Boomerang::Boomerang(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v) :

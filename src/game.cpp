@@ -25,15 +25,8 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
     }
 
     hero = new Hero(renderer);
-
-    if (!hero->load_textures()) {
-      fatal("Failed to load hero media!\n");
-    } else if (TTF_Init() == -1) {
-      fatal("Font engine failed to initialize.\n");
-    }
-
-
     gamepanel = new GamePanel(hero, renderer, font.Get());
+
     renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
