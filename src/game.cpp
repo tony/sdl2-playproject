@@ -12,9 +12,10 @@ extern const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
   renderer(renderer),
-  bgTexture(renderer, get_full_path("resources/tiles_12.png"))
+  bgTexture(nullptr)
 {
   try {
+    SDL2pp::Texture bgTexture(renderer, get_full_path("resources/tiles_12.png"));
     hero = new Hero(renderer);
     gamepanel = new GamePanel(hero, renderer, font.Get());
 
