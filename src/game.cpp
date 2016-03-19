@@ -1,14 +1,14 @@
 #include <iostream>
 #include "game.h"
 
-extern const double SCREEN_WIDTH = 630;
-extern const double SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 630;
+const int SCREEN_HEIGHT = 480;
 
-extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
-  0, int(SCREEN_HEIGHT * .9), int(SCREEN_WIDTH), int(SCREEN_HEIGHT * .1)};
+const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
+        0, static_cast<int>(SCREEN_HEIGHT * .9), SCREEN_WIDTH, static_cast<int>(SCREEN_HEIGHT * .1)};
 
-extern const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, int(SCREEN_WIDTH),
-  int(SCREEN_HEIGHT * .9)};
+const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
+  static_cast<int>(SCREEN_HEIGHT * .9)};
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
   renderer(renderer),
@@ -32,9 +32,8 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) :
 
 Game::~Game() {
   renderer = nullptr;
-  delete window;
+  window = nullptr;
 
-  TTF_Quit();
   IMG_Quit();
   SDL_Quit();
 }
@@ -158,7 +157,7 @@ int main(void) {
         SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-    SDL2pp::Font font(get_full_path("resources/fonts/TerminusTTF-Bold-4.39.ttf"), 36);
+    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
 
     Game game(renderer, font);
     game.GameLoop();

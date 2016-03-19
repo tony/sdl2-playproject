@@ -1,9 +1,4 @@
 #include "game.h"
-#include <iostream>
-
-extern const double SCREEN_HEIGHT;
-extern const double SCREEN_WIDTH;
-extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
 const int SHOOTING_DELAY = 200;
 const int HERO_SPRITE_W = 30;
@@ -28,28 +23,28 @@ void Hero::loop(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W] ||
       currentKeyStates[SDL_SCANCODE_K]) {
     state = HERO_STATE_WALK_UP;
-    position.y = CLAMP(position.y - MAIN_VIEWPORT_RECT.h * 0.01, 0,
+    position.y = CLAMP(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
         MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
   if (currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_S] ||
       currentKeyStates[SDL_SCANCODE_J]) {
     state = HERO_STATE_WALK_DOWN;
-    position.y = CLAMP(position.y + MAIN_VIEWPORT_RECT.h * 0.01, 0,
+    position.y = CLAMP(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
         MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
   if (currentKeyStates[SDL_SCANCODE_LEFT] || currentKeyStates[SDL_SCANCODE_A] ||
       currentKeyStates[SDL_SCANCODE_H]) {
     state = HERO_STATE_WALK_LEFT;
-    position.x = CLAMP(position.x - SCREEN_WIDTH * 0.01, 0,
+    position.x = CLAMP(position.x - static_cast<int>(SCREEN_WIDTH * 0.01), 0,
         SCREEN_WIDTH - HERO_SPRITE_W);
   }
 
   if (currentKeyStates[SDL_SCANCODE_RIGHT] ||
       currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_L]) {
     state = HERO_STATE_WALK_RIGHT;
-    position.x = CLAMP(position.x + SCREEN_WIDTH * 0.01, 0,
+    position.x = CLAMP(position.x + static_cast<int>(SCREEN_WIDTH * 0.01), 0,
         SCREEN_WIDTH - HERO_SPRITE_W);
   }
 

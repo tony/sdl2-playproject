@@ -20,6 +20,8 @@
 
 extern const int HERO_SPRITE_W;
 extern const int HERO_SPRITE_H;
+extern const int SCREEN_WIDTH;
+extern const int SCREEN_HEIGHT;
 
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
@@ -42,8 +44,6 @@ enum HeroState {
 typedef struct Stats {
   int current_hp = 100;
   int hp = 100;
-  int strength = 8;
-  int intelligence = 8;
 } Stats;
 
 class Hero;
