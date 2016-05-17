@@ -2,9 +2,15 @@
 
 #include <memory>
 #include <vector>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2pp/SDL2pp.hh>
+#include <SDL2pp/Window.hh>
+#include <SDL2pp/Rect.hh>
+#include <SDL2pp/Texture.hh>
+#include <SDL2pp/Optional.hh>
+#include <SDL2pp/Font.hh>
 
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
@@ -14,17 +20,17 @@
 
 extern const int HERO_SPRITE_W;
 extern const int HERO_SPRITE_H;
+extern const int SCREEN_WIDTH;
+extern const int SCREEN_HEIGHT;
 
-extern const SDL_Rect MAIN_VIEWPORT_RECT;
-extern const SDL_Rect BOTTOM_VIEWPORT_RECT;
+extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
+extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
-std::shared_ptr<SDL_Texture> texture_load(const char* path,
-                                          SDL_Renderer* renderer);
 void draw_text(const char* text,
-               const int x,
-               const int y,
-               TTF_Font* font,
-               SDL_Renderer* renderer);
+    const int x,
+    const int y,
+    TTF_Font* font,
+    SDL2pp::Renderer& renderer);
 
 enum HeroState {
   HERO_STATE_DEFAULT,
@@ -36,83 +42,74 @@ enum HeroState {
 };
 
 typedef struct Stats {
-  int current_hp;
-  int hp;
-  int strength;
-  int intelligence;
+  int current_hp = 100;
+  int hp = 100;
 } Stats;
 
+class Hero;
+
 class Boomerang {
- public:
-  SDL_Renderer* renderer;
-  SDL_Rect position;
-  SDL_Point velocity;
+  public:
+    SDL2pp::Renderer& renderer;
+    SDL2pp::Rect position;
+    SDL2pp::Point velocity;
 
-  Boomerang(SDL_Renderer* renderer, SDL_Rect position, SDL_Point velocity);
-  ~Boomerang();
-  void loop();
-  SDL_Rect getPosition() const { return position; };
-  int getPositionX() const { return position.x; };
-  int getPositionY() const { return position.y; };
-  SDL_Point getVelocity() const { return velocity; };
-  int getVelocityX() const { return velocity.x; };
-  int getVelocityY() const { return velocity.y; };
-  bool outOfBounds();
-  void draw();
+    Boomerang(Hero* hero, SDL2pp::Renderer& renderer, SDL2pp::Rect position, SDL2pp::Point velocity);
+    Hero* hero;
+    void loop();
+    SDL2pp::Rect getPosition() const { return position; };
+    int getPositionX() const { return position.x; };
+    int getPositionY() const { return position.y; };
+    SDL2pp::Point getVelocity() const { return velocity; };
+    int getVelocityX() const { return velocity.x; };
+    int getVelocityY() const { return velocity.y; };
+    bool outOfBounds();
 
- private:
-  std::shared_ptr<SDL_Texture> texture;
 };
 
 class Hero {
- public:
-  Hero(SDL_Renderer* renderer);
-  ~Hero();
-  SDL_Rect HeroState[HERO_STATE_TOTAL];
-  std::shared_ptr<SDL_Texture> spriteSheet;  // sprite sheet
-  SDL_Rect position;
-  SDL_Point velocity;
-  Stats stats;
-  enum HeroState state;
-  SDL_Renderer* renderer;
-  std::vector<Boomerang*> boomerangs;
-  Uint32 last_shot;
-  void CreateBoomerang(void);
+  public:
+    Hero(SDL2pp::Renderer& renderer);
+    SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
+    SDL2pp::Texture spriteSheet;
+    SDL2pp::Texture boomerangSprite;
+    SDL2pp::Rect position = {0, 0, 30, 30};
+    SDL2pp::Point velocity;
+    Stats stats;
+    enum HeroState state = HERO_STATE_DEFAULT;
+    SDL2pp::Renderer& renderer;
+    std::vector<Boomerang*> boomerangs;
+    Uint32 last_shot;
+    void CreateBoomerang(void);
 
-  void loop(const Uint8* currentKeyStates);
-  bool load_textures(void);
+    void loop(const Uint8* currentKeyStates);
 };
 
 class GamePanel {
- public:
-  GamePanel(Hero* hero, SDL_Renderer* renderer, TTF_Font* font);
-  void DrawStats();
-  Hero* hero;
-  SDL_Renderer* renderer;
-  TTF_Font* font;
+  public:
+    GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font);
+    void DrawStats();
+    Hero* hero;
+    SDL2pp::Renderer& renderer;
+    TTF_Font* font;
 };
 
 class Game {
- public:
-  Game(void);
-  ~Game();
-  void GameLoop();
-  SDL_Renderer* renderer;
+  public:
+    Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
+    ~Game();
+    void GameLoop();
 
- private:
-  Hero* hero;
-  GamePanel* gamepanel;
-  TTF_Font* font;
-  SDL_Event e;
-  bool quit;
-  int imgFlags;
-  void SystemLoop(const SDL_Event* e, bool* quit);
-  SDL_Window* window;
-  std::shared_ptr<SDL_Texture> bgTexture;
+  private:
+    SDL2pp::Renderer& renderer;
+    Hero* hero;
+    GamePanel* gamepanel;
+    SDL_Event e;
+    bool quit = false;
+    void BubbleGlobalEvent(const SDL_Event* e, bool* quit);
+    SDL2pp::Window* window;
+    SDL2pp::Texture bgTexture;
 };
-
-bool game_load_textures(std::shared_ptr<SDL_Texture>& bgTexture,
-                        SDL_Renderer* renderer);
 
 char* get_full_path(const char* path);
 
