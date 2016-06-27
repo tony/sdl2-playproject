@@ -1,8 +1,7 @@
 all: build
 
 mkdir_build:
-	rm -rf build
-	mkdir -p build
+	[[ -d ./build ]] || mkdir -p build
 
 build: mkdir_build
 	cd build; cmake ..
