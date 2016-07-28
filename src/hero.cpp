@@ -63,10 +63,11 @@ void Hero::loop(const Uint8* currentKeyStates) {
   // boomerang drawing and clean up
   auto it = boomerangs.begin();
   while (it != boomerangs.end()) {
-    if ((**it).outOfBounds())
+    if ((**it).outOfBounds()) {
       it = boomerangs.erase(it);
-    else
+    } else {
       ++it;
+}
   }
   for (auto& boomerang : boomerangs) {
     boomerang->loop();

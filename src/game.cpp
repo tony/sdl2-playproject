@@ -46,7 +46,7 @@ void Game::GameLoop() {
     if (SDL_PollEvent(&e) != 0) {
       BubbleGlobalEvent(&e, &quit);
     }
-    const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+    const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
     hero->loop(currentKeyStates);
     renderer.Copy(hero->spriteSheet, hero->HeroState[hero->state],
                   hero->position);
@@ -85,7 +85,7 @@ void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
           break;
 
         case SDLK_c:
-          if (e->key.keysym.mod & KMOD_CTRL) {
+          if ((e->key.keysym.mod & KMOD_CTRL) != 0) {
             *quit = true;
           }
           break;
@@ -147,7 +147,7 @@ void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
   }
 }
 
-int main(void) {
+int main() {
   try {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     SDL2pp::SDLTTF sdl_ttf;

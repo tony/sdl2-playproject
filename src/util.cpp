@@ -1,5 +1,5 @@
 #include "game.h"
-#include <errno.h>
+#include <cerrno>
 
 /* Log a critical error with error string and die. */
 __dead void fatal(const char* msg, ...) {
@@ -7,8 +7,9 @@ __dead void fatal(const char* msg, ...) {
   va_list ap;
 
   va_start(ap, msg);
-  if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1)
+  if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1) {
     exit(1);
+}
   exit(1);
 }
 
@@ -36,11 +37,11 @@ void draw_text(const char* text,
 
   SDL_Rect message_shadow_rect = {x + 2, y + 2, message_shadow->w,
                                   message_shadow->h};
-  SDL_RenderCopy(renderer.Get(), message_texture_shadow, NULL,
+  SDL_RenderCopy(renderer.Get(), message_texture_shadow, nullptr,
                  &message_shadow_rect);
 
   SDL_Rect message_rect = {x, y, message->w, message->h};
-  SDL_RenderCopy(renderer.Get(), message_texture, NULL, &message_rect);
+  SDL_RenderCopy(renderer.Get(), message_texture, nullptr, &message_rect);
 
   SDL_FreeSurface(message);
   SDL_FreeSurface(message_shadow);
