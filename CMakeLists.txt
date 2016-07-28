@@ -43,8 +43,12 @@ file (GLOB game_SOURCES src/*.cpp)
 # include plugin
 include(cmake/clang-format.cmake)
 include(cmake/clang-tidy.cmake)
+if (CLANG_TIDY)  # CMake >= 3.6 runs clang-tidy on build
+	set(CMAKE_CXX_CLANG_TIDY ${CLANG_TIDY})
+endif()
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
+
 add_executable(game ${game_SOURCES})
 target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
