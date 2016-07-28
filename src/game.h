@@ -87,9 +87,9 @@ class Hero {
 
 class GamePanel {
   public:
-    GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font);
+    GamePanel(const std::shared_ptr<Hero>& hero, SDL2pp::Renderer& renderer, TTF_Font* font);
     void DrawStats();
-    Hero* hero;
+    const std::shared_ptr<Hero>& hero;
     SDL2pp::Renderer& renderer;
     TTF_Font* font;
 };
@@ -102,8 +102,8 @@ class Game {
 
   private:
     SDL2pp::Renderer& renderer;
-    Hero* hero;
-    GamePanel* gamepanel;
+    std::shared_ptr<Hero> hero;
+    std::shared_ptr<GamePanel> gamepanel;
     SDL_Event e;
     bool quit = false;
     void BubbleGlobalEvent(const SDL_Event* e, bool* quit);

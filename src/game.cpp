@@ -12,12 +12,12 @@ const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
   renderer(renderer),
+  hero(std::make_shared<Hero>(renderer)),
+  gamepanel(std::make_shared<GamePanel>(hero, renderer, font.Get())),
   bgTexture(nullptr)
 {
   try {
     bgTexture = SDL2pp::Texture(renderer, "resources/tiles_12.png");
-    hero = new Hero(renderer);
-    gamepanel = new GamePanel(hero, renderer, font.Get());
 
     renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
   } catch (SDL2pp::Exception& e) {
@@ -59,7 +59,7 @@ void Game::GameLoop() {
   }
 }
 
-GamePanel::GamePanel(Hero* hero, SDL2pp::Renderer& renderer, TTF_Font* font)
+GamePanel::GamePanel(const std::shared_ptr<Hero>& hero, SDL2pp::Renderer& renderer, TTF_Font* font)
   : hero(hero), renderer(renderer), font(font) {}
 
   void GamePanel::DrawStats() {
