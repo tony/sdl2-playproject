@@ -1,21 +1,21 @@
-#include <iostream>
 #include "game.h"
+#include <iostream>
 
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
 
 const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
-        0, static_cast<int>(SCREEN_HEIGHT * .9), SCREEN_WIDTH, static_cast<int>(SCREEN_HEIGHT * .1)};
+    0, static_cast<int>(SCREEN_HEIGHT * .9), SCREEN_WIDTH,
+    static_cast<int>(SCREEN_HEIGHT * .1)};
 
 const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
-  static_cast<int>(SCREEN_HEIGHT * .9)};
+                                         static_cast<int>(SCREEN_HEIGHT * .9)};
 
-Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font) : 
-  renderer(renderer),
-  hero(std::make_shared<Hero>(renderer)),
-  gamepanel(std::make_shared<GamePanel>(hero, renderer, font.Get())),
-  bgTexture(nullptr)
-{
+Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font)
+    : renderer(renderer),
+      hero(std::make_shared<Hero>(renderer)),
+      gamepanel(std::make_shared<GamePanel>(hero, renderer, font.Get())),
+      bgTexture(nullptr) {
   try {
     bgTexture = SDL2pp::Texture(renderer, "resources/tiles_12.png");
 
@@ -48,9 +48,8 @@ void Game::GameLoop() {
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
     hero->loop(currentKeyStates);
-    renderer.Copy(
-        hero->spriteSheet, hero->HeroState[hero->state],
-        hero->position);
+    renderer.Copy(hero->spriteSheet, hero->HeroState[hero->state],
+                  hero->position);
 
     gamepanel->DrawStats();
 
@@ -59,18 +58,20 @@ void Game::GameLoop() {
   }
 }
 
-GamePanel::GamePanel(const std::shared_ptr<Hero>& hero, SDL2pp::Renderer& renderer, TTF_Font* font)
-  : hero(hero), renderer(renderer), font(font) {}
+GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,
+                     SDL2pp::Renderer& renderer,
+                     TTF_Font* font)
+    : hero(hero), renderer(renderer), font(font) {}
 
-  void GamePanel::DrawStats() {
-    char herotext[32];
-    renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
+void GamePanel::DrawStats() {
+  char herotext[32];
+  renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
-    snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
-        hero->stats.hp);
-    draw_text(herotext, 0, 0, font, renderer);
-    renderer.SetViewport(MAIN_VIEWPORT_RECT);
-  }
+  snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
+           hero->stats.hp);
+  draw_text(herotext, 0, 0, font, renderer);
+  renderer.SetViewport(MAIN_VIEWPORT_RECT);
+}
 
 void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
   switch (e->type) {
@@ -103,15 +104,15 @@ void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
           break;
         case SDL_WINDOWEVENT_MOVED:
           SDL_Log("Window %d moved to %d,%d", e->window.windowID,
-              e->window.data1, e->window.data2);
+                  e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_RESIZED:
           SDL_Log("Window %d resized to %dx%d", e->window.windowID,
-              e->window.data1, e->window.data2);
+                  e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_SIZE_CHANGED:
           SDL_Log("Window %d size changed to %dx%d", e->window.windowID,
-              e->window.data1, e->window.data2);
+                  e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_MINIMIZED:
           SDL_Log("Window %d minimized", e->window.windowID);
@@ -139,7 +140,7 @@ void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
           break;
         default:
           SDL_Log("Window %d got unknown event %d", e->window.windowID,
-              e->window.event);
+                  e->window.event);
           break;
       }
       break;
@@ -150,11 +151,11 @@ int main(void) {
   try {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     SDL2pp::SDLTTF sdl_ttf;
-    SDL2pp::SDLImage image(IMG_INIT_PNG); // optional
+    SDL2pp::SDLImage image(IMG_INIT_PNG);  // optional
 
     SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
-        SDL_WINDOW_RESIZABLE);
+                          SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+                          SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
     SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
