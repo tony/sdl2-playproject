@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.6)
 project(game)
 
+# for clang-tidy
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Use our modified FindSDL2* modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${game_SOURCE_DIR}/cmake")
 set(BIN_DIR ${game_SOURCE_DIR}/bin)
-
-# include plugin
-include(cmake/clang-format.cmake)
 
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
@@ -39,6 +39,10 @@ file (COPY ${MY_PROJECT_FONT_RESOURCES} DESTINATION resources/fonts)
 
 include_directories("./src")
 file (GLOB game_SOURCES src/*.cpp)
+
+# include plugin
+include(cmake/clang-format.cmake)
+include(cmake/clang-tidy.cmake)
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 add_executable(game ${game_SOURCES})
