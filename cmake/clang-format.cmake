@@ -8,7 +8,7 @@ find_program(CLANG_FORMAT NAMES clang-format
 )
 
 if (CLANG_FORMAT)
-	message("ClangFormat found: ${CLANG_FORMAT}")
+	message("Found clang-format: ${CLANG_FORMAT}")
 	add_custom_target(
 		format
 		COMMAND ${CLANG_FORMAT}

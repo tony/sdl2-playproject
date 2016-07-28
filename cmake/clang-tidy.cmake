@@ -8,7 +8,7 @@ find_program(CLANG_TIDY NAMES clang-tidy
 )
 
 if (CLANG_TIDY)
-	message("clang-tidy found: ${CLANG_TIDY}")
+	message("Found clang-tidy: ${CLANG_TIDY}")
 	add_custom_target(
 		tidy
 		COMMAND ${CLANG_TIDY}
