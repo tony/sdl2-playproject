@@ -5,13 +5,10 @@ const int HERO_SPRITE_W = 30;
 const int HERO_SPRITE_H = 30;
 
 Hero::Hero(SDL2pp::Renderer& renderer) :
-  spriteSheet(nullptr),
-  boomerangSprite(nullptr),
+  spriteSheet(SDL2pp::Texture(renderer, "resources/elliot/spritesheet.png")),
+  boomerangSprite(SDL2pp::Texture(renderer, "resources/boomerang.png")),
   renderer(renderer)
 {
-  spriteSheet = SDL2pp::Texture(renderer, "resources/elliot/spritesheet.png");
-  boomerangSprite = SDL2pp::Texture(renderer, "resources/boomerang.png");
-
   HeroState[HERO_STATE_DEFAULT] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
   HeroState[HERO_STATE_WALK_UP] = SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
   HeroState[HERO_STATE_WALK_DOWN] = SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
