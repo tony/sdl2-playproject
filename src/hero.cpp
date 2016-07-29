@@ -22,37 +22,37 @@ Hero::Hero(SDL2pp::Renderer& renderer)
 }
 
 void Hero::loop(const Uint8* currentKeyStates) {
-  if (currentKeyStates[SDL_SCANCODE_UP] || currentKeyStates[SDL_SCANCODE_W] ||
-      currentKeyStates[SDL_SCANCODE_K]) {
+  if (currentKeyStates[SDL_SCANCODE_UP] != 0 || currentKeyStates[SDL_SCANCODE_W] != 0 ||
+      currentKeyStates[SDL_SCANCODE_K] != 0) {
     state = HERO_STATE_WALK_UP;
     position.y =
         CLAMP(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_DOWN] || currentKeyStates[SDL_SCANCODE_S] ||
-      currentKeyStates[SDL_SCANCODE_J]) {
+  if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 || currentKeyStates[SDL_SCANCODE_S] != 0 ||
+      currentKeyStates[SDL_SCANCODE_J] != 0) {
     state = HERO_STATE_WALK_DOWN;
     position.y =
         CLAMP(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - HERO_SPRITE_H);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_LEFT] || currentKeyStates[SDL_SCANCODE_A] ||
-      currentKeyStates[SDL_SCANCODE_H]) {
+  if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 || currentKeyStates[SDL_SCANCODE_A] != 0 ||
+      currentKeyStates[SDL_SCANCODE_H] != 0) {
     state = HERO_STATE_WALK_LEFT;
     position.x = CLAMP(position.x - static_cast<int>(SCREEN_WIDTH * 0.01), 0,
                        SCREEN_WIDTH - HERO_SPRITE_W);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_RIGHT] ||
-      currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_L]) {
+  if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
+      currentKeyStates[SDL_SCANCODE_D] != 0 || currentKeyStates[SDL_SCANCODE_L] != 0) {
     state = HERO_STATE_WALK_RIGHT;
     position.x = CLAMP(position.x + static_cast<int>(SCREEN_WIDTH * 0.01), 0,
                        SCREEN_WIDTH - HERO_SPRITE_W);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_SPACE]) {
+  if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
       CreateBoomerang();
