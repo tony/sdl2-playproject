@@ -49,7 +49,7 @@ void Game::update() {
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
     hero->handleEvents(currentKeyStates);
-    renderer.Copy(hero->spriteSheet, hero->HeroState[hero->state],
+    renderer.Copy(hero->spriteSheet, hero->spritesheet_subdimensions[hero->state],
                   hero->position);
 
     gamepanel->drawStats();

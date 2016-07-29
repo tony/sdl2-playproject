@@ -59,6 +59,7 @@ class Boomerang {
             SDL2pp::Rect position,
             SDL2pp::Point velocity);
   Hero* hero;
+  bool inBounds();
   void handleEvents();
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
@@ -66,14 +67,13 @@ class Boomerang {
   SDL2pp::Point getVelocity() const { return velocity; };
   int getVelocityX() const { return velocity.x; };
   int getVelocityY() const { return velocity.y; };
-  bool outOfBounds();
   SDL2pp::Texture sprite;
 };
 
 class Hero {
  public:
   Hero(SDL2pp::Renderer& renderer);
-  SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
+  SDL2pp::Rect spritesheet_subdimensions[HERO_STATE_TOTAL];
   SDL2pp::Texture spriteSheet;
   SDL2pp::Rect position = {0, 0, 30, 30};
   SDL2pp::Point velocity;
@@ -115,7 +115,7 @@ class Game {
   SDL2pp::Texture bgTexture;
 };
 
-char* get_full_path(const char* path);
+std::string get_full_path(const char* path);
 
 #ifndef __dead
 #define __dead __attribute__((__noreturn__))

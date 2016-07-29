@@ -8,15 +8,15 @@ Hero::Hero(SDL2pp::Renderer& renderer)
     : spriteSheet(
           SDL2pp::Texture(renderer, "resources/elliot/spritesheet.png")),
       renderer(renderer) {
-  HeroState[HERO_STATE_DEFAULT] =
+  spritesheet_subdimensions[HERO_STATE_DEFAULT] =
       SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
-  HeroState[HERO_STATE_WALK_UP] =
+  spritesheet_subdimensions[HERO_STATE_WALK_UP] =
       SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
-  HeroState[HERO_STATE_WALK_DOWN] =
+  spritesheet_subdimensions[HERO_STATE_WALK_DOWN] =
       SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
-  HeroState[HERO_STATE_WALK_LEFT] =
+  spritesheet_subdimensions[HERO_STATE_WALK_LEFT] =
       SDL2pp::Rect(0, 505, HERO_SPRITE_W, HERO_SPRITE_H);
-  HeroState[HERO_STATE_WALK_RIGHT] =
+  spritesheet_subdimensions[HERO_STATE_WALK_RIGHT] =
       SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 
@@ -66,7 +66,7 @@ void Hero::handleEvents(const Uint8* currentKeyStates) {
   // boomerang drawing and clean up
   auto it = boomerangs.begin();
   while (it != boomerangs.end()) {
-    if ((**it).outOfBounds()) {
+    if (!(**it).inBounds()) {
       it = boomerangs.erase(it);
     } else {
       ++it;
@@ -117,17 +117,14 @@ Boomerang::Boomerang(Hero* hero,
       hero(hero),
       sprite(SDL2pp::Texture(renderer, "resources/boomerang.png")) {}
 
-bool Boomerang::outOfBounds() {
-  return (position.x > MAIN_VIEWPORT_RECT.w ||
-          position.w > MAIN_VIEWPORT_RECT.w || position.x < 0 ||
-          position.y > MAIN_VIEWPORT_RECT.h ||
-          position.h > MAIN_VIEWPORT_RECT.h || position.y < 0);
+bool Boomerang::inBounds() {
+  return MAIN_VIEWPORT_RECT.Contains(position);
 }
 
 void Boomerang::handleEvents() {
   position.x += velocity.x;
   position.y += velocity.y;
-  if (!outOfBounds()) {
+  if (inBounds()) {
     renderer.Copy(sprite, SDL2pp::NullOpt, position);
   }
 }

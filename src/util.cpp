@@ -53,7 +53,8 @@ void draw_text(const char* text,
   message_texture_shadow = nullptr;
 }
 
-char* get_full_path(const char* path) {
-  auto full_path = SDL_GetBasePath();
-  return strcat(full_path, path);
+std::string get_full_path(const char* path) {
+  auto base_path = SDL_GetBasePath();
+  std::string full_path = std::string(base_path) + std::string(path);
+  return full_path;
 }
