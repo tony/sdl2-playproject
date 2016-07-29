@@ -21,7 +21,7 @@ Hero::Hero(SDL2pp::Renderer& renderer)
       SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 
-void Hero::loop(const Uint8* currentKeyStates) {
+void Hero::handleEvents(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 || currentKeyStates[SDL_SCANCODE_W] != 0 ||
       currentKeyStates[SDL_SCANCODE_K] != 0) {
     state = HERO_STATE_WALK_UP;
@@ -55,7 +55,7 @@ void Hero::loop(const Uint8* currentKeyStates) {
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      CreateBoomerang();
+      createBoomerang();
       last_shot = now;
     }
   }
@@ -70,11 +70,11 @@ void Hero::loop(const Uint8* currentKeyStates) {
 }
   }
   for (auto& boomerang : boomerangs) {
-    boomerang->loop();
+    boomerang->handleEvents();
   }
 }
 
-void Hero::CreateBoomerang() {
+void Hero::createBoomerang() {
   if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
     SDL2pp::Point velocity;
 
@@ -117,7 +117,7 @@ bool Boomerang::outOfBounds() {
           position.h > MAIN_VIEWPORT_RECT.h || position.y < 0);
 }
 
-void Boomerang::loop() {
+void Boomerang::handleEvents() {
   position.x += velocity.x;
   position.y += velocity.y;
   if (!outOfBounds()) {

@@ -59,7 +59,7 @@ class Boomerang {
             SDL2pp::Rect position,
             SDL2pp::Point velocity);
   Hero* hero;
-  void loop();
+  void handleEvents();
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
   int getPositionY() const { return position.y; };
@@ -82,9 +82,9 @@ class Hero {
   SDL2pp::Renderer& renderer;
   std::vector<Boomerang*> boomerangs;
   Uint32 last_shot;
-  void CreateBoomerang(void);
+  void createBoomerang(void);
 
-  void loop(const Uint8* currentKeyStates);
+  void handleEvents(const Uint8* currentKeyStates);
 };
 
 class GamePanel {
@@ -92,7 +92,7 @@ class GamePanel {
   GamePanel(const std::shared_ptr<Hero>& hero,
             SDL2pp::Renderer& renderer,
             TTF_Font* font);
-  void DrawStats();
+  void drawStats();
   const std::shared_ptr<Hero>& hero;
   SDL2pp::Renderer& renderer;
   TTF_Font* font;
@@ -102,7 +102,7 @@ class Game {
  public:
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
   ~Game();
-  void GameLoop();
+  void GamehandleEvents();
 
  private:
   SDL2pp::Renderer& renderer;
@@ -110,7 +110,7 @@ class Game {
   std::shared_ptr<GamePanel> gamepanel;
   SDL_Event e;
   bool quit = false;
-  void BubbleGlobalEvent(const SDL_Event* e, bool* quit);
+  void handleEvent(const SDL_Event* e, bool* quit);
   std::unique_ptr<SDL2pp::Window> window;
   SDL2pp::Texture bgTexture;
 };

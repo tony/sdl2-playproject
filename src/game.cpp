@@ -39,20 +39,20 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::GameLoop() {
+void Game::GamehandleEvents() {
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(MAIN_VIEWPORT_RECT);
     renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
     if (SDL_PollEvent(&e) != 0) {
-      BubbleGlobalEvent(&e, &quit);
+      handleEvent(&e, &quit);
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-    hero->loop(currentKeyStates);
+    hero->handleEvents(currentKeyStates);
     renderer.Copy(hero->spriteSheet, hero->HeroState[hero->state],
                   hero->position);
 
-    gamepanel->DrawStats();
+    gamepanel->drawStats();
 
     renderer.Present();
     SDL_Delay(16);
@@ -64,7 +64,7 @@ GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,
                      TTF_Font* font)
     : hero(hero), renderer(renderer), font(font) {}
 
-void GamePanel::DrawStats() {
+void GamePanel::drawStats() {
   std::stringstream herotext;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
@@ -73,7 +73,7 @@ void GamePanel::DrawStats() {
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 
-void Game::BubbleGlobalEvent(const SDL_Event* e, bool* quit) {
+void Game::handleEvent(const SDL_Event* e, bool* quit) {
   switch (e->type) {
     case SDL_QUIT:
       *quit = true;
@@ -161,7 +161,7 @@ int main() {
     SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
 
     Game game(renderer, font);
-    game.GameLoop();
+    game.GamehandleEvents();
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
     std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
