@@ -1,5 +1,6 @@
 #include "game.h"
 #include <iostream>
+#include <sstream>
 
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
@@ -64,12 +65,11 @@ GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,
     : hero(hero), renderer(renderer), font(font) {}
 
 void GamePanel::DrawStats() {
-  char herotext[32];
+  std::stringstream herotext;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
-  snprintf(herotext, sizeof(herotext), "health %d / %d", hero->stats.current_hp,
-           hero->stats.hp);
-  draw_text(herotext, 0, 0, font, renderer);
+  herotext << "health " << hero->stats.current_hp << " / " << hero->stats.hp;
+  draw_text(herotext.str().c_str(), 0, 0, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 
