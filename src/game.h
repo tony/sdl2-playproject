@@ -67,6 +67,7 @@ class Boomerang {
   int getVelocityX() const { return velocity.x; };
   int getVelocityY() const { return velocity.y; };
   bool outOfBounds();
+  SDL2pp::Texture sprite;
 };
 
 class Hero {
@@ -74,7 +75,6 @@ class Hero {
   Hero(SDL2pp::Renderer& renderer);
   SDL2pp::Rect HeroState[HERO_STATE_TOTAL];
   SDL2pp::Texture spriteSheet;
-  SDL2pp::Texture boomerangSprite;
   SDL2pp::Rect position = {0, 0, 30, 30};
   SDL2pp::Point velocity;
   Stats stats;

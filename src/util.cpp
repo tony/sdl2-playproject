@@ -9,7 +9,7 @@ __dead void fatal(const char* msg, ...) {
   va_start(ap, msg);
   if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1) {
     exit(1);
-}
+  }
   exit(1);
 }
 
