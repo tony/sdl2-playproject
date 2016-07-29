@@ -74,7 +74,7 @@ void Hero::loop(const Uint8* currentKeyStates) {
   }
 }
 
-void Hero::CreateBoomerang(void) {
+void Hero::CreateBoomerang() {
   if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
     SDL2pp::Point velocity;
 
@@ -108,7 +108,7 @@ Boomerang::Boomerang(Hero* hero,
                      SDL2pp::Renderer& renderer,
                      SDL2pp::Rect p,
                      SDL2pp::Point v)
-    : renderer(renderer), position(p), velocity(v), hero(hero) {}
+    : renderer(renderer), position(std::move(p)), velocity(std::move(v)), hero(hero) {}
 
 bool Boomerang::outOfBounds() {
   return (position.x > MAIN_VIEWPORT_RECT.w ||
