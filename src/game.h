@@ -102,7 +102,7 @@ class Game {
  public:
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
   ~Game();
-  void GamehandleEvents();
+  void update();
 
  private:
   SDL2pp::Renderer& renderer;

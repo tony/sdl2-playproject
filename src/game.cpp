@@ -39,7 +39,7 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::GamehandleEvents() {
+void Game::update() {
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(MAIN_VIEWPORT_RECT);
@@ -161,7 +161,7 @@ int main() {
     SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
 
     Game game(renderer, font);
-    game.GamehandleEvents();
+    game.update();
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
     std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
