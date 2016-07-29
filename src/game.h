@@ -111,7 +111,7 @@ class Game {
   SDL_Event e;
   bool quit = false;
   void BubbleGlobalEvent(const SDL_Event* e, bool* quit);
-  SDL2pp::Window* window;
+  std::unique_ptr<SDL2pp::Window> window;
   SDL2pp::Texture bgTexture;
 };
 
