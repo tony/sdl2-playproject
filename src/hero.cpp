@@ -103,18 +103,14 @@ void Hero::createBoomerang() {
         velocity.y = 0;
         break;
     }
-    boomerangs.push_back(new Boomerang(this, renderer, position, velocity));
+    boomerangs.push_back(new Boomerang(renderer, position, velocity));
   }
 }
 
-Boomerang::Boomerang(Hero* hero,
-                     SDL2pp::Renderer& renderer,
+Boomerang::Boomerang(SDL2pp::Renderer& renderer,
                      SDL2pp::Rect p,
                      SDL2pp::Point v)
-    : renderer(renderer),
-      position(std::move(p)),
-      velocity(std::move(v)),
-      hero(hero),
+    : Actor{renderer, std::move(p), std::move(v)},
       sprite(SDL2pp::Texture(renderer, "resources/boomerang.png")) {}
 
 bool Boomerang::inBounds() {

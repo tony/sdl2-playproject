@@ -46,27 +46,36 @@ typedef struct Stats {
   int hp = 100;
 } Stats;
 
-class Hero;
-
-class Boomerang {
+class Actor {
  public:
+  Actor(SDL2pp::Renderer& renderer,
+        SDL2pp::Rect position,
+        SDL2pp::Point velocity)
+      : renderer(renderer), position(position), velocity(velocity){};
+  Actor(const Actor&) = delete;
+  Actor& operator=(const Actor&) = delete;
+
   SDL2pp::Renderer& renderer;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
-
-  Boomerang(Hero* hero,
-            SDL2pp::Renderer& renderer,
-            SDL2pp::Rect position,
-            SDL2pp::Point velocity);
-  Hero* hero;
-  bool inBounds();
-  void handleEvents();
+  virtual void handleEvents() = 0;
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
   int getPositionY() const { return position.y; };
   SDL2pp::Point getVelocity() const { return velocity; };
   int getVelocityX() const { return velocity.x; };
   int getVelocityY() const { return velocity.y; };
+};
+
+class Hero;
+
+class Boomerang : public Actor {
+ public:
+  Boomerang(SDL2pp::Renderer& renderer,
+            SDL2pp::Rect position,
+            SDL2pp::Point velocity);
+  void handleEvents() override final;
+  bool inBounds();
   SDL2pp::Texture sprite;
 };
 
