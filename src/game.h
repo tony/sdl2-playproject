@@ -58,13 +58,14 @@ class Actor {
   SDL2pp::Renderer& renderer;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
-  virtual void handleEvents() = 0;
+
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
   int getPositionY() const { return position.y; };
   SDL2pp::Point getVelocity() const { return velocity; };
   int getVelocityX() const { return velocity.x; };
   int getVelocityY() const { return velocity.y; };
+  virtual void handleEvents(const Uint8* currentKeyStates) = 0;
 };
 
 class Hero;
@@ -74,26 +75,25 @@ class Boomerang : public Actor {
   Boomerang(SDL2pp::Renderer& renderer,
             SDL2pp::Rect position,
             SDL2pp::Point velocity);
-  void handleEvents() override final;
+  void handleEvents(const Uint8* currentKeyStates) override final;
   bool inBounds();
   SDL2pp::Texture sprite;
 };
 
-class Hero {
+class Hero : public Actor {
  public:
-  Hero(SDL2pp::Renderer& renderer);
+  Hero(SDL2pp::Renderer& renderer,
+           SDL2pp::Rect position = {0, 0, 30, 30},
+           SDL2pp::Point velocity = {0, 0});
   SDL2pp::Rect spritesheet_subdimensions[HeroState::HERO_STATE_TOTAL];
-  SDL2pp::Texture spriteSheet;
-  SDL2pp::Rect position = {0, 0, 30, 30};
-  SDL2pp::Point velocity;
   Stats stats;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
-  SDL2pp::Renderer& renderer;
   std::vector<Boomerang*> boomerangs;
   Uint32 last_shot;
+  SDL2pp::Texture sprite;
   void createBoomerang(void);
 
-  void handleEvents(const Uint8* currentKeyStates);
+  void handleEvents(const Uint8* currentKeyStates) override final;
 };
 
 class GamePanel {
