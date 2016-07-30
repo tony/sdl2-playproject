@@ -6,9 +6,8 @@ const int HERO_SPRITE_H = 30;
 
 Hero::Hero(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
-           SDL2pp::Point velocity)
-    : Actor(renderer, position, velocity),
-      sprite(SDL2pp::Texture(renderer, "resources/elliot/spritesheet.png")) {
+           SDL2pp::Point velocity) :
+    Actor(renderer, position, velocity, "resources/elliot/spritesheet.png") {
   spritesheet_subdimensions[HERO_STATE_DEFAULT] =
       SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
   spritesheet_subdimensions[HERO_STATE_WALK_UP] =
@@ -111,8 +110,7 @@ void Hero::createBoomerang() {
 Boomerang::Boomerang(SDL2pp::Renderer& renderer,
                      SDL2pp::Rect p,
                      SDL2pp::Point v)
-    : Actor{renderer, std::move(p), std::move(v)},
-      sprite(SDL2pp::Texture(renderer, "resources/boomerang.png")) {}
+    : Actor{renderer, std::move(p), std::move(v), "resources/boomerang.png"} {};
 
 bool Boomerang::inBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);

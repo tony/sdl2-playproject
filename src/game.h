@@ -50,14 +50,16 @@ class Actor {
  public:
   Actor(SDL2pp::Renderer& renderer,
         SDL2pp::Rect position,
-        SDL2pp::Point velocity)
-      : renderer(renderer), position(position), velocity(velocity){};
+        SDL2pp::Point velocity,
+        std::string spritePath)
+      : renderer(renderer), position(position), velocity(velocity), sprite(SDL2pp::Texture(renderer, spritePath.c_str())) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
 
   SDL2pp::Renderer& renderer;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
+  SDL2pp::Texture sprite;
 
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
@@ -77,7 +79,6 @@ class Boomerang : public Actor {
             SDL2pp::Point velocity);
   void handleEvents(const Uint8* currentKeyStates) override final;
   bool inBounds();
-  SDL2pp::Texture sprite;
 };
 
 class Hero : public Actor {
@@ -90,7 +91,6 @@ class Hero : public Actor {
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   std::vector<Boomerang*> boomerangs;
   Uint32 last_shot;
-  SDL2pp::Texture sprite;
   void createBoomerang(void);
 
   void handleEvents(const Uint8* currentKeyStates) override final;
