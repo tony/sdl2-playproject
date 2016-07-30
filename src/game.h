@@ -73,12 +73,12 @@ class Boomerang {
 class Hero {
  public:
   Hero(SDL2pp::Renderer& renderer);
-  SDL2pp::Rect spritesheet_subdimensions[HERO_STATE_TOTAL];
+  SDL2pp::Rect spritesheet_subdimensions[HeroState::HERO_STATE_TOTAL];
   SDL2pp::Texture spriteSheet;
   SDL2pp::Rect position = {0, 0, 30, 30};
   SDL2pp::Point velocity;
   Stats stats;
-  enum HeroState state = HERO_STATE_DEFAULT;
+  enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   SDL2pp::Renderer& renderer;
   std::vector<Boomerang*> boomerangs;
   Uint32 last_shot;
