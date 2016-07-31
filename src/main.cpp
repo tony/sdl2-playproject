@@ -49,8 +49,7 @@ void Game::update() {
     }
     const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
     hero->handleEvents(currentKeyStates);
-    renderer.Copy(hero->sprite, hero->spritesheet_subdimensions[hero->state],
-                  hero->position);
+    renderer.Copy(hero->sprite, hero->subsprite[hero->state], hero->position);
 
     gamepanel->drawStats();
 
@@ -69,7 +68,7 @@ void GamePanel::drawStats() {
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
   herotext << "health " << hero->stats.current_hp << " / " << hero->stats.hp;
-  draw_text(herotext.str().c_str(), 0, 0, font, renderer);
+  draw_text(herotext.str(), 0, 0, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 

@@ -32,6 +32,12 @@ void draw_text(const char* text,
                TTF_Font* font,
                SDL2pp::Renderer& renderer);
 
+void draw_text(const std::string text,
+               const int x,
+               const int y,
+               TTF_Font* font,
+               SDL2pp::Renderer& renderer);
+
 enum HeroState {
   HERO_STATE_DEFAULT,
   HERO_STATE_WALK_UP,
@@ -89,7 +95,7 @@ class Hero : public Actor {
   Hero(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
-  SDL2pp::Rect spritesheet_subdimensions[HeroState::HERO_STATE_TOTAL];
+  SDL2pp::Rect subsprite[HeroState::HERO_STATE_TOTAL];
   Stats stats;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   std::vector<Boomerang*> boomerangs;

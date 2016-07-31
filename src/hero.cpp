@@ -8,15 +8,15 @@ Hero::Hero(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
     : Actor(renderer, position, velocity, "resources/elliot/spritesheet.png") {
-  spritesheet_subdimensions[HERO_STATE_DEFAULT] =
+  subsprite[HERO_STATE_DEFAULT] =
       SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
-  spritesheet_subdimensions[HERO_STATE_WALK_UP] =
+  subsprite[HERO_STATE_WALK_UP] =
       SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
-  spritesheet_subdimensions[HERO_STATE_WALK_DOWN] =
+  subsprite[HERO_STATE_WALK_DOWN] =
       SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
-  spritesheet_subdimensions[HERO_STATE_WALK_LEFT] =
+  subsprite[HERO_STATE_WALK_LEFT] =
       SDL2pp::Rect(0, 505, HERO_SPRITE_W, HERO_SPRITE_H);
-  spritesheet_subdimensions[HERO_STATE_WALK_RIGHT] =
+  subsprite[HERO_STATE_WALK_RIGHT] =
       SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 

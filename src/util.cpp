@@ -58,3 +58,11 @@ std::string get_full_path(const char* path) {
   std::string full_path = std::string(base_path) + std::string(path);
   return full_path;
 }
+
+void draw_text(const std::string text,
+               const int x,
+               const int y,
+               TTF_Font* font,
+               SDL2pp::Renderer& renderer) {
+  return draw_text(text.c_str(), x, y, font, renderer);
+}
