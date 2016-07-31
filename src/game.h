@@ -9,6 +9,7 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Window.hh>
+#include <array>
 #include <memory>
 #include <vector>
 
@@ -95,7 +96,7 @@ class Hero : public Actor {
   Hero(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
-  SDL2pp::Rect subsprite[HeroState::HERO_STATE_TOTAL];
+  std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
   Stats stats;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   std::vector<Boomerang*> boomerangs;
