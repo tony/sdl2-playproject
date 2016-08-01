@@ -14,10 +14,10 @@ const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
 const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
                                          static_cast<int>(SCREEN_HEIGHT * .9)};
 
-Game::Game(SDL2pp::Renderer& renderer, const SDL2pp::Font& font)
+Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font)
     : renderer(renderer),
       hero(std::make_shared<Hero>(renderer)),
-      gamepanel(std::make_shared<GamePanel>(hero, renderer, font.Get())),
+      gamepanel(std::make_shared<GamePanel>(hero, renderer, font)),
       bgTexture(nullptr),
       m_input(Input()) {
   try {
@@ -66,7 +66,7 @@ Input::Input() {
 
 GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,
                      SDL2pp::Renderer& renderer,
-                     TTF_Font* font)
+                     SDL2pp::Font& font)
     : hero(hero), renderer(renderer), font(font) {}
 
 void GamePanel::drawStats() {
@@ -153,11 +153,10 @@ void Game::handleEvent(const SDL_Event* e, bool* quit) {
 }
 
 int main() {
-
   namespace spd = spdlog;
   // console logger (multithreaded and with color)
   auto console = spd::stdout_logger_mt("console", true);
-  console->info("Welcome to spdlog!") ;
+  console->info("Welcome to spdlog!");
 
   try {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);

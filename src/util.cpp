@@ -4,7 +4,7 @@
 void draw_text(const char* text,
                const int x,
                const int y,
-               TTF_Font* font,
+               SDL2pp::Font& font,
                SDL2pp::Renderer& renderer) {
   SDL_Color textForegroundColor;
   textForegroundColor.r = 255, textForegroundColor.g = 255,
@@ -12,33 +12,18 @@ void draw_text(const char* text,
   SDL_Color textShadowColor;
   textShadowColor.r = 0, textShadowColor.g = 0, textShadowColor.b = 0,
   textShadowColor.a = 255;
-  SDL_Surface* message = nullptr;
-  SDL_Surface* message_shadow = nullptr;
-  SDL_Texture* message_texture = nullptr;
-  SDL_Texture* message_texture_shadow = nullptr;
 
-  message = TTF_RenderText_Solid(font, text, textForegroundColor);
-  message_shadow = TTF_RenderText_Solid(font, text, textShadowColor);
-  message_texture = SDL_CreateTextureFromSurface(renderer.Get(), message);
-  message_texture_shadow =
-      SDL_CreateTextureFromSurface(renderer.Get(), message_shadow);
+  auto message = font.RenderText_Solid(text, textForegroundColor);
+  auto message_shadow = font.RenderText_Solid(text, textShadowColor);
+  auto message_texture = SDL2pp::Texture(renderer, message);
+  auto message_texture_shadow = SDL2pp::Texture(renderer, message_shadow);
 
-  SDL_Rect message_shadow_rect = {x + 2, y + 2, message_shadow->w,
-                                  message_shadow->h};
-  SDL_RenderCopy(renderer.Get(), message_texture_shadow, nullptr,
-                 &message_shadow_rect);
+  SDL2pp::Rect message_shadow_rect = {x + 2, y + 2, message_shadow.GetWidth(),
+                                      message_shadow.GetHeight()};
+  renderer.Copy(message_texture_shadow, SDL2pp::NullOpt, message_shadow_rect);
 
-  SDL_Rect message_rect = {x, y, message->w, message->h};
-  SDL_RenderCopy(renderer.Get(), message_texture, nullptr, &message_rect);
-
-  SDL_FreeSurface(message);
-  SDL_FreeSurface(message_shadow);
-  SDL_DestroyTexture(message_texture);
-  SDL_DestroyTexture(message_texture_shadow);
-  message = nullptr;
-  message_shadow = nullptr;
-  message_texture = nullptr;
-  message_texture_shadow = nullptr;
+  SDL2pp::Rect message_rect = {x, y, message.GetWidth(), message.GetHeight()};
+  renderer.Copy(message_texture, SDL2pp::NullOpt, message_rect);
 }
 
 std::string get_full_path(const char* path) {
@@ -50,7 +35,7 @@ std::string get_full_path(const char* path) {
 void draw_text(const std::string text,
                const int x,
                const int y,
-               TTF_Font* font,
+               SDL2pp::Font& font,
                SDL2pp::Renderer& renderer) {
   return draw_text(text.c_str(), x, y, font, renderer);
 }

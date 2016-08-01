@@ -30,13 +30,13 @@ extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 void draw_text(const char* text,
                const int x,
                const int y,
-               TTF_Font* font,
+               SDL2pp::Font& font,
                SDL2pp::Renderer& renderer);
 
 void draw_text(const std::string text,
                const int x,
                const int y,
-               TTF_Font* font,
+               SDL2pp::Font& font,
                SDL2pp::Renderer& renderer);
 
 enum HeroState {
@@ -115,13 +115,13 @@ class GamePanel {
  public:
   GamePanel(const std::shared_ptr<Hero>& hero,
             SDL2pp::Renderer& renderer,
-            TTF_Font* font);
+            SDL2pp::Font& font);
   void drawStats();
   const std::shared_ptr<Hero>& hero;
 
  private:
   SDL2pp::Renderer& renderer;
-  TTF_Font* font;
+  SDL2pp::Font& font;
 };
 
 class Input {
@@ -132,7 +132,7 @@ class Input {
 
 class Game {
  public:
-  Game(SDL2pp::Renderer& renderer, const SDL2pp::Font& font);
+  Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
   ~Game();
   void update();
 
