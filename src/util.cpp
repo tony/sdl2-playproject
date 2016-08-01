@@ -1,18 +1,6 @@
 #include "game.h"
 #include <cerrno>
 
-/* Log a critical error with error string and die. */
-__dead void fatal(const char* msg, ...) {
-  char* fmt;
-  va_list ap;
-
-  va_start(ap, msg);
-  if (asprintf(&fmt, "fatal: %s: %s", msg, strerror(errno)) == -1) {
-    exit(1);
-  }
-  exit(1);
-}
-
 void draw_text(const char* text,
                const int x,
                const int y,

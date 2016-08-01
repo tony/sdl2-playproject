@@ -148,10 +148,3 @@ class Game {
 };
 
 std::string get_full_path(const char* path);
-
-#ifndef __dead
-#define __dead __attribute__((__noreturn__))
-#endif
-
-/* Fatal errors. */
-__dead void fatal(const char* msg, ...);
