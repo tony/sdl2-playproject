@@ -10,7 +10,7 @@ set(BIN_DIR ${game_SOURCE_DIR}/bin)
 
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++11")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
@@ -28,7 +28,7 @@ ADD_SUBDIRECTORY(vendor/libSDL2pp)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
-
+find_package(Threads)
 
 file (GLOB MY_PROJECT_GFX_RESOURCES resources/*.png)
 file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
@@ -38,6 +38,8 @@ file (GLOB MY_PROJECT_FONT_RESOURCES resources/fonts/*)
 file (COPY ${MY_PROJECT_FONT_RESOURCES} DESTINATION resources/fonts)
 
 include_directories("./src")
+include_directories("./vendor/spdlog/include")
+
 file (GLOB game_SOURCES src/*.cpp)
 
 # include plugin
@@ -50,5 +52,5 @@ endif()
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 
 add_executable(game ${game_SOURCES})
-target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES})
+target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
