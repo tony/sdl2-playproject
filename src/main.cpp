@@ -21,7 +21,7 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
       bgTexture(SDL2pp::Texture(renderer, "resources/tiles_12.png")),
       input(std::make_shared<Input>()),
       console(console) {
-    console.info("Game started.");
+  console.info("Game started.");
 }
 
 Game::~Game() {
