@@ -108,7 +108,7 @@ class Hero : public Actor {
   std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   std::vector<Boomerang*> boomerangs;
-  Uint32 last_shot;
+  Uint32 last_shot = 0;
 };
 
 class GamePanel {
