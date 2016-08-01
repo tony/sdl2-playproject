@@ -138,6 +138,7 @@ class Game {
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console);
   ~Game();
   void update();
+
  private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<Hero> hero;
