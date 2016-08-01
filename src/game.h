@@ -147,7 +147,7 @@ class Game {
   bool quit = false;
   void handleEvent(const SDL_Event* e, bool* quit);
   SDL2pp::Texture bgTexture;
-  Input m_input;
+  std::shared_ptr<Input> input;
   spd::logger& console;
 };
 

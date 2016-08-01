@@ -17,25 +17,13 @@ const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
                                          static_cast<int>(SCREEN_HEIGHT * .9)};
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
-    : renderer(renderer),
+    : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
       hero(std::make_shared<Hero>(renderer)),
       gamepanel(std::make_shared<GamePanel>(hero, renderer, font)),
-      bgTexture(nullptr),
-      m_input(Input()),
+      bgTexture(SDL2pp::Texture(renderer, "resources/tiles_12.png")),
+      input(std::make_shared<Input>()),
       console(console) {
-  try {
     console.info("Game started.");
-    bgTexture = SDL2pp::Texture(renderer, "resources/tiles_12.png");
-
-    renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
-  } catch (SDL2pp::Exception& e) {
-    // Exception stores SDL_GetError() result and name of function which failed
-    std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
-    std::cerr << "  Reason: " << e.GetSDLError() << std::endl;
-  } catch (std::exception& e) {
-    // This also works (e.g. "SDL_Init failed: No available video device")
-    std::cerr << e.what() << std::endl;
-  }
 }
 
 Game::~Game() {
@@ -55,7 +43,7 @@ void Game::mainLoop() {
       handleEvent(&e, &quit);
     }
 
-    hero->handleEvents(m_input.keys);
+    hero->handleEvents(input->keys);
     hero->update();
 
     gamepanel->drawStats();
