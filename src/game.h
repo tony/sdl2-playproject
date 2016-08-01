@@ -1,5 +1,6 @@
 #pragma once
 
+#include "spdlog/spdlog.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -12,6 +13,8 @@
 #include <array>
 #include <memory>
 #include <vector>
+
+namespace spd = spdlog;
 
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
@@ -132,10 +135,9 @@ class Input {
 
 class Game {
  public:
-  Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
+  Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console);
   ~Game();
   void update();
-
  private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<Hero> hero;
@@ -145,6 +147,7 @@ class Game {
   void handleEvent(const SDL_Event* e, bool* quit);
   SDL2pp::Texture bgTexture;
   Input m_input;
+  spd::logger& console;
 };
 
 std::string get_full_path(const char* path);
