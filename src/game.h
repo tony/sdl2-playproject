@@ -90,8 +90,8 @@ class Boomerang : public Actor {
   Boomerang(SDL2pp::Renderer& renderer,
             SDL2pp::Rect position,
             SDL2pp::Point velocity);
-  void handleEvents(const Uint8* currentKeyStates) override final;
   bool inBounds();
+  void handleEvents(const Uint8* currentKeyStates) override final;
 };
 
 class Hero : public Actor {
@@ -101,12 +101,13 @@ class Hero : public Actor {
        SDL2pp::Point velocity = {0, 0});
   void handleEvents(const Uint8* currentKeyStates) override final;
   void update() override final;
-  void createBoomerang(void);
+  Stats stats;
 
+ private:
+  void createBoomerang(void);
   std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
   std::vector<Boomerang*> boomerangs;
-  Stats stats;
   Uint32 last_shot;
 };
 
@@ -117,6 +118,8 @@ class GamePanel {
             TTF_Font* font);
   void drawStats();
   const std::shared_ptr<Hero>& hero;
+
+ private:
   SDL2pp::Renderer& renderer;
   TTF_Font* font;
 };
@@ -133,6 +136,7 @@ class Game {
   ~Game();
   void update();
 
+ private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<Hero> hero;
   std::shared_ptr<GamePanel> gamepanel;
