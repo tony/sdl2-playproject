@@ -21,6 +21,20 @@ elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL "MSVC")
 	endif()
 endif()
 
+if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -Werror -Wno-missing-field-initializers")
+
+	if(CMAKE_BUILD_TYPE MATCHES "Debug")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+		if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR APPLE)
+			# OR APPLE: in case using custom llvm/clang and on apple
+			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined-trap -fsanitize-undefined-trap-on-error")
+		else()
+			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined")
+		endif()
+	endif()
+endif()
+
 SET(SDL2PP_WITH_IMAGE TRUE)
 SET(SDL2PP_WITH_TTF TRUE)
 ADD_SUBDIRECTORY(vendor/libSDL2pp)
