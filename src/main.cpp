@@ -1,6 +1,8 @@
 #include "game.h"
 #include <iostream>
 #include <sstream>
+#include <cstdlib>
+#include "spdlog/spdlog.h"
 
 const int SCREEN_WIDTH = 630;
 const int SCREEN_HEIGHT = 480;
@@ -151,6 +153,12 @@ void Game::handleEvent(const SDL_Event* e, bool* quit) {
 }
 
 int main() {
+
+  namespace spd = spdlog;
+  // console logger (multithreaded and with color)
+  auto console = spd::stdout_logger_mt("console", true);
+  console->info("Welcome to spdlog!") ;
+
   try {
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
     SDL2pp::SDLTTF sdl_ttf;
