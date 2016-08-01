@@ -137,7 +137,7 @@ class Game {
  public:
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console);
   ~Game();
-  void update();
+  void mainLoop();
 
  private:
   SDL2pp::Renderer& renderer;
