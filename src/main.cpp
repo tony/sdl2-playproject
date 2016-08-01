@@ -34,7 +34,6 @@ Game::Game(SDL2pp::Renderer& renderer, const SDL2pp::Font& font)
 
 Game::~Game() {
   renderer = nullptr;
-  window = nullptr;
 
   IMG_Quit();
   SDL_Quit();

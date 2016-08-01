@@ -139,7 +139,6 @@ class Game {
   SDL_Event e;
   bool quit = false;
   void handleEvent(const SDL_Event* e, bool* quit);
-  std::unique_ptr<SDL2pp::Window> window;
   SDL2pp::Texture bgTexture;
   Input m_input;
 };
