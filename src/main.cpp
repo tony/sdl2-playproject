@@ -12,11 +12,12 @@ const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
 const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
                                          static_cast<int>(SCREEN_HEIGHT * .9)};
 
-Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font)
+Game::Game(SDL2pp::Renderer& renderer, const SDL2pp::Font& font)
     : renderer(renderer),
       hero(std::make_shared<Hero>(renderer)),
       gamepanel(std::make_shared<GamePanel>(hero, renderer, font.Get())),
-      bgTexture(nullptr) {
+      bgTexture(nullptr),
+      m_input(Input()) {
   try {
     bgTexture = SDL2pp::Texture(renderer, "resources/tiles_12.png");
 
@@ -47,15 +48,19 @@ void Game::update() {
     if (SDL_PollEvent(&e) != 0) {
       handleEvent(&e, &quit);
     }
-    const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-    hero->handleEvents(currentKeyStates);
-    renderer.Copy(hero->sprite, hero->subsprite[hero->state], hero->position);
+
+    hero->handleEvents(m_input.keys);
+    hero->update();
 
     gamepanel->drawStats();
 
     renderer.Present();
     SDL_Delay(16);
   }
+}
+
+Input::Input() {
+  keys = SDL_GetKeyboardState(nullptr);
 }
 
 GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,

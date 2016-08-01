@@ -20,6 +20,10 @@ Hero::Hero(SDL2pp::Renderer& renderer,
       SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 
+void Hero::update() {
+  renderer.Copy(sprite, subsprite[state], position);
+}
+
 void Hero::handleEvents(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
       currentKeyStates[SDL_SCANCODE_W] != 0 ||

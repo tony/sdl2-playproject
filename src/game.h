@@ -66,18 +66,21 @@ class Actor {
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
 
-  SDL2pp::Renderer& renderer;
-  SDL2pp::Rect position;
-  SDL2pp::Point velocity;
-  SDL2pp::Texture sprite;
-
   SDL2pp::Rect getPosition() const { return position; };
   int getPositionX() const { return position.x; };
   int getPositionY() const { return position.y; };
   SDL2pp::Point getVelocity() const { return velocity; };
   int getVelocityX() const { return velocity.x; };
   int getVelocityY() const { return velocity.y; };
+
+ protected:
   virtual void handleEvents(const Uint8* currentKeyStates) = 0;
+  virtual void update(){};
+
+  SDL2pp::Renderer& renderer;
+  SDL2pp::Rect position;
+  SDL2pp::Point velocity;
+  SDL2pp::Texture sprite;
 };
 
 class Hero;
@@ -96,14 +99,15 @@ class Hero : public Actor {
   Hero(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
-  std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
-  Stats stats;
-  enum HeroState state = HeroState::HERO_STATE_DEFAULT;
-  std::vector<Boomerang*> boomerangs;
-  Uint32 last_shot;
+  void handleEvents(const Uint8* currentKeyStates) override final;
+  void update() override final;
   void createBoomerang(void);
 
-  void handleEvents(const Uint8* currentKeyStates) override final;
+  std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
+  enum HeroState state = HeroState::HERO_STATE_DEFAULT;
+  std::vector<Boomerang*> boomerangs;
+  Stats stats;
+  Uint32 last_shot;
 };
 
 class GamePanel {
@@ -117,13 +121,18 @@ class GamePanel {
   TTF_Font* font;
 };
 
+class Input {
+ public:
+  Input();
+  const Uint8* keys;
+};
+
 class Game {
  public:
-  Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font);
+  Game(SDL2pp::Renderer& renderer, const SDL2pp::Font& font);
   ~Game();
   void update();
 
- private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<Hero> hero;
   std::shared_ptr<GamePanel> gamepanel;
@@ -132,6 +141,7 @@ class Game {
   void handleEvent(const SDL_Event* e, bool* quit);
   std::unique_ptr<SDL2pp::Window> window;
   SDL2pp::Texture bgTexture;
+  Input m_input;
 };
 
 std::string get_full_path(const char* path);
