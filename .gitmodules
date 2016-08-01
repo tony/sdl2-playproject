@@ -3,4 +3,4 @@
 	url = https://github.com/libSDL2pp/libSDL2pp.git
 [submodule "vendor/spdlog"]
 	path = vendor/spdlog
-	url = https://github.com/tony/spdlog
+	url = https://github.com/gabime/spdlog
