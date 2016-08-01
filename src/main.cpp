@@ -1,7 +1,5 @@
 #include "game.h"
-#include <iostream>
 #include <sstream>
-#include <cstdlib>
 #include "spdlog/spdlog.h"
 
 namespace spd = spdlog;
