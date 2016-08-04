@@ -1,23 +1,37 @@
 #include "game.h"
 
 const int SHOOTING_DELAY = 200;
-const int HERO_SPRITE_W = 30;
-const int HERO_SPRITE_H = 30;
+const int HERO_SPRITE_W = 33;
+const int HERO_SPRITE_H = 33;
+
+SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
+                               std::string spritePath,
+                               Uint8 r,
+                               Uint8 g,
+                               Uint8 b) {
+  auto surface = SDL2pp::Surface(spritePath);
+  auto surface2 = surface.Lock();
+  surface.SetColorKey(true, SDL_MapRGB(&surface2.GetFormat(), r, g, b));
+  auto image = SDL2pp::Texture(renderer, surface);
+  return image;
+}
 
 Hero::Hero(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
-    : Actor(renderer, position, velocity, "resources/elliot/spritesheet.png") {
+    : Actor(renderer, position, velocity, "resources/gfx/modular_ships.png") {
+  sprite =
+      loadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
   subsprite[HERO_STATE_DEFAULT] =
-      SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
+      SDL2pp::Rect(126, 79, HERO_SPRITE_W, HERO_SPRITE_H);
   subsprite[HERO_STATE_WALK_UP] =
-      SDL2pp::Rect(0, 1010, HERO_SPRITE_W, HERO_SPRITE_H);
+      SDL2pp::Rect(126, 79, HERO_SPRITE_W, HERO_SPRITE_H);
   subsprite[HERO_STATE_WALK_DOWN] =
-      SDL2pp::Rect(0, 0, HERO_SPRITE_W, HERO_SPRITE_H);
+      SDL2pp::Rect(126, 79, HERO_SPRITE_W, HERO_SPRITE_H);
   subsprite[HERO_STATE_WALK_LEFT] =
-      SDL2pp::Rect(0, 505, HERO_SPRITE_W, HERO_SPRITE_H);
+      SDL2pp::Rect(126, 79, HERO_SPRITE_W, HERO_SPRITE_H);
   subsprite[HERO_STATE_WALK_RIGHT] =
-      SDL2pp::Rect(0, 720, HERO_SPRITE_W, HERO_SPRITE_H);
+      SDL2pp::Rect(126, 79, HERO_SPRITE_W, HERO_SPRITE_H);
 }
 
 void Hero::update() {
@@ -114,7 +128,8 @@ void Hero::createBoomerang() {
 Boomerang::Boomerang(SDL2pp::Renderer& renderer,
                      SDL2pp::Rect p,
                      SDL2pp::Point v)
-    : Actor{renderer, std::move(p), std::move(v), "resources/boomerang.png"} {};
+    : Actor{renderer, std::move(p), std::move(v),
+            "resources/gfx/m484BulletCollection1.png"} {};
 
 bool Boomerang::inBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);

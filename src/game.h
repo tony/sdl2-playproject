@@ -9,6 +9,7 @@
 #include <SDL2pp/Rect.hh>
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Texture.hh>
+#include <SDL2pp/Surface.hh>
 #include <SDL2pp/Window.hh>
 #include <array>
 #include <memory>
@@ -55,6 +56,12 @@ typedef struct Stats {
   int current_hp = 100;
   int hp = 100;
 } Stats;
+
+SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
+                               std::string spritePath,
+                               Uint8 r,
+                               Uint8 g,
+                               Uint8 b);
 
 class Actor {
  public:

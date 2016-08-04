@@ -18,7 +18,8 @@ Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
       hero(std::make_shared<Hero>(renderer)),
       gamepanel(std::make_shared<GamePanel>(hero, renderer, font)),
-      bgTexture(SDL2pp::Texture(renderer, "resources/tiles_12.png")),
+      bgTexture(SDL2pp::Texture(renderer,
+                                "resources/gfx/side-bg/green-mountain.png")),
       input(std::make_shared<Input>()),
       console(console) {
   console.info("Game started.");
