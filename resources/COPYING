@@ -1,28 +1,5 @@
-continents.png:
+modular_ships.png:
 
-source: https://pixabay.com/en/globe-world-map-earth-32299/
+source: http://opengameart.org/content/modular-ships
 license: CC0 Public Domain
 
-elliot sprite:
-source: http://opengameart.org/content/elliot-rpg
-license: CC0 / elliot/LICENSE.TXT
-
-tiles_12.png
-source: http://opengameart.org/content/rpg-town-pixel-art-assets
-thanks: http://blog-buch.rhcloud.com
-license: CC0
-
-scifitiles-sheet_0.png:
-source: http://opengameart.org/content/sci-fi-interior-tiles
-thanks: http://blog-buch.rhcloud.com
-license: CC0
-
-dungeon_sheet_0.png
-source: http://opengameart.org/content/a-blocky-dungeon
-thanks: http://blog-buch.rhcloud.com 
-license: CC0
-
-outdoor_sheet.png:
-source: http://opengameart.org/sites/default/files/sheet_13.png
-thanks: http://blog-buch.rhcloud.com 
-license: CC0
