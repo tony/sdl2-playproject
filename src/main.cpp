@@ -32,20 +32,20 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::mainLoop() {
+void Game::MainLoop() {
   console.info("Game update.");
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(MAIN_VIEWPORT_RECT);
     renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
     if (SDL_PollEvent(&e) != 0) {
-      handleEvent(&e, &quit);
+      HandleEvent(&e, &quit);
     }
 
-    ship->handleEvents(input->keys);
-    ship->update();
+    ship->HandleEvents(input->keys);
+    ship->Update();
 
-    gamepanel->drawStats();
+    gamepanel->DrawStats();
 
     renderer.Present();
     SDL_Delay(16);
@@ -61,7 +61,7 @@ GamePanel::GamePanel(const std::shared_ptr<Ship>& ship,
                      SDL2pp::Font& font)
     : ship(ship), renderer(renderer), font(font) {}
 
-void GamePanel::drawStats() {
+void GamePanel::DrawStats() {
   std::stringstream shiptext;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
@@ -70,7 +70,7 @@ void GamePanel::drawStats() {
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 
-void Game::handleEvent(const SDL_Event* e, bool* quit) {
+void Game::HandleEvent(const SDL_Event* e, bool* quit) {
   switch (e->type) {
     case SDL_QUIT:
       *quit = true;
@@ -162,7 +162,7 @@ int main() {
     SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
 
     Game game(renderer, font, *console);
-    game.mainLoop();
+    game.MainLoop();
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
     std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;

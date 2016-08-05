@@ -33,11 +33,11 @@ Ship::Ship(SDL2pp::Renderer& renderer,
       SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
 }
 
-void Ship::update() {
+void Ship::Update() {
   renderer.Copy(sprite, subsprite[state], position);
 }
 
-void Ship::handleEvents(const Uint8* currentKeyStates) {
+void Ship::HandleEvents(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
       currentKeyStates[SDL_SCANCODE_W] != 0 ||
       currentKeyStates[SDL_SCANCODE_K] != 0) {
@@ -75,7 +75,7 @@ void Ship::handleEvents(const Uint8* currentKeyStates) {
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      spawnBullet();
+      SpawnBullet();
       last_shot = now;
     }
   }
@@ -83,18 +83,18 @@ void Ship::handleEvents(const Uint8* currentKeyStates) {
   // bullet drawing and clean up
   auto it = bullets.begin();
   while (it != bullets.end()) {
-    if (!(**it).inBounds()) {
+    if (!(**it).InBounds()) {
       it = bullets.erase(it);
     } else {
       ++it;
     }
   }
   for (auto& bullet : bullets) {
-    bullet->handleEvents(currentKeyStates);
+    bullet->HandleEvents(currentKeyStates);
   }
 }
 
-void Ship::spawnBullet() {
+void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     SDL2pp::Point velocity;
     velocity.x = 6;
@@ -112,17 +112,17 @@ Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
   position.x += 30;
 };
 
-bool Bullet::inBounds() {
+bool Bullet::InBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);
 }
 
-void Bullet::handleEvents(const Uint8* currentKeyStates) {
+void Bullet::HandleEvents(const Uint8* currentKeyStates) {
   std::ignore = currentKeyStates;
   position.x += velocity.x;
   position.y += velocity.y;
   position.h = 9;
   position.w = 9;
-  if (inBounds()) {
+  if (InBounds()) {
     renderer.Copy(sprite, SDL2pp::Rect{12, 103, 3, 3}, position);
   }
 }

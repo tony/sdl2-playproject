@@ -78,8 +78,8 @@ class Actor {
   int getVelocityY() const { return velocity.y; };
 
  protected:
-  virtual void handleEvents(const Uint8* currentKeyStates) = 0;
-  virtual void update(){};
+  virtual void HandleEvents(const Uint8* currentKeyStates) = 0;
+  virtual void Update(){};
 
   SDL2pp::Renderer& renderer;
   SDL2pp::Rect position;
@@ -94,8 +94,8 @@ class Bullet : public Actor {
   Bullet(SDL2pp::Renderer& renderer,
          SDL2pp::Rect position,
          SDL2pp::Point velocity);
-  bool inBounds();
-  void handleEvents(const Uint8* currentKeyStates) override final;
+  bool InBounds();
+  void HandleEvents(const Uint8* currentKeyStates) override final;
 };
 
 class Ship : public Actor {
@@ -103,12 +103,12 @@ class Ship : public Actor {
   Ship(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
-  void handleEvents(const Uint8* currentKeyStates) override final;
-  void update() override final;
+  void HandleEvents(const Uint8* currentKeyStates) override final;
+  void Update() override final;
   Stats stats;
 
  private:
-  void spawnBullet(void);
+  void SpawnBullet(void);
   std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
   enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
   std::vector<Bullet*> bullets;
@@ -120,7 +120,7 @@ class GamePanel {
   GamePanel(const std::shared_ptr<Ship>& ship,
             SDL2pp::Renderer& renderer,
             SDL2pp::Font& font);
-  void drawStats();
+  void DrawStats();
   const std::shared_ptr<Ship>& ship;
 
  private:
@@ -138,7 +138,7 @@ class Game {
  public:
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console);
   ~Game();
-  void mainLoop();
+  void MainLoop();
 
  private:
   SDL2pp::Renderer& renderer;
@@ -146,7 +146,7 @@ class Game {
   std::shared_ptr<GamePanel> gamepanel;
   SDL_Event e;
   bool quit = false;
-  void handleEvent(const SDL_Event* e, bool* quit);
+  void HandleEvent(const SDL_Event* e, bool* quit);
   SDL2pp::Texture bgTexture;
   std::shared_ptr<Input> input;
   spd::logger& console;
