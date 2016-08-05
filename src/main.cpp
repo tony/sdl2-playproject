@@ -66,7 +66,7 @@ void GamePanel::drawStats() {
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
   shiptext << "health " << ship->stats.current_hp << " / " << ship->stats.hp;
-  draw_text(shiptext.str(), 0, 0, font, renderer);
+  DrawText(shiptext.str(), 0, 0, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 

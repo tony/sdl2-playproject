@@ -1,11 +1,11 @@
 #include "game.h"
 #include <cerrno>
 
-void draw_text(const std::string text,
-               const int x,
-               const int y,
-               SDL2pp::Font& font,
-               SDL2pp::Renderer& renderer) {
+void DrawText(const std::string text,
+              const int x,
+              const int y,
+              SDL2pp::Font& font,
+              SDL2pp::Renderer& renderer) {
   SDL_Color textForegroundColor;
   textForegroundColor.r = 255, textForegroundColor.g = 255,
   textForegroundColor.b = 255, textForegroundColor.a = 255;
@@ -26,13 +26,13 @@ void draw_text(const std::string text,
   renderer.Copy(message_texture, SDL2pp::NullOpt, message_rect);
 }
 
-std::string get_full_path(const char* path) {
+std::string GetFullPath(const char* path) {
   auto base_path = SDL_GetBasePath();
   std::string full_path = std::string(base_path) + std::string(path);
   return full_path;
 }
 
-SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
+SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
                                std::string spritePath,
                                Uint8 r,
                                Uint8 g,

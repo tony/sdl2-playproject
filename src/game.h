@@ -31,11 +31,17 @@ extern const int SCREEN_HEIGHT;
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
-void draw_text(const std::string text,
-               const int x,
-               const int y,
-               SDL2pp::Font& font,
-               SDL2pp::Renderer& renderer);
+void DrawText(const std::string text,
+              const int x,
+              const int y,
+              SDL2pp::Font& font,
+              SDL2pp::Renderer& renderer);
+
+SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
+                               std::string spritePath,
+                               Uint8 r,
+                               Uint8 g,
+                               Uint8 b);
 
 enum ShipState {
   SHIP_STATE_DEFAULT,
@@ -146,4 +152,4 @@ class Game {
   spd::logger& console;
 };
 
-std::string get_full_path(const char* path);
+std::string GetFullPath(const char* path);

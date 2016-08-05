@@ -4,7 +4,7 @@ const int SHOOTING_DELAY = 200;
 const int SHIP_SPRITE_W = 33;
 const int SHIP_SPRITE_H = 33;
 
-SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
+SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
                                std::string spritePath,
                                Uint8 r,
                                Uint8 g,
@@ -20,7 +20,7 @@ Ship::Ship(SDL2pp::Renderer& renderer,
            SDL2pp::Point velocity)
     : Actor(renderer, position, velocity, "resources/gfx/modular_ships.png") {
   sprite =
-      loadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
+      LoadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
   subsprite[SHIP_STATE_DEFAULT] =
       SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
   subsprite[SHIP_STATE_WALK_UP] =
@@ -106,7 +106,7 @@ void Ship::spawnBullet() {
 Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
     : Actor{renderer, std::move(p), std::move(v),
             "resources/gfx/m484BulletCollection1.png"} {
-  sprite = loadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
+  sprite = LoadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
                           0, 0, 0);
   position.y += 12;
   position.x += 30;
