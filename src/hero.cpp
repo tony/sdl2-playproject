@@ -75,7 +75,7 @@ void Ship::handleEvents(const Uint8* currentKeyStates) {
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      createBullet();
+      spawnBullet();
       last_shot = now;
     }
   }
@@ -94,7 +94,7 @@ void Ship::handleEvents(const Uint8* currentKeyStates) {
   }
 }
 
-void Ship::createBullet() {
+void Ship::spawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     SDL2pp::Point velocity;
     velocity.x = 2;

@@ -114,7 +114,7 @@ class Ship : public Actor {
   Stats stats;
 
  private:
-  void createBullet(void);
+  void spawnBullet(void);
   std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
   enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
   std::vector<Bullet*> bullets;
