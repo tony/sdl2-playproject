@@ -97,7 +97,7 @@ void Ship::handleEvents(const Uint8* currentKeyStates) {
 void Ship::spawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     SDL2pp::Point velocity;
-    velocity.x = 2;
+    velocity.x = 6;
     velocity.y = 0;
     bullets.push_back(new Bullet(renderer, position, velocity));
   }

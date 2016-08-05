@@ -31,12 +31,6 @@ extern const int SCREEN_HEIGHT;
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
 
-void draw_text(const char* text,
-               const int x,
-               const int y,
-               SDL2pp::Font& font,
-               SDL2pp::Renderer& renderer);
-
 void draw_text(const std::string text,
                const int x,
                const int y,
@@ -56,12 +50,6 @@ typedef struct Stats {
   int current_hp = 100;
   int hp = 100;
 } Stats;
-
-SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string spritePath,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b);
 
 class Actor {
  public:
