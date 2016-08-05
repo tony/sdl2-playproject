@@ -1,6 +1,5 @@
 #include "game.h"
 
-const int SHOOTING_DELAY = 200;
 const int SHIP_SPRITE_W = 33;
 const int SHIP_SPRITE_H = 33;
 
@@ -74,7 +73,7 @@ void Ship::HandleEvents(const Uint8* currentKeyStates) {
 
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
-    if (now - last_shot >= SHOOTING_DELAY) {
+    if (now - last_shot >= shooting_delay) {
       SpawnBullet();
       last_shot = now;
     }
@@ -96,9 +95,6 @@ void Ship::HandleEvents(const Uint8* currentKeyStates) {
 
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
-    SDL2pp::Point velocity;
-    velocity.x = 6;
-    velocity.y = 0;
     bullets.push_back(new Bullet(renderer, position, velocity));
   }
 }

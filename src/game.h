@@ -21,7 +21,7 @@ namespace spd = spdlog;
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
 
-#define SHIP_MAX_BULLETS 10
+#define SHIP_MAX_BULLETS 80
 
 extern const int SHIP_SPRITE_W;
 extern const int SHIP_SPRITE_H;
@@ -96,6 +96,9 @@ class Bullet : public Actor {
          SDL2pp::Point velocity);
   bool InBounds();
   void HandleEvents(const Uint8* currentKeyStates) override final;
+
+ private:
+  SDL2pp::Point velocity{9, 0};
 };
 
 class Ship : public Actor {
@@ -108,6 +111,7 @@ class Ship : public Actor {
   Stats stats;
 
  private:
+  const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
   std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
   enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
