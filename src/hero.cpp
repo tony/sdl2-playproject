@@ -80,26 +80,26 @@ void Hero::handleEvents(const Uint8* currentKeyStates) {
     }
   }
 
-  // boomerang drawing and clean up
-  auto it = boomerangs.begin();
-  while (it != boomerangs.end()) {
+  // bullet drawing and clean up
+  auto it = bullets.begin();
+  while (it != bullets.end()) {
     if (!(**it).inBounds()) {
-      it = boomerangs.erase(it);
+      it = bullets.erase(it);
     } else {
       ++it;
     }
   }
-  for (auto& boomerang : boomerangs) {
-    boomerang->handleEvents(currentKeyStates);
+  for (auto& bullet : bullets) {
+    bullet->handleEvents(currentKeyStates);
   }
 }
 
 void Hero::createBullet() {
-  if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
+  if (bullets.size() < HERO_MAX_bulletS) {
     SDL2pp::Point velocity;
     velocity.x = 2;
     velocity.y = 0;
-    boomerangs.push_back(new Bullet(renderer, position, velocity));
+    bullets.push_back(new Bullet(renderer, position, velocity));
   }
 }
 

@@ -21,7 +21,7 @@ namespace spd = spdlog;
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
 
-#define HERO_MAX_BOOMERANGS 10
+#define HERO_MAX_bulletS 10
 
 extern const int HERO_SPRITE_W;
 extern const int HERO_SPRITE_H;
@@ -117,7 +117,7 @@ class Hero : public Actor {
   void createBullet(void);
   std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
-  std::vector<Bullet*> boomerangs;
+  std::vector<Bullet*> bullets;
   Uint32 last_shot = 0;
 };
 
