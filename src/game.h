@@ -95,11 +95,11 @@ class Actor {
 
 class Hero;
 
-class Boomerang : public Actor {
+class Bullet : public Actor {
  public:
-  Boomerang(SDL2pp::Renderer& renderer,
-            SDL2pp::Rect position,
-            SDL2pp::Point velocity);
+  Bullet(SDL2pp::Renderer& renderer,
+         SDL2pp::Rect position,
+         SDL2pp::Point velocity);
   bool inBounds();
   void handleEvents(const Uint8* currentKeyStates) override final;
 };
@@ -114,10 +114,10 @@ class Hero : public Actor {
   Stats stats;
 
  private:
-  void createBoomerang(void);
+  void createBullet(void);
   std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
   enum HeroState state = HeroState::HERO_STATE_DEFAULT;
-  std::vector<Boomerang*> boomerangs;
+  std::vector<Bullet*> boomerangs;
   Uint32 last_shot = 0;
 };
 

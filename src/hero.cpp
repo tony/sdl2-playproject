@@ -75,7 +75,7 @@ void Hero::handleEvents(const Uint8* currentKeyStates) {
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= SHOOTING_DELAY) {
-      createBoomerang();
+      createBullet();
       last_shot = now;
     }
   }
@@ -94,51 +94,35 @@ void Hero::handleEvents(const Uint8* currentKeyStates) {
   }
 }
 
-void Hero::createBoomerang() {
+void Hero::createBullet() {
   if (boomerangs.size() < HERO_MAX_BOOMERANGS) {
     SDL2pp::Point velocity;
-
-    switch (state) {
-      case HERO_STATE_WALK_UP:
-        velocity.x = 0;
-        velocity.y = -1;
-        break;
-      case HERO_STATE_WALK_DOWN:
-        velocity.x = 0;
-        velocity.y = 1;
-        break;
-      case HERO_STATE_WALK_LEFT:
-        velocity.x = -1;
-        velocity.y = 0;
-        break;
-      case HERO_STATE_WALK_RIGHT:
-        velocity.x = 1;
-        velocity.y = 0;
-        break;
-      default:
-        velocity.x = 0;
-        velocity.y = 0;
-        break;
-    }
-    boomerangs.push_back(new Boomerang(renderer, position, velocity));
+    velocity.x = 2;
+    velocity.y = 0;
+    boomerangs.push_back(new Bullet(renderer, position, velocity));
   }
 }
 
-Boomerang::Boomerang(SDL2pp::Renderer& renderer,
-                     SDL2pp::Rect p,
-                     SDL2pp::Point v)
+Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
     : Actor{renderer, std::move(p), std::move(v),
-            "resources/gfx/m484BulletCollection1.png"} {};
+            "resources/gfx/m484BulletCollection1.png"} {
+  sprite = loadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
+                          0, 0, 0);
+  position.y += 12;
+  position.x += 30;
+};
 
-bool Boomerang::inBounds() {
+bool Bullet::inBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);
 }
 
-void Boomerang::handleEvents(const Uint8* currentKeyStates) {
+void Bullet::handleEvents(const Uint8* currentKeyStates) {
   std::ignore = currentKeyStates;
   position.x += velocity.x;
   position.y += velocity.y;
+  position.h = 9;
+  position.w = 9;
   if (inBounds()) {
-    renderer.Copy(sprite, SDL2pp::NullOpt, position);
+    renderer.Copy(sprite, SDL2pp::Rect{12, 103, 3, 3}, position);
   }
 }
