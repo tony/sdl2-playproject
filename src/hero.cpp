@@ -10,8 +10,7 @@ SDL2pp::Texture loadImageAlpha(SDL2pp::Renderer& renderer,
                                Uint8 g,
                                Uint8 b) {
   auto surface = SDL2pp::Surface(spritePath);
-  auto surface2 = surface.Lock();
-  surface.SetColorKey(true, SDL_MapRGB(&surface2.GetFormat(), r, g, b));
+  surface.SetColorKey(true, SDL_MapRGB(&surface.Lock().GetFormat(), r, g, b));
   auto image = SDL2pp::Texture(renderer, surface);
   return image;
 }
