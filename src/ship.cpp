@@ -119,6 +119,6 @@ void Bullet::HandleEvents(const Uint8* currentKeyStates) {
   position.h = 9;
   position.w = 9;
   if (InBounds()) {
-    renderer.Copy(sprite, SDL2pp::Rect{12, 103, 3, 3}, position);
+    renderer.Copy(sprite, SDL2pp::Rect{12, 142, 3, 3}, position);
   }
 }
