@@ -21,10 +21,10 @@ namespace spd = spdlog;
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
 
-#define HERO_MAX_bulletS 10
+#define SHIP_MAX_BULLETS 10
 
-extern const int HERO_SPRITE_W;
-extern const int HERO_SPRITE_H;
+extern const int SHIP_SPRITE_W;
+extern const int SHIP_SPRITE_H;
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 
@@ -43,13 +43,13 @@ void draw_text(const std::string text,
                SDL2pp::Font& font,
                SDL2pp::Renderer& renderer);
 
-enum HeroState {
-  HERO_STATE_DEFAULT,
-  HERO_STATE_WALK_UP,
-  HERO_STATE_WALK_DOWN,
-  HERO_STATE_WALK_LEFT,
-  HERO_STATE_WALK_RIGHT,
-  HERO_STATE_TOTAL
+enum ShipState {
+  SHIP_STATE_DEFAULT,
+  SHIP_STATE_WALK_UP,
+  SHIP_STATE_WALK_DOWN,
+  SHIP_STATE_WALK_LEFT,
+  SHIP_STATE_WALK_RIGHT,
+  SHIP_STATE_TOTAL
 };
 
 typedef struct Stats {
@@ -93,7 +93,7 @@ class Actor {
   SDL2pp::Texture sprite;
 };
 
-class Hero;
+class Ship;
 
 class Bullet : public Actor {
  public:
@@ -104,9 +104,9 @@ class Bullet : public Actor {
   void handleEvents(const Uint8* currentKeyStates) override final;
 };
 
-class Hero : public Actor {
+class Ship : public Actor {
  public:
-  Hero(SDL2pp::Renderer& renderer,
+  Ship(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
   void handleEvents(const Uint8* currentKeyStates) override final;
@@ -115,19 +115,19 @@ class Hero : public Actor {
 
  private:
   void createBullet(void);
-  std::array<SDL2pp::Rect, HeroState::HERO_STATE_TOTAL> subsprite;
-  enum HeroState state = HeroState::HERO_STATE_DEFAULT;
+  std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
+  enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
   std::vector<Bullet*> bullets;
   Uint32 last_shot = 0;
 };
 
 class GamePanel {
  public:
-  GamePanel(const std::shared_ptr<Hero>& hero,
+  GamePanel(const std::shared_ptr<Ship>& ship,
             SDL2pp::Renderer& renderer,
             SDL2pp::Font& font);
   void drawStats();
-  const std::shared_ptr<Hero>& hero;
+  const std::shared_ptr<Ship>& ship;
 
  private:
   SDL2pp::Renderer& renderer;
@@ -148,7 +148,7 @@ class Game {
 
  private:
   SDL2pp::Renderer& renderer;
-  std::shared_ptr<Hero> hero;
+  std::shared_ptr<Ship> ship;
   std::shared_ptr<GamePanel> gamepanel;
   SDL_Event e;
   bool quit = false;

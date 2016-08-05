@@ -16,8 +16,8 @@ const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
-      hero(std::make_shared<Hero>(renderer)),
-      gamepanel(std::make_shared<GamePanel>(hero, renderer, font)),
+      ship(std::make_shared<Ship>(renderer)),
+      gamepanel(std::make_shared<GamePanel>(ship, renderer, font)),
       bgTexture(SDL2pp::Texture(renderer,
                                 "resources/gfx/side-bg/green-mountain.png")),
       input(std::make_shared<Input>()),
@@ -42,8 +42,8 @@ void Game::mainLoop() {
       handleEvent(&e, &quit);
     }
 
-    hero->handleEvents(input->keys);
-    hero->update();
+    ship->handleEvents(input->keys);
+    ship->update();
 
     gamepanel->drawStats();
 
@@ -56,17 +56,17 @@ Input::Input() {
   keys = SDL_GetKeyboardState(nullptr);
 }
 
-GamePanel::GamePanel(const std::shared_ptr<Hero>& hero,
+GamePanel::GamePanel(const std::shared_ptr<Ship>& ship,
                      SDL2pp::Renderer& renderer,
                      SDL2pp::Font& font)
-    : hero(hero), renderer(renderer), font(font) {}
+    : ship(ship), renderer(renderer), font(font) {}
 
 void GamePanel::drawStats() {
-  std::stringstream herotext;
+  std::stringstream shiptext;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
-  herotext << "health " << hero->stats.current_hp << " / " << hero->stats.hp;
-  draw_text(herotext.str(), 0, 0, font, renderer);
+  shiptext << "health " << ship->stats.current_hp << " / " << ship->stats.hp;
+  draw_text(shiptext.str(), 0, 0, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 
