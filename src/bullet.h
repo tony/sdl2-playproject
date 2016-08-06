@@ -3,8 +3,7 @@
 #include <SDL2pp/Rect.hh>
 #include <SDL2pp/SDL2pp.hh>
 #include <memory>
-
-class Actor;
+#include "actor.h"
 
 class Bullet : public Actor {
  public:

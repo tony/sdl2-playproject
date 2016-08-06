@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include "actor.h"
 #include "bullet.h"
 
 enum ShipState {
