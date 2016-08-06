@@ -1,7 +1,6 @@
 #include "config.h"
 #include "game.h"
 #include "game_panel.h"
-#include "stats.h"
 
 namespace spd = spdlog;
 
