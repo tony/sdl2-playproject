@@ -53,9 +53,29 @@ enum ShipState {
 };
 
 typedef struct Stats {
-  int current_hp = 100;
-  int hp = 100;
+  int health = 100;
+  int health_max = 100;
+  int level = 1;
 } Stats;
+
+class StatService {
+ public:
+  StatService(int ship_level, int ship_health, int ship_health_max)
+      : ship_level(ship_level),
+        ship_health(ship_health),
+        ship_health_max(ship_health_max) {}
+  void set_ship_level(int level) { ship_level = level; };
+  void set_ship_health(int health) { ship_health = health; };
+  void set_ship_health_max(int health_max) { ship_health_max = health_max; };
+  int get_ship_level() const { return ship_level; };
+  int get_ship_health() const { return ship_health; };
+  int get_ship_health_max() const { return ship_health_max; };
+
+ private:
+  int ship_level;
+  int ship_health;
+  int ship_health_max;
+};
 
 class Actor {
  public:
@@ -69,13 +89,6 @@ class Actor {
         sprite(SDL2pp::Texture(renderer, spritePath.c_str())) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
-
-  SDL2pp::Rect getPosition() const { return position; };
-  int getPositionX() const { return position.x; };
-  int getPositionY() const { return position.y; };
-  SDL2pp::Point getVelocity() const { return velocity; };
-  int getVelocityX() const { return velocity.x; };
-  int getVelocityY() const { return velocity.y; };
 
  protected:
   virtual void HandleEvents(const Uint8* currentKeyStates) = 0;
@@ -108,7 +121,7 @@ class Ship : public Actor {
        SDL2pp::Point velocity = {0, 0});
   void HandleEvents(const Uint8* currentKeyStates) override final;
   void Update() override final;
-  Stats stats;
+  Stats stats = Stats();
 
  private:
   const unsigned int shooting_delay = 80;
@@ -121,11 +134,11 @@ class Ship : public Actor {
 
 class GamePanel {
  public:
-  GamePanel(const std::shared_ptr<Ship>& ship,
+  GamePanel(const std::shared_ptr<StatService>& stat_service,
             SDL2pp::Renderer& renderer,
             SDL2pp::Font& font);
   void DrawStats();
-  const std::shared_ptr<Ship>& ship;
+  const std::shared_ptr<StatService>& stat_service;
 
  private:
   SDL2pp::Renderer& renderer;
@@ -147,7 +160,8 @@ class Game {
  private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<Ship> ship;
-  std::shared_ptr<GamePanel> gamepanel;
+  std::shared_ptr<StatService> stat_service;
+  std::shared_ptr<GamePanel> game_panel;
   SDL_Event e;
   bool quit = false;
   void HandleEvent(const SDL_Event* e, bool* quit);
