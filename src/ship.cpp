@@ -1,18 +1,9 @@
 #include "game.h"
+#include "ship.h"
+#include "bullet.h"
 
 const int SHIP_SPRITE_W = 33;
 const int SHIP_SPRITE_H = 33;
-
-SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string spritePath,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b) {
-  auto surface = SDL2pp::Surface(spritePath);
-  surface.SetColorKey(true, SDL_MapRGB(&surface.Lock().GetFormat(), r, g, b));
-  auto image = SDL2pp::Texture(renderer, surface);
-  return image;
-}
 
 Ship::Ship(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
@@ -97,29 +88,5 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     bullets.push_back(new Bullet(renderer, position, velocity));
-  }
-}
-
-Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
-    : Actor{renderer, std::move(p), std::move(v),
-            "resources/gfx/m484BulletCollection1.png"} {
-  sprite = LoadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
-                          0, 0, 0);
-  position.y += 12;
-  position.x += 30;
-};
-
-bool Bullet::InBounds() {
-  return MAIN_VIEWPORT_RECT.Contains(position);
-}
-
-void Bullet::HandleInput(const Uint8* currentKeyStates) {
-  std::ignore = currentKeyStates;
-  position.x += velocity.x;
-  position.y += velocity.y;
-  position.h = 9;
-  position.w = 9;
-  if (InBounds()) {
-    renderer.Copy(sprite, SDL2pp::Rect{12, 142, 3, 3}, position);
   }
 }

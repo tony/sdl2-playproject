@@ -1,5 +1,8 @@
 #include "game.h"
+#include "ship.h"
+#include "bullet.h"
 #include <sstream>
+#include <memory>
 #include "spdlog/spdlog.h"
 
 namespace spd = spdlog;

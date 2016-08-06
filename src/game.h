@@ -17,6 +17,9 @@
 
 namespace spd = spdlog;
 
+class Ship;
+struct ShipStats;
+
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))
@@ -42,21 +45,6 @@ SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
                                Uint8 r,
                                Uint8 g,
                                Uint8 b);
-
-enum ShipState {
-  SHIP_STATE_DEFAULT,
-  SHIP_STATE_WALK_UP,
-  SHIP_STATE_WALK_DOWN,
-  SHIP_STATE_WALK_LEFT,
-  SHIP_STATE_WALK_RIGHT,
-  SHIP_STATE_TOTAL
-};
-
-typedef struct ShipStats {
-  int health = 100;
-  int health_max = 100;
-  int level = 1;
-} ShipStats;
 
 class StatService {
  public:
@@ -86,38 +74,6 @@ class Actor {
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
   SDL2pp::Texture sprite;
-};
-
-class Ship;
-
-class Bullet : public Actor {
- public:
-  Bullet(SDL2pp::Renderer& renderer,
-         SDL2pp::Rect position,
-         SDL2pp::Point velocity);
-  bool InBounds();
-  void HandleInput(const Uint8* currentKeyStates) override final;
-
- private:
-  SDL2pp::Point velocity{9, 0};
-};
-
-class Ship : public Actor {
- public:
-  Ship(SDL2pp::Renderer& renderer,
-       SDL2pp::Rect position = {0, 0, 30, 30},
-       SDL2pp::Point velocity = {0, 0});
-  void HandleInput(const Uint8* currentKeyStates) override final;
-  void Update() override final;
-  std::shared_ptr<ShipStats> stats;
-
- private:
-  const unsigned int shooting_delay = 80;
-  void SpawnBullet(void);
-  std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
-  enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
-  std::vector<Bullet*> bullets;
-  Uint32 last_shot = 0;
 };
 
 class GamePanel {
