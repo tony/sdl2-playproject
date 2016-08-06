@@ -79,7 +79,7 @@ class Actor {
   Actor& operator=(const Actor&) = delete;
 
  protected:
-  virtual void HandleEvents(const Uint8* currentKeyStates) = 0;
+  virtual void HandleInput(const Uint8* currentKeyStates) = 0;
   virtual void Update(){};
 
   SDL2pp::Renderer& renderer;
@@ -96,7 +96,7 @@ class Bullet : public Actor {
          SDL2pp::Rect position,
          SDL2pp::Point velocity);
   bool InBounds();
-  void HandleEvents(const Uint8* currentKeyStates) override final;
+  void HandleInput(const Uint8* currentKeyStates) override final;
 
  private:
   SDL2pp::Point velocity{9, 0};
@@ -107,7 +107,7 @@ class Ship : public Actor {
   Ship(SDL2pp::Renderer& renderer,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
-  void HandleEvents(const Uint8* currentKeyStates) override final;
+  void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
   std::shared_ptr<ShipStats> stats;
 

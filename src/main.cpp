@@ -43,7 +43,7 @@ void Game::MainLoop() {
       HandleEvent(&e, &quit);
     }
 
-    ship->HandleEvents(input->keys);
+    ship->HandleInput(input->keys);
     ship->Update();
 
     game_panel->DrawStats();

@@ -37,7 +37,7 @@ void Ship::Update() {
   renderer.Copy(sprite, subsprite[state], position);
 }
 
-void Ship::HandleEvents(const Uint8* currentKeyStates) {
+void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
       currentKeyStates[SDL_SCANCODE_W] != 0 ||
       currentKeyStates[SDL_SCANCODE_K] != 0) {
@@ -90,7 +90,7 @@ void Ship::HandleEvents(const Uint8* currentKeyStates) {
     }
   }
   for (auto& bullet : bullets) {
-    bullet->HandleEvents(currentKeyStates);
+    bullet->HandleInput(currentKeyStates);
   }
 }
 
@@ -113,7 +113,7 @@ bool Bullet::InBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);
 }
 
-void Bullet::HandleEvents(const Uint8* currentKeyStates) {
+void Bullet::HandleInput(const Uint8* currentKeyStates) {
   std::ignore = currentKeyStates;
   position.x += velocity.x;
   position.y += velocity.y;
