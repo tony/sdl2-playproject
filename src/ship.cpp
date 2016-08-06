@@ -1,6 +1,7 @@
 #include "game.h"
 #include "ship.h"
 #include "bullet.h"
+#include "util.h"
 
 const int SHIP_SPRITE_W = 33;
 const int SHIP_SPRITE_H = 33;

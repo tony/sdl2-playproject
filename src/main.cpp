@@ -1,6 +1,7 @@
 #include "game.h"
 #include "ship.h"
 #include "bullet.h"
+#include "util.h"
 #include <sstream>
 #include <memory>
 #include "spdlog/spdlog.h"

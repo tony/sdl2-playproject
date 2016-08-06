@@ -1,5 +1,6 @@
 #include "game.h"
 #include "bullet.h"
+#include "util.h"
 
 Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
     : Actor{renderer, std::move(p), std::move(v),

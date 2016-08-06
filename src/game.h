@@ -20,10 +20,6 @@ namespace spd = spdlog;
 class Ship;
 struct ShipStats;
 
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-#define MAX(x, y) ((x) > (y) ? (x) : (y))
-#define CLAMP(v, min, max) (MAX(MIN(v, max), min))
-
 #define SHIP_MAX_BULLETS 80
 
 extern const int SHIP_SPRITE_W;
@@ -33,18 +29,6 @@ extern const int SCREEN_HEIGHT;
 
 extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
 extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
-
-void DrawText(const std::string text,
-              const int x,
-              const int y,
-              SDL2pp::Font& font,
-              SDL2pp::Renderer& renderer);
-
-SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string spritePath,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b);
 
 class StatService {
  public:
@@ -113,5 +97,3 @@ class Game {
   std::shared_ptr<Input> input;
   spd::logger& console;
 };
-
-std::string GetFullPath(const char* path);
