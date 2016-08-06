@@ -1,5 +1,4 @@
-#include "game.h"
-#include <cerrno>
+#include "util.h"
 
 void DrawText(const std::string text,
               const int x,

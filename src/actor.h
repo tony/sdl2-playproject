@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SDL2pp/SDL2pp.hh>
+
 class Actor {
  public:
   Actor(SDL2pp::Renderer& renderer,

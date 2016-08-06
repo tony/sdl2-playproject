@@ -1,5 +1,5 @@
-#include "game.h"
 #include "bullet.h"
+#include "config.h"
 #include "util.h"
 
 Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)

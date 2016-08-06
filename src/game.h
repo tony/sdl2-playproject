@@ -11,45 +11,16 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 #include <SDL2pp/Window.hh>
-#include <array>
 #include <memory>
 #include <vector>
 
 namespace spd = spdlog;
 
 class Actor;
+class GamePanel;
 class Ship;
+class StatService;
 struct ShipStats;
-
-#define SHIP_MAX_BULLETS 80
-
-extern const int SHIP_SPRITE_W;
-extern const int SHIP_SPRITE_H;
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
-
-extern const SDL2pp::Rect MAIN_VIEWPORT_RECT;
-extern const SDL2pp::Rect BOTTOM_VIEWPORT_RECT;
-
-class StatService {
- public:
-  StatService(const std::shared_ptr<ShipStats>& ship_stats)
-      : ship(ship_stats) {}
-  const std::shared_ptr<ShipStats>& ship;
-};
-
-class GamePanel {
- public:
-  GamePanel(const std::shared_ptr<StatService>& stat_service,
-            SDL2pp::Renderer& renderer,
-            SDL2pp::Font& font);
-  void DrawStats();
-  const std::shared_ptr<StatService>& stat_service;
-
- private:
-  SDL2pp::Renderer& renderer;
-  SDL2pp::Font& font;
-};
 
 class Input {
  public:

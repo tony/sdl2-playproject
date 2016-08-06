@@ -1,5 +1,8 @@
 #pragma once
 
+#include <SDL2pp/Font.hh>
+#include <SDL2pp/SDL2pp.hh>
+
 #define MIN(x, y) ((x) < (y) ? (x) : (y))
 #define MAX(x, y) ((x) > (y) ? (x) : (y))
 #define CLAMP(v, min, max) (MAX(MIN(v, max), min))

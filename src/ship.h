@@ -1,6 +1,8 @@
 #pragma once
 
+#include <array>
 #include <memory>
+#include <vector>
 #include "actor.h"
 #include "bullet.h"
 

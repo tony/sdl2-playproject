@@ -1,22 +1,9 @@
+#include "config.h"
 #include "game.h"
-#include "ship.h"
-#include "bullet.h"
-#include "util.h"
-#include <sstream>
-#include <memory>
-#include "spdlog/spdlog.h"
+#include "game_panel.h"
+#include "stats.h"
 
 namespace spd = spdlog;
-
-const int SCREEN_WIDTH = 630;
-const int SCREEN_HEIGHT = 480;
-
-const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
-    0, static_cast<int>(SCREEN_HEIGHT * .9), SCREEN_WIDTH,
-    static_cast<int>(SCREEN_HEIGHT * .1)};
-
-const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
-                                         static_cast<int>(SCREEN_HEIGHT * .9)};
 
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
@@ -59,21 +46,6 @@ void Game::MainLoop() {
 
 Input::Input() {
   keys = SDL_GetKeyboardState(nullptr);
-}
-
-GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
-                     SDL2pp::Renderer& renderer,
-                     SDL2pp::Font& font)
-    : stat_service(stat_service), renderer(renderer), font(font) {}
-
-void GamePanel::DrawStats() {
-  std::stringstream ship_text;
-  renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
-
-  ship_text << "health " << stat_service->ship->health << " / "
-            << stat_service->ship->health_max;
-  DrawText(ship_text.str(), 0, 0, font, renderer);
-  renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }
 
 void Game::HandleEvent(const SDL_Event* e, bool* quit) {

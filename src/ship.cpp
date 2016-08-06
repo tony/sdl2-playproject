@@ -1,10 +1,6 @@
-#include "game.h"
+#include "config.h"
 #include "ship.h"
-#include "bullet.h"
 #include "util.h"
-
-const int SHIP_SPRITE_W = 33;
-const int SHIP_SPRITE_H = 33;
 
 Ship::Ship(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
