@@ -17,9 +17,7 @@ const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_WIDTH,
 Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
       ship(std::make_shared<Ship>(renderer)),
-      stat_service(std::make_shared<StatService>(ship->stats.level,
-                                                 ship->stats.health,
-                                                 ship->stats.health_max)),
+      stat_service(std::make_shared<StatService>(ship->stats)),
       game_panel(std::make_shared<GamePanel>(stat_service, renderer, font)),
       bgTexture(SDL2pp::Texture(renderer,
                                 "resources/gfx/side-bg/green-mountain.png")),
@@ -68,8 +66,8 @@ void GamePanel::DrawStats() {
   std::stringstream ship_text;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
 
-  ship_text << "health " << stat_service->get_ship_health() << " / "
-            << stat_service->get_ship_health_max();
+  ship_text << "health " << stat_service->ship->health << " / "
+            << stat_service->ship->health_max;
   DrawText(ship_text.str(), 0, 0, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }

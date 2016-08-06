@@ -17,7 +17,8 @@ SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
 Ship::Ship(SDL2pp::Renderer& renderer,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
-    : Actor(renderer, position, velocity, "resources/gfx/modular_ships.png") {
+    : Actor(renderer, position, velocity, "resources/gfx/modular_ships.png"),
+      stats(std::make_shared<ShipStats>()) {
   sprite =
       LoadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
   subsprite[SHIP_STATE_DEFAULT] =

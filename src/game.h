@@ -52,29 +52,17 @@ enum ShipState {
   SHIP_STATE_TOTAL
 };
 
-typedef struct Stats {
+typedef struct ShipStats {
   int health = 100;
   int health_max = 100;
   int level = 1;
-} Stats;
+} ShipStats;
 
 class StatService {
  public:
-  StatService(int ship_level, int ship_health, int ship_health_max)
-      : ship_level(ship_level),
-        ship_health(ship_health),
-        ship_health_max(ship_health_max) {}
-  void set_ship_level(int level) { ship_level = level; };
-  void set_ship_health(int health) { ship_health = health; };
-  void set_ship_health_max(int health_max) { ship_health_max = health_max; };
-  int get_ship_level() const { return ship_level; };
-  int get_ship_health() const { return ship_health; };
-  int get_ship_health_max() const { return ship_health_max; };
-
- private:
-  int ship_level;
-  int ship_health;
-  int ship_health_max;
+  StatService(const std::shared_ptr<ShipStats>& ship_stats)
+      : ship(ship_stats) {}
+  const std::shared_ptr<ShipStats>& ship;
 };
 
 class Actor {
@@ -121,7 +109,7 @@ class Ship : public Actor {
        SDL2pp::Point velocity = {0, 0});
   void HandleEvents(const Uint8* currentKeyStates) override final;
   void Update() override final;
-  Stats stats = Stats();
+  std::shared_ptr<ShipStats> stats;
 
  private:
   const unsigned int shooting_delay = 80;
