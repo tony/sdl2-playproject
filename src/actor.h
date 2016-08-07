@@ -23,4 +23,5 @@ class Actor {
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
   SDL2pp::Texture sprite;
+  SDL2pp::Texture shadow = nullptr;
 };

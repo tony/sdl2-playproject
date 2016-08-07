@@ -7,6 +7,8 @@ Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
             "resources/gfx/m484BulletCollection1.png"} {
   sprite = LoadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
                           0, 0, 0);
+  shadow = LoadImageShadow(renderer, "resources/gfx/m484BulletCollection1.png",
+                           0, 0, 0);
   position.y += 12;
   position.x += 30;
   position.h = 9;
@@ -19,9 +21,19 @@ bool Bullet::InBounds() {
 
 void Bullet::HandleInput(const Uint8* currentKeyStates) {
   std::ignore = currentKeyStates;
+}
+
+void Bullet::Update() {
   position.x += velocity.x;
   position.y += velocity.y;
   if (InBounds()) {
+    auto shadow_dimensions = SDL2pp::Rect{12, 142, 3, 3};
+    auto shadow_position = position;
+    shadow_position.x += 1;
+    shadow_position.y += 1;
+
+    renderer.Copy(shadow, shadow_dimensions, shadow_position);
+
     renderer.Copy(sprite, SDL2pp::Rect{12, 142, 3, 3}, position);
   }
 }

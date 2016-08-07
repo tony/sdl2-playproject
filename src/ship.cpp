@@ -9,6 +9,8 @@ Ship::Ship(SDL2pp::Renderer& renderer,
       stats(std::make_shared<ShipStats>()) {
   sprite =
       LoadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
+  shadow = LoadImageShadow(renderer, "resources/gfx/modular_ships.png", 13, 107,
+                           178);
   subsprite[SHIP_STATE_DEFAULT] =
       SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
   subsprite[SHIP_STATE_WALK_UP] =
@@ -26,11 +28,14 @@ void Ship::Update() {
   auto shadow_position = position;
   shadow_position.x += 1;
   shadow_position.y += 1;
-  auto shadow = LoadImageShadow(renderer, "resources/gfx/modular_ships.png", 13,
-                                107, 178);
+
   renderer.Copy(shadow, shadow_dimensions, shadow_position);
 
   renderer.Copy(sprite, subsprite[state], position);
+
+  for (auto& bullet : bullets) {
+    bullet->Update();
+  }
 }
 
 void Ship::HandleInput(const Uint8* currentKeyStates) {
