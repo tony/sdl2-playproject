@@ -132,7 +132,7 @@ int main() {
     SDL2pp::SDLImage image(IMG_INIT_PNG);  // optional
 
     SDL2pp::Window window("sdl2-playproject", SDL_WINDOWPOS_CENTERED,
-                          SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,
+                          SDL_WINDOWPOS_CENTERED, SCREEN_RECT.w, SCREEN_RECT.h,
                           SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);

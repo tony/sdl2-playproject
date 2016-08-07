@@ -48,16 +48,16 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_A] != 0 ||
       currentKeyStates[SDL_SCANCODE_H] != 0) {
     state = SHIP_STATE_WALK_LEFT;
-    position.x = CLAMP(position.x - static_cast<int>(SCREEN_WIDTH * 0.01), 0,
-                       SCREEN_WIDTH - SHIP_SPRITE_W);
+    position.x = CLAMP(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+                       SCREEN_RECT.w - SHIP_SPRITE_W);
   }
 
   if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
       currentKeyStates[SDL_SCANCODE_D] != 0 ||
       currentKeyStates[SDL_SCANCODE_L] != 0) {
     state = SHIP_STATE_WALK_RIGHT;
-    position.x = CLAMP(position.x + static_cast<int>(SCREEN_WIDTH * 0.01), 0,
-                       SCREEN_WIDTH - SHIP_SPRITE_W);
+    position.x = CLAMP(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+                       SCREEN_RECT.w - SHIP_SPRITE_W);
   }
 
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
