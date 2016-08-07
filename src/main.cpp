@@ -1,4 +1,5 @@
 #include "config.h"
+#include "input.h"
 #include "game.h"
 #include "game_panel.h"
 
@@ -41,10 +42,6 @@ void Game::MainLoop() {
     renderer.Present();
     SDL_Delay(16);
   }
-}
-
-Input::Input() {
-  keys = SDL_GetKeyboardState(nullptr);
 }
 
 void Game::HandleEvent(const SDL_Event* e, bool* quit) {

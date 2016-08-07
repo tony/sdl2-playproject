@@ -22,12 +22,6 @@ class Ship;
 class StatService;
 struct ShipStats;
 
-class Input {
- public:
-  Input();
-  const Uint8* keys;
-};
-
 class Game {
  public:
   Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console);
