@@ -22,6 +22,14 @@ Ship::Ship(SDL2pp::Renderer& renderer,
 }
 
 void Ship::Update() {
+  auto shadow_dimensions = subsprite[state];
+  auto shadow_position = position;
+  shadow_position.x += 1;
+  shadow_position.y += 1;
+  auto shadow = LoadImageShadow(renderer, "resources/gfx/modular_ships.png", 13,
+                                107, 178);
+  renderer.Copy(shadow, shadow_dimensions, shadow_position);
+
   renderer.Copy(sprite, subsprite[state], position);
 }
 

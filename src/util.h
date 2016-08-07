@@ -21,4 +21,10 @@ SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
                                Uint8 g,
                                Uint8 b);
 
+SDL2pp::Texture LoadImageShadow(SDL2pp::Renderer& renderer,
+                                std::string spritePath,
+                                Uint8 r,
+                                Uint8 g,
+                                Uint8 b);
+
 std::string GetFullPath(const char* path);
