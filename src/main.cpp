@@ -28,7 +28,7 @@ void Game::MainLoop() {
   console.info("Game update.");
   while (!quit) {
     renderer.Clear();
-    renderer.SetViewport(MAIN_VIEWPORT_RECT);
+    renderer.SetViewport(SCREEN_RECT);
     renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
     if (SDL_PollEvent(&e) != 0) {
       HandleEvent(&e, &quit);
@@ -133,7 +133,7 @@ int main() {
                           SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 36);
+    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
 
     Game game(renderer, font, *console);
     game.MainLoop();

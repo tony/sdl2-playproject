@@ -15,6 +15,6 @@ void GamePanel::DrawStats() {
 
   ship_text << "health " << stat_service->ship->health << " / "
             << stat_service->ship->health_max;
-  DrawText(ship_text.str(), 0, 0, font, renderer);
+  DrawText(ship_text.str(), 5, 25, font, renderer);
   renderer.SetViewport(MAIN_VIEWPORT_RECT);
 }

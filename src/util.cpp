@@ -17,7 +17,7 @@ void DrawText(const std::string text,
   auto message_texture = SDL2pp::Texture(renderer, message);
   auto message_texture_shadow = SDL2pp::Texture(renderer, message_shadow);
 
-  SDL2pp::Rect message_shadow_rect = {x + 2, y + 2, message_shadow.GetWidth(),
+  SDL2pp::Rect message_shadow_rect = {x + 1, y + 1, message_shadow.GetWidth(),
                                       message_shadow.GetHeight()};
   renderer.Copy(message_texture_shadow, SDL2pp::NullOpt, message_shadow_rect);
 
