@@ -11,7 +11,6 @@ class Bullet : public Actor {
          SDL2pp::Rect position,
          SDL2pp::Point velocity);
   bool InBounds();
-  void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
 
  private:

@@ -90,9 +90,6 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       ++it;
     }
   }
-  for (auto& bullet : bullets) {
-    bullet->HandleInput(currentKeyStates);
-  }
 }
 
 void Ship::SpawnBullet() {

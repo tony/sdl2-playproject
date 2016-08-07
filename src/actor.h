@@ -16,7 +16,9 @@ class Actor {
   Actor& operator=(const Actor&) = delete;
 
  protected:
-  virtual void HandleInput(const Uint8* currentKeyStates) = 0;
+  virtual void HandleInput(const Uint8* currentKeyStates) {
+    std::ignore = currentKeyStates;
+  }
   virtual void Update(){};
 
   SDL2pp::Renderer& renderer;

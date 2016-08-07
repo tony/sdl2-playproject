@@ -19,10 +19,6 @@ bool Bullet::InBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);
 }
 
-void Bullet::HandleInput(const Uint8* currentKeyStates) {
-  std::ignore = currentKeyStates;
-}
-
 void Bullet::Update() {
   position.x += velocity.x;
   position.y += velocity.y;
