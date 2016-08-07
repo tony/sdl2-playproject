@@ -31,7 +31,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_K] != 0) {
     state = SHIP_STATE_WALK_UP;
     position.y =
-        CLAMP(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
+        clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
   }
 
@@ -40,7 +40,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_J] != 0) {
     state = SHIP_STATE_WALK_DOWN;
     position.y =
-        CLAMP(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
+        clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
   }
 
@@ -48,7 +48,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_A] != 0 ||
       currentKeyStates[SDL_SCANCODE_H] != 0) {
     state = SHIP_STATE_WALK_LEFT;
-    position.x = CLAMP(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+    position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - SHIP_SPRITE_W);
   }
 
@@ -56,7 +56,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_D] != 0 ||
       currentKeyStates[SDL_SCANCODE_L] != 0) {
     state = SHIP_STATE_WALK_RIGHT;
-    position.x = CLAMP(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+    position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - SHIP_SPRITE_W);
   }
 
