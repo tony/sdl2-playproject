@@ -3,8 +3,11 @@
 #include "resource.h"
 #include "util.h"
 
-Bullet::Bullet(SDL2pp::Renderer& renderer, SDL2pp::Rect p, SDL2pp::Point v)
-    : Actor{renderer, std::move(p), std::move(v),
+Bullet::Bullet(SDL2pp::Renderer& renderer,
+               const std::shared_ptr<ResourceManager>& resource_manager,
+               SDL2pp::Rect p,
+               SDL2pp::Point v)
+    : Actor{renderer, resource_manager, std::move(p), std::move(v),
             "resources/gfx/m484BulletCollection1.png"} {
   sprite = LoadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
                           0, 0, 0);

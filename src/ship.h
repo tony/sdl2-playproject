@@ -5,6 +5,7 @@
 #include <vector>
 #include "actor.h"
 #include "bullet.h"
+#include "resource.h"
 
 enum ShipState {
   SHIP_STATE_DEFAULT,
@@ -24,6 +25,7 @@ typedef struct ShipStats {
 class Ship : public Actor {
  public:
   Ship(SDL2pp::Renderer& renderer,
+       const std::shared_ptr<ResourceManager>& resource_manager,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
   void HandleInput(const Uint8* currentKeyStates) override final;

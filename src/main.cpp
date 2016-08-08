@@ -11,7 +11,7 @@ Game::Game(SDL2pp::Renderer& renderer,
            spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
       resource_manager(resource_manager),
-      ship(std::make_shared<Ship>(renderer)),
+      ship(std::make_shared<Ship>(renderer, resource_manager)),
       stat_service(std::make_shared<StatService>(ship->stats)),
       game_panel(std::make_shared<GamePanel>(stat_service,
                                              renderer,

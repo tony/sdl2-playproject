@@ -4,9 +4,14 @@
 #include "util.h"
 
 Ship::Ship(SDL2pp::Renderer& renderer,
+           const std::shared_ptr<ResourceManager>& resource_manager,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
-    : Actor(renderer, position, velocity, "resources/gfx/modular_ships.png"),
+    : Actor(renderer,
+            resource_manager,
+            position,
+            velocity,
+            "resources/gfx/modular_ships.png"),
       stats(std::make_shared<ShipStats>()) {
   sprite =
       LoadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
@@ -95,6 +100,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
-    bullets.push_back(new Bullet(renderer, position, velocity));
+    bullets.push_back(
+        new Bullet(renderer, resource_manager, position, velocity));
   }
 }

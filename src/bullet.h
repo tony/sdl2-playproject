@@ -4,10 +4,12 @@
 #include <SDL2pp/SDL2pp.hh>
 #include <memory>
 #include "actor.h"
+#include "resource.h"
 
 class Bullet : public Actor {
  public:
   Bullet(SDL2pp::Renderer& renderer,
+         const std::shared_ptr<ResourceManager>& resource_manager,
          SDL2pp::Rect position,
          SDL2pp::Point velocity);
   bool InBounds();
