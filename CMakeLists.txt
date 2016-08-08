@@ -44,9 +44,10 @@ find_package(SDL2_Image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(Threads)
 
-file (GLOB_RECURSE MY_PROJECT_GFX_RESOURCES resources/*)
-message(STATUS ${MY_PROJECT_GFX_RESOURCES})
-file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources)
+file (GLOB MY_PROJECT_GFX_RESOURCES resources/gfx/*)
+file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources/gfx)
+file (GLOB MY_PROJECT_FONTS_RESOURCES resources/fonts/*)
+file (COPY ${MY_PROJECT_FONTS_RESOURCES} DESTINATION resources/fonts)
 
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
