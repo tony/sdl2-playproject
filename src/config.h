@@ -3,8 +3,6 @@
 #include <SDL2pp/Rect.hh>
 
 const int SHIP_MAX_BULLETS = 80;
-const int SHIP_SPRITE_W = 33;
-const int SHIP_SPRITE_H = 33;
 
 const SDL2pp::Rect SCREEN_RECT = {0, 0, 630, 480};
 

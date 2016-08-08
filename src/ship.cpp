@@ -11,7 +11,7 @@ Ship::Ship(SDL2pp::Renderer& renderer,
             resource_manager,
             position,
             velocity,
-            SDL2pp::Rect{126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H}),
+            SDL2pp::Rect{126, 79, 33, 33}),
       stats(std::make_shared<ShipStats>()) {
   sprite =
       SDL2pp::Texture(renderer, *resource_manager->GetSurface("modular_ships"));
@@ -46,7 +46,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
     state = ShipState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
+              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
   }
 
   if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ||
@@ -55,7 +55,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
     state = ShipState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
+              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
   }
 
   if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 ||
@@ -63,7 +63,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_H] != 0) {
     state = ShipState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - SHIP_SPRITE_W);
+                       SCREEN_RECT.w - subsprite_rect.w);
   }
 
   if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
@@ -71,7 +71,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
       currentKeyStates[SDL_SCANCODE_L] != 0) {
     state = ShipState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - SHIP_SPRITE_W);
+                       SCREEN_RECT.w - subsprite_rect.w);
   }
 
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
