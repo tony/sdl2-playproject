@@ -17,8 +17,8 @@ typedef struct ShipStats {
 
 class Ship : public Actor {
  public:
-  Ship(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-       const std::shared_ptr<ResourceManager>& resource_manager,
+  Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+       const std::unique_ptr<ResourceManager>& resource_manager,
        SDL2pp::Rect position = {0, 0, 30, 30},
        SDL2pp::Point velocity = {0, 0});
   void HandleInput(const Uint8* currentKeyStates) override final;

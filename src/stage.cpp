@@ -1,7 +1,7 @@
 #include "stage.h"
 
-LevelStage::LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-                       const std::shared_ptr<ResourceManager>& resource_manager,
+LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                       const std::unique_ptr<ResourceManager>& resource_manager,
                        const std::shared_ptr<StatService>& stat_service)
     : renderer(renderer), bg_texture(resource_manager->GetTexture("bg1")) {
   game_panel =

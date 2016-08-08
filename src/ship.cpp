@@ -3,8 +3,8 @@
 #include "ship.h"
 #include "util.h"
 
-Ship::Ship(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-           const std::shared_ptr<ResourceManager>& resource_manager,
+Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+           const std::unique_ptr<ResourceManager>& resource_manager,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
     : Actor(renderer,

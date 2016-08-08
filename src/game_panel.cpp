@@ -5,8 +5,8 @@
 #include "util.h"
 
 GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
-                     const std::shared_ptr<SDL2pp::Renderer>& renderer,
-                     const std::shared_ptr<ResourceManager>& resource_manager)
+                     const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                     const std::unique_ptr<ResourceManager>& resource_manager)
     : stat_service(stat_service),
       renderer(renderer),
       resource_manager(resource_manager) {}

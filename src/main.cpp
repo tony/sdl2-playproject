@@ -6,8 +6,8 @@
 
 namespace spd = spdlog;
 
-Game::Game(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-           const std::shared_ptr<ResourceManager>& resource_manager,
+Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+           const std::unique_ptr<ResourceManager>& resource_manager,
            spd::logger& console)
     : renderer(renderer),
       resource_manager(resource_manager),
@@ -131,11 +131,11 @@ int main() {
                           SDL_WINDOWPOS_CENTERED, SCREEN_RECT.w, SCREEN_RECT.h,
                           SDL_WINDOW_RESIZABLE);
 
-    auto renderer = std::make_shared<SDL2pp::Renderer>(
+    auto renderer = std::make_unique<SDL2pp::Renderer>(
         window, -1, SDL_RENDERER_ACCELERATED);
 
     // add resources
-    auto resource_manager = std::make_shared<ResourceManager>();
+    auto resource_manager = std::make_unique<ResourceManager>();
 
     SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
     resource_manager->AddFont("terminus-18", font);

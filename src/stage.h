@@ -15,14 +15,14 @@ class Stage {
 
 class LevelStage : Stage {
  public:
-  LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-             const std::shared_ptr<ResourceManager>& resource_manager,
+  LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+             const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<StatService>& stat_service);
   void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
 
  private:
-  const std::shared_ptr<SDL2pp::Renderer>& renderer;
+  const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::shared_ptr<SDL2pp::Texture>& bg_texture;
   std::shared_ptr<Ship> ship;
   std::shared_ptr<ResourceManager> resource_manager;
