@@ -18,9 +18,6 @@ Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
 }
 
-Game::~Game() {
-}
-
 void Game::MainLoop() {
   auto stage =
       std::make_unique<LevelStage>(renderer, resource_manager, stat_service);

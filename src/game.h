@@ -27,7 +27,6 @@ class Game {
   Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
        const std::unique_ptr<ResourceManager>& resource_manager,
        spd::logger& console);
-  ~Game();
   void MainLoop();
 
  private:
