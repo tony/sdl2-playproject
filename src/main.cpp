@@ -3,6 +3,7 @@
 #include "game.h"
 #include "game_panel.h"
 #include "resource.h"
+#include "stage.h"
 
 namespace spd = spdlog;
 
@@ -11,13 +12,7 @@ Game::Game(SDL2pp::Renderer& renderer,
            spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
       resource_manager(resource_manager),
-      ship(std::make_shared<Ship>(renderer, resource_manager)),
-      stat_service(std::make_shared<StatService>(ship->stats)),
-      game_panel(std::make_shared<GamePanel>(stat_service,
-                                             renderer,
-                                             resource_manager)),
-      bgTexture(SDL2pp::Texture(renderer,
-                                "resources/gfx/side-bg/green-mountain.png")),
+      stat_service(std::make_shared<StatService>()),
       input(std::make_shared<Input>()),
       console(console) {
   console.info("Game started.");
@@ -32,19 +27,17 @@ Game::~Game() {
 }
 
 void Game::MainLoop() {
-  console.info("Game update.");
+  auto stage = new Stage(renderer, resource_manager, stat_service, console);
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(SCREEN_RECT);
-    renderer.Copy(bgTexture, SDL2pp::NullOpt, SDL2pp::NullOpt);
+
     if (SDL_PollEvent(&e) != 0) {
       HandleEvent(&e, &quit);
     }
 
-    ship->HandleInput(input->keys);
-    ship->Update();
-
-    game_panel->DrawStats();
+    stage->HandleInput(input->keys);
+    stage->Update();
 
     renderer.Present();
     SDL_Delay(16);

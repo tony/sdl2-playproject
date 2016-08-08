@@ -33,13 +33,10 @@ class Game {
  private:
   SDL2pp::Renderer& renderer;
   std::shared_ptr<ResourceManager> resource_manager;
-  std::shared_ptr<Ship> ship;
   std::shared_ptr<StatService> stat_service;
-  std::shared_ptr<GamePanel> game_panel;
   SDL_Event e;
   bool quit = false;
   void HandleEvent(const SDL_Event* e, bool* quit);
-  SDL2pp::Texture bgTexture;
   std::shared_ptr<Input> input;
   spd::logger& console;
 };
