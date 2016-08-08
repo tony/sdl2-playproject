@@ -35,7 +35,7 @@ class Ship : public Actor {
  private:
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprite;
+  std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprites;
   enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
   std::vector<Bullet*> bullets;
   Uint32 last_shot = 0;

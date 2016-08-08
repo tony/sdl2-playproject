@@ -8,11 +8,13 @@ class Actor {
   Actor(SDL2pp::Renderer& renderer,
         const std::shared_ptr<ResourceManager>& resource_manager,
         SDL2pp::Rect position,
-        SDL2pp::Point velocity)
+        SDL2pp::Point velocity,
+        SDL2pp::Rect subsprite_rect)
       : renderer(renderer),
         resource_manager(resource_manager),
         position(position),
-        velocity(velocity) {}
+        velocity(velocity),
+        subsprite_rect(subsprite_rect) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
 
@@ -26,7 +28,7 @@ class Actor {
   const std::shared_ptr<ResourceManager>& resource_manager;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
-  SDL2pp::Optional<SDL2pp::Rect> subsprite_rect;
+  SDL2pp::Rect subsprite_rect;
   SDL2pp::Texture sprite = nullptr;
   SDL2pp::Texture shadow = nullptr;
 };

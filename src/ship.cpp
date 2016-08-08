@@ -7,33 +7,32 @@ Ship::Ship(SDL2pp::Renderer& renderer,
            const std::shared_ptr<ResourceManager>& resource_manager,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
-    : Actor(renderer, resource_manager, position, velocity),
+    : Actor(renderer,
+            resource_manager,
+            position,
+            velocity,
+            SDL2pp::Rect{126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H}),
       stats(std::make_shared<ShipStats>()) {
   sprite =
       SDL2pp::Texture(renderer, *resource_manager->GetSurface("modular_ships"));
   shadow = SDL2pp::Texture(
       renderer, *resource_manager->GetSurface("modular_ships_tinted"));
-  subsprite[SHIP_STATE_DEFAULT] =
-      SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
-  subsprite[SHIP_STATE_WALK_UP] =
-      SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
-  subsprite[SHIP_STATE_WALK_DOWN] =
-      SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
-  subsprite[SHIP_STATE_WALK_LEFT] =
-      SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
-  subsprite[SHIP_STATE_WALK_RIGHT] =
-      SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
+  subsprites[SHIP_STATE_DEFAULT] = subsprite_rect;
+  subsprites[SHIP_STATE_WALK_UP] = subsprite_rect;
+  subsprites[SHIP_STATE_WALK_DOWN] = subsprite_rect;
+  subsprites[SHIP_STATE_WALK_LEFT] = subsprite_rect;
+  subsprites[SHIP_STATE_WALK_RIGHT] = subsprite_rect;
 }
 
 void Ship::Update() {
-  auto shadow_dimensions = subsprite[state];
+  auto shadow_dimensions = subsprites[state];
   auto shadow_position = position;
   shadow_position.x += 1;
   shadow_position.y += 1;
 
   renderer.Copy(shadow, shadow_dimensions, shadow_position);
 
-  renderer.Copy(sprite, subsprite[state], position);
+  renderer.Copy(sprite, subsprites[state], position);
 
   for (auto& bullet : bullets) {
     bullet->Update();
