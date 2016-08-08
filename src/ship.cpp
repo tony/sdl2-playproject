@@ -81,14 +81,9 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   }
 
   // bullet drawing and clean up
-  auto it = bullets.begin();
-  while (it != bullets.end()) {
-    if (!(**it).InBounds()) {
-      it = bullets.erase(it);
-    } else {
-      ++it;
-    }
-  }
+  bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+                               [](auto& b) { return !b->InBounds(); }),
+                bullets.end());
 }
 
 void Ship::SpawnBullet() {

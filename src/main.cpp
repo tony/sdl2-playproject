@@ -16,7 +16,6 @@ Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       console(console) {
   console.info("Game started.");
   renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
-  std::ignore = resource_manager;
 }
 
 Game::~Game() {
