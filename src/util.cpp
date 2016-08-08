@@ -30,29 +30,3 @@ std::string GetFullPath(const char* path) {
   std::string full_path = std::string(base_path) + std::string(path);
   return full_path;
 }
-
-SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string spritePath,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b) {
-  auto surface = SDL2pp::Surface(spritePath);
-  surface.SetBlendMode(SDL_BLENDMODE_NONE);
-  surface.SetColorKey(true, SDL_MapRGB(&surface.Lock().GetFormat(), r, g, b));
-  auto image = SDL2pp::Texture(renderer, surface);
-  return image;
-}
-
-SDL2pp::Texture LoadImageShadow(SDL2pp::Renderer& renderer,
-                                std::string spritePath,
-                                Uint8 r,
-                                Uint8 g,
-                                Uint8 b) {
-  auto surface = SDL2pp::Surface(spritePath);
-  surface.SetBlendMode(SDL_BLENDMODE_NONE);
-  surface.SetColorKey(true, SDL_MapRGB(&surface.Lock().GetFormat(), r, g, b));
-  surface.SetColorMod(0, 0, 0);
-  surface.SetAlphaMod(205);
-  auto image = SDL2pp::Texture(renderer, surface);
-  return image;
-}

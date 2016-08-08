@@ -15,16 +15,4 @@ void DrawText(const std::string text,
               SDL2pp::Font& font,
               SDL2pp::Renderer& renderer);
 
-SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string spritePath,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b);
-
-SDL2pp::Texture LoadImageShadow(SDL2pp::Renderer& renderer,
-                                std::string spritePath,
-                                Uint8 r,
-                                Uint8 g,
-                                Uint8 b);
-
 std::string GetFullPath(const char* path);

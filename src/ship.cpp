@@ -1,4 +1,5 @@
 #include "config.h"
+#include "resource.h"
 #include "ship.h"
 #include "util.h"
 

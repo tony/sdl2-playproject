@@ -2,19 +2,26 @@
 #include "input.h"
 #include "game.h"
 #include "game_panel.h"
+#include "resource.h"
 
 namespace spd = spdlog;
 
-Game::Game(SDL2pp::Renderer& renderer, SDL2pp::Font& font, spd::logger& console)
+Game::Game(SDL2pp::Renderer& renderer,
+           std::shared_ptr<ResourceManager> resource_manager,
+           spd::logger& console)
     : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
+      resource_manager(resource_manager),
       ship(std::make_shared<Ship>(renderer)),
       stat_service(std::make_shared<StatService>(ship->stats)),
-      game_panel(std::make_shared<GamePanel>(stat_service, renderer, font)),
+      game_panel(std::make_shared<GamePanel>(stat_service,
+                                             renderer,
+                                             resource_manager)),
       bgTexture(SDL2pp::Texture(renderer,
                                 "resources/gfx/side-bg/green-mountain.png")),
       input(std::make_shared<Input>()),
       console(console) {
   console.info("Game started.");
+  std::ignore = resource_manager;
 }
 
 Game::~Game() {
@@ -133,9 +140,17 @@ int main() {
                           SDL_WINDOW_RESIZABLE);
 
     SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
-    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
 
-    Game game(renderer, font, *console);
+    // add resources
+    auto resource_manager = std::make_shared<ResourceManager>();
+
+    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
+    resource_manager->AddFont("terminus-18", font);
+
+    resource_manager->AddSurface("bg1",
+                                 "resources/gfx/side-bg/green-mountain.png");
+
+    Game game(renderer, resource_manager, *console);
     game.MainLoop();
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed

@@ -4,16 +4,17 @@
 #include <SDL2pp/Font.hh>
 #include <memory>
 #include "stats.h"
+#include "resource.h"
 
 class GamePanel {
  public:
   GamePanel(const std::shared_ptr<StatService>& stat_service,
             SDL2pp::Renderer& renderer,
-            SDL2pp::Font& font);
+            const std::shared_ptr<ResourceManager>& resource_manager);
   void DrawStats();
   const std::shared_ptr<StatService>& stat_service;
 
  private:
   SDL2pp::Renderer& renderer;
-  SDL2pp::Font& font;
+  const std::shared_ptr<ResourceManager>& resource_manager;
 };
