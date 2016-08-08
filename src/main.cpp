@@ -149,6 +149,15 @@ int main() {
 
     resource_manager->AddSurface("bg1",
                                  "resources/gfx/side-bg/green-mountain.png");
+    resource_manager->AddSurfaceWithTransparency(
+        "modular_ships", "resources/gfx/modular_ships.png", 13, 107, 178);
+    resource_manager->AddSurfaceWithTransparencyAndTint(
+        "modular_ships_tinted", "resources/gfx/modular_ships.png", 13, 107,
+        178);
+    resource_manager->AddSurfaceWithTransparency(
+        "bullets1", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
+    resource_manager->AddSurfaceWithTransparencyAndTint(
+        "bullets1_tinted", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
 
     Game game(renderer, resource_manager, *console);
     game.MainLoop();

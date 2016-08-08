@@ -7,16 +7,12 @@ Ship::Ship(SDL2pp::Renderer& renderer,
            const std::shared_ptr<ResourceManager>& resource_manager,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
-    : Actor(renderer,
-            resource_manager,
-            position,
-            velocity,
-            "resources/gfx/modular_ships.png"),
+    : Actor(renderer, resource_manager, position, velocity),
       stats(std::make_shared<ShipStats>()) {
   sprite =
-      LoadImageAlpha(renderer, "resources/gfx/modular_ships.png", 13, 107, 178);
-  shadow = LoadImageShadow(renderer, "resources/gfx/modular_ships.png", 13, 107,
-                           178);
+      SDL2pp::Texture(renderer, *resource_manager->GetSurface("modular_ships"));
+  shadow = SDL2pp::Texture(
+      renderer, *resource_manager->GetSurface("modular_ships_tinted"));
   subsprite[SHIP_STATE_DEFAULT] =
       SDL2pp::Rect(126, 79, SHIP_SPRITE_W, SHIP_SPRITE_H);
   subsprite[SHIP_STATE_WALK_UP] =

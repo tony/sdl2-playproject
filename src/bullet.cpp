@@ -7,12 +7,11 @@ Bullet::Bullet(SDL2pp::Renderer& renderer,
                const std::shared_ptr<ResourceManager>& resource_manager,
                SDL2pp::Rect p,
                SDL2pp::Point v)
-    : Actor{renderer, resource_manager, std::move(p), std::move(v),
-            "resources/gfx/m484BulletCollection1.png"} {
-  sprite = LoadImageAlpha(renderer, "resources/gfx/m484BulletCollection1.png",
-                          0, 0, 0);
-  shadow = LoadImageShadow(renderer, "resources/gfx/m484BulletCollection1.png",
-                           0, 0, 0);
+    : Actor{renderer, resource_manager, std::move(p), std::move(v)} {
+  shadow = SDL2pp::Texture(renderer,
+                           *resource_manager->GetSurface("bullets1_tinted"));
+  sprite = SDL2pp::Texture(renderer, *resource_manager->GetSurface("bullets1"));
+
   position.y += 12;
   position.x += 30;
   position.h = 9;

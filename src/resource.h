@@ -10,6 +10,16 @@ class ResourceManager {
  public:
   ResourceManager();
   void AddSurface(std::string key, std::string file_path);
+  void AddSurfaceWithTransparency(std::string key,
+                                  std::string file_path,
+                                  Uint8 r,
+                                  Uint8 g,
+                                  Uint8 b);
+  void AddSurfaceWithTransparencyAndTint(std::string key,
+                                         std::string file_path,
+                                         Uint8 r,
+                                         Uint8 g,
+                                         Uint8 b);
   std::shared_ptr<SDL2pp::Surface> GetSurface(std::string key) const {
     return surfaces_.at(key);
   }
@@ -27,15 +37,3 @@ class ResourceManager {
   std::map<std::string, std::shared_ptr<SDL2pp::Texture>> textures_;
   std::map<std::string, std::shared_ptr<SDL2pp::Surface>> surfaces_;
 };
-
-SDL2pp::Texture LoadImageAlpha(SDL2pp::Renderer& renderer,
-                               std::string sprite_path,
-                               Uint8 r,
-                               Uint8 g,
-                               Uint8 b);
-
-SDL2pp::Texture LoadImageShadow(SDL2pp::Renderer& renderer,
-                                std::string sprite_path,
-                                Uint8 r,
-                                Uint8 g,
-                                Uint8 b);
