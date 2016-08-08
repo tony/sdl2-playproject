@@ -19,8 +19,6 @@ Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 }
 
 Game::~Game() {
-  IMG_Quit();
-  SDL_Quit();
 }
 
 void Game::MainLoop() {
@@ -170,8 +168,13 @@ int main() {
         "bullets1",
         SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
 
-    Game game(renderer, resource_manager, *console);
-    game.MainLoop();
+    auto game = std::make_unique<Game>(renderer, resource_manager, *console);
+    game->MainLoop();
+    resource_manager = nullptr;
+    font = nullptr;
+    renderer = nullptr;
+    IMG_Quit();
+    SDL_Quit();
   } catch (SDL2pp::Exception& e) {
     // Exception stores SDL_GetError() result and name of function which failed
     std::cerr << "Error in: " << e.GetSDLFunction() << std::endl;
@@ -180,5 +183,6 @@ int main() {
     // This also works (e.g. "SDL_Init failed: No available video device")
     std::cerr << e.what() << std::endl;
   }
+
   return 0;
 }
