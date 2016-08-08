@@ -6,21 +6,20 @@
 
 namespace spd = spdlog;
 
-Game::Game(SDL2pp::Renderer& renderer,
-           std::shared_ptr<ResourceManager> resource_manager,
+Game::Game(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+           const std::shared_ptr<ResourceManager>& resource_manager,
            spd::logger& console)
-    : renderer(renderer.SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF)),
+    : renderer(renderer),
       resource_manager(resource_manager),
       stat_service(std::make_shared<StatService>()),
       input(std::make_shared<Input>()),
       console(console) {
   console.info("Game started.");
+  renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
   std::ignore = resource_manager;
 }
 
 Game::~Game() {
-  renderer = nullptr;
-
   IMG_Quit();
   SDL_Quit();
 }
@@ -29,8 +28,8 @@ void Game::MainLoop() {
   auto stage =
       std::make_unique<LevelStage>(renderer, resource_manager, stat_service);
   while (!quit) {
-    renderer.Clear();
-    renderer.SetViewport(SCREEN_RECT);
+    renderer->Clear();
+    renderer->SetViewport(SCREEN_RECT);
 
     if (SDL_PollEvent(&e) != 0) {
       HandleEvent(&e, &quit);
@@ -39,7 +38,7 @@ void Game::MainLoop() {
     stage->HandleInput(input->keys);
     stage->Update();
 
-    renderer.Present();
+    renderer->Present();
     SDL_Delay(16);
   }
 }
@@ -132,7 +131,8 @@ int main() {
                           SDL_WINDOWPOS_CENTERED, SCREEN_RECT.w, SCREEN_RECT.h,
                           SDL_WINDOW_RESIZABLE);
 
-    SDL2pp::Renderer renderer(window, -1, SDL_RENDERER_ACCELERATED);
+    auto renderer = std::make_shared<SDL2pp::Renderer>(
+        window, -1, SDL_RENDERER_ACCELERATED);
 
     // add resources
     auto resource_manager = std::make_shared<ResourceManager>();
@@ -153,22 +153,23 @@ int main() {
         "bullets1_tinted", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
 
     resource_manager->AddTexture(
-        "bg1", SDL2pp::Texture(renderer, *resource_manager->GetSurface("bg1")));
+        "bg1",
+        SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
     resource_manager->AddTexture(
         "modular_ships",
-        SDL2pp::Texture(renderer,
+        SDL2pp::Texture(*renderer,
                         *resource_manager->GetSurface("modular_ships")));
     resource_manager->AddTexture(
         "modular_ships_tinted",
-        SDL2pp::Texture(renderer,
+        SDL2pp::Texture(*renderer,
                         *resource_manager->GetSurface("modular_ships_tinted")));
     resource_manager->AddTexture(
         "bullets1_tinted",
-        SDL2pp::Texture(renderer,
+        SDL2pp::Texture(*renderer,
                         *resource_manager->GetSurface("bullets1_tinted")));
     resource_manager->AddTexture(
         "bullets1",
-        SDL2pp::Texture(renderer, *resource_manager->GetSurface("bullets1")));
+        SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
 
     Game game(renderer, resource_manager, *console);
     game.MainLoop();

@@ -5,7 +5,7 @@
 
 class Actor {
  public:
-  Actor(SDL2pp::Renderer& renderer,
+  Actor(const std::shared_ptr<SDL2pp::Renderer>& renderer,
         const std::shared_ptr<ResourceManager>& resource_manager,
         SDL2pp::Rect position,
         SDL2pp::Point velocity,
@@ -28,7 +28,7 @@ class Actor {
   }
   virtual void Update(){};
 
-  SDL2pp::Renderer& renderer;
+  const std::shared_ptr<SDL2pp::Renderer>& renderer;
   const std::shared_ptr<ResourceManager>& resource_manager;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;

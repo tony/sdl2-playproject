@@ -3,7 +3,7 @@
 #include "ship.h"
 #include "util.h"
 
-Ship::Ship(SDL2pp::Renderer& renderer,
+Ship::Ship(const std::shared_ptr<SDL2pp::Renderer>& renderer,
            const std::shared_ptr<ResourceManager>& resource_manager,
            SDL2pp::Rect position,
            SDL2pp::Point velocity)
@@ -28,9 +28,9 @@ void Ship::Update() {
   shadow_position.x += 1;
   shadow_position.y += 1;
 
-  renderer.Copy(*shadow, shadow_dimensions, shadow_position);
+  renderer->Copy(*shadow, shadow_dimensions, shadow_position);
 
-  renderer.Copy(*sprite, subsprites[state], position);
+  renderer->Copy(*sprite, subsprites[state], position);
 
   for (auto& bullet : bullets) {
     bullet->Update();

@@ -1,7 +1,7 @@
 #include "bullet.h"
 #include "config.h"
 
-Bullet::Bullet(SDL2pp::Renderer& renderer,
+Bullet::Bullet(const std::shared_ptr<SDL2pp::Renderer>& renderer,
                const std::shared_ptr<ResourceManager>& resource_manager,
                SDL2pp::Rect p,
                SDL2pp::Point v)
@@ -31,8 +31,8 @@ void Bullet::Update() {
     shadow_position.x += 1;
     shadow_position.y += 1;
 
-    renderer.Copy(*shadow, shadow_dimensions, shadow_position);
+    renderer->Copy(*shadow, shadow_dimensions, shadow_position);
 
-    renderer.Copy(*sprite, subsprite_rect, position);
+    renderer->Copy(*sprite, subsprite_rect, position);
   }
 }

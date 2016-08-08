@@ -8,7 +8,7 @@
 
 class Bullet : public Actor {
  public:
-  Bullet(SDL2pp::Renderer& renderer,
+  Bullet(const std::shared_ptr<SDL2pp::Renderer>& renderer,
          const std::shared_ptr<ResourceManager>& resource_manager,
          SDL2pp::Rect position,
          SDL2pp::Point velocity);

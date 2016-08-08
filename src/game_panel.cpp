@@ -5,7 +5,7 @@
 #include "util.h"
 
 GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
-                     SDL2pp::Renderer& renderer,
+                     const std::shared_ptr<SDL2pp::Renderer>& renderer,
                      const std::shared_ptr<ResourceManager>& resource_manager)
     : stat_service(stat_service),
       renderer(renderer),
@@ -17,11 +17,11 @@ void GamePanel::Update() {
 
 void GamePanel::DrawStats() {
   std::stringstream ship_text;
-  renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
+  renderer->SetViewport(BOTTOM_VIEWPORT_RECT);
 
   ship_text << "health " << stat_service->ship->health << " / "
             << stat_service->ship->health_max;
-  DrawText(ship_text.str(), 5, 25, *resource_manager->GetFont("terminus-18"),
+  DrawText(ship_text.str(), 5, 25, resource_manager->GetFont("terminus-18"),
            renderer);
-  renderer.SetViewport(MAIN_VIEWPORT_RECT);
+  renderer->SetViewport(MAIN_VIEWPORT_RECT);
 }

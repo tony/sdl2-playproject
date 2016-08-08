@@ -1,7 +1,7 @@
 #include "stage.h"
 
-LevelStage::LevelStage(SDL2pp::Renderer& renderer,
-                       std::shared_ptr<ResourceManager> resource_manager,
+LevelStage::LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+                       const std::shared_ptr<ResourceManager>& resource_manager,
                        const std::shared_ptr<StatService>& stat_service)
     : renderer(renderer), bg_texture(resource_manager->GetTexture("bg1")) {
   game_panel =
@@ -15,7 +15,7 @@ void LevelStage::HandleInput(const Uint8* currentKeyStates) {
 }
 
 void LevelStage::Update() {
-  renderer.Copy(*bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
+  renderer->Copy(*bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
   game_panel->Update();
   ship->Update();
 }
