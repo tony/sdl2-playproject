@@ -17,11 +17,11 @@ Ship::Ship(SDL2pp::Renderer& renderer,
       SDL2pp::Texture(renderer, *resource_manager->GetSurface("modular_ships"));
   shadow = SDL2pp::Texture(
       renderer, *resource_manager->GetSurface("modular_ships_tinted"));
-  subsprites[SHIP_STATE_DEFAULT] = subsprite_rect;
-  subsprites[SHIP_STATE_WALK_UP] = subsprite_rect;
-  subsprites[SHIP_STATE_WALK_DOWN] = subsprite_rect;
-  subsprites[SHIP_STATE_WALK_LEFT] = subsprite_rect;
-  subsprites[SHIP_STATE_WALK_RIGHT] = subsprite_rect;
+  subsprites[ShipState::DEFAULT] = subsprite_rect;
+  subsprites[ShipState::UP] = subsprite_rect;
+  subsprites[ShipState::DOWN] = subsprite_rect;
+  subsprites[ShipState::LEFT] = subsprite_rect;
+  subsprites[ShipState::RIGHT] = subsprite_rect;
 }
 
 void Ship::Update() {
@@ -43,7 +43,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
       currentKeyStates[SDL_SCANCODE_W] != 0 ||
       currentKeyStates[SDL_SCANCODE_K] != 0) {
-    state = SHIP_STATE_WALK_UP;
+    state = ShipState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
@@ -52,7 +52,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ||
       currentKeyStates[SDL_SCANCODE_S] != 0 ||
       currentKeyStates[SDL_SCANCODE_J] != 0) {
-    state = SHIP_STATE_WALK_DOWN;
+    state = ShipState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - SHIP_SPRITE_H);
@@ -61,7 +61,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 ||
       currentKeyStates[SDL_SCANCODE_A] != 0 ||
       currentKeyStates[SDL_SCANCODE_H] != 0) {
-    state = SHIP_STATE_WALK_LEFT;
+    state = ShipState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - SHIP_SPRITE_W);
   }
@@ -69,7 +69,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
       currentKeyStates[SDL_SCANCODE_D] != 0 ||
       currentKeyStates[SDL_SCANCODE_L] != 0) {
-    state = SHIP_STATE_WALK_RIGHT;
+    state = ShipState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - SHIP_SPRITE_W);
   }

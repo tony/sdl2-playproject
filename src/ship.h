@@ -7,14 +7,7 @@
 #include "bullet.h"
 #include "resource.h"
 
-enum ShipState {
-  SHIP_STATE_DEFAULT,
-  SHIP_STATE_WALK_UP,
-  SHIP_STATE_WALK_DOWN,
-  SHIP_STATE_WALK_LEFT,
-  SHIP_STATE_WALK_RIGHT,
-  SHIP_STATE_TOTAL
-};
+enum ShipState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
 
 typedef struct ShipStats {
   int health = 100;
@@ -35,8 +28,8 @@ class Ship : public Actor {
  private:
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  std::array<SDL2pp::Rect, ShipState::SHIP_STATE_TOTAL> subsprites;
-  enum ShipState state = ShipState::SHIP_STATE_DEFAULT;
+  std::array<SDL2pp::Rect, ShipState::TOTAL> subsprites;
+  enum ShipState state = ShipState::DEFAULT;
   std::vector<Bullet*> bullets;
   Uint32 last_shot = 0;
 };
