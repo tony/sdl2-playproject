@@ -7,12 +7,13 @@ Bullet::Bullet(SDL2pp::Renderer& renderer,
                const std::shared_ptr<ResourceManager>& resource_manager,
                SDL2pp::Rect p,
                SDL2pp::Point v)
-    : Actor{renderer, resource_manager, std::move(p), std::move(v),
-            SDL2pp::Rect{12, 142, 3, 3}} {
-  shadow = SDL2pp::Texture(renderer,
-                           *resource_manager->GetSurface("bullets1_tinted"));
-  sprite = SDL2pp::Texture(renderer, *resource_manager->GetSurface("bullets1"));
-
+    : Actor{renderer,
+            resource_manager,
+            std::move(p),
+            std::move(v),
+            SDL2pp::Rect{12, 142, 3, 3},
+            resource_manager->GetTexture("bullets1"),
+            resource_manager->GetTexture("bullets1_tinted")} {
   position.y += 12;
   position.x += 30;
   position.h = 9;
@@ -32,8 +33,8 @@ void Bullet::Update() {
     shadow_position.x += 1;
     shadow_position.y += 1;
 
-    renderer.Copy(shadow, shadow_dimensions, shadow_position);
+    renderer.Copy(*shadow, shadow_dimensions, shadow_position);
 
-    renderer.Copy(sprite, subsprite_rect, position);
+    renderer.Copy(*sprite, subsprite_rect, position);
   }
 }

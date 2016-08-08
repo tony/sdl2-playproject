@@ -27,7 +27,8 @@ Game::~Game() {
 }
 
 void Game::MainLoop() {
-  auto stage = new Stage(renderer, resource_manager, stat_service, console);
+  auto stage = std::make_unique<Stage>(renderer, resource_manager, stat_service,
+                                       console);
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(SCREEN_RECT);
@@ -151,6 +152,22 @@ int main() {
         "bullets1", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
     resource_manager->AddSurfaceWithTransparencyAndTint(
         "bullets1_tinted", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
+
+    resource_manager->AddTexture(
+        "modular_ships",
+        SDL2pp::Texture(renderer,
+                        *resource_manager->GetSurface("modular_ships")));
+    resource_manager->AddTexture(
+        "modular_ships_tinted",
+        SDL2pp::Texture(renderer,
+                        *resource_manager->GetSurface("modular_ships_tinted")));
+    resource_manager->AddTexture(
+        "bullets1_tinted",
+        SDL2pp::Texture(renderer,
+                        *resource_manager->GetSurface("bullets1_tinted")));
+    resource_manager->AddTexture(
+        "bullets1",
+        SDL2pp::Texture(renderer, *resource_manager->GetSurface("bullets1")));
 
     Game game(renderer, resource_manager, *console);
     game.MainLoop();

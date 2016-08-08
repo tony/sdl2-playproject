@@ -11,12 +11,10 @@ Ship::Ship(SDL2pp::Renderer& renderer,
             resource_manager,
             position,
             velocity,
-            SDL2pp::Rect{126, 79, 33, 33}),
+            SDL2pp::Rect{126, 79, 33, 33},
+            resource_manager->GetTexture("modular_ships"),
+            resource_manager->GetTexture("modular_ships_tinted")),
       stats(std::make_shared<ShipStats>()) {
-  sprite =
-      SDL2pp::Texture(renderer, *resource_manager->GetSurface("modular_ships"));
-  shadow = SDL2pp::Texture(
-      renderer, *resource_manager->GetSurface("modular_ships_tinted"));
   subsprites[ShipState::DEFAULT] = subsprite_rect;
   subsprites[ShipState::UP] = subsprite_rect;
   subsprites[ShipState::DOWN] = subsprite_rect;
@@ -30,9 +28,9 @@ void Ship::Update() {
   shadow_position.x += 1;
   shadow_position.y += 1;
 
-  renderer.Copy(shadow, shadow_dimensions, shadow_position);
+  renderer.Copy(*shadow, shadow_dimensions, shadow_position);
 
-  renderer.Copy(sprite, subsprites[state], position);
+  renderer.Copy(*sprite, subsprites[state], position);
 
   for (auto& bullet : bullets) {
     bullet->Update();
