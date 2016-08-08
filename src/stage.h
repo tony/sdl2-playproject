@@ -9,17 +9,26 @@ namespace spd = spdlog;
 
 class Stage {
  public:
-  Stage(SDL2pp::Renderer& renderer,
-        std::shared_ptr<ResourceManager> resource_manager,
-        const std::shared_ptr<StatService>& stat_service,
-        spd::logger& console);
-  void HandleInput(const Uint8* currentKeyStates);
-  void Update();
+  Stage(SDL2pp::Renderer& renderer, spd::logger& console);
+  virtual void HandleInput(const Uint8* currentKeyStates) = 0;
+  virtual void Update() = 0;
+
+ protected:
+  SDL2pp::Renderer& renderer;
+};
+
+class LevelStage : Stage {
+ public:
+  LevelStage(SDL2pp::Renderer& renderer,
+             std::shared_ptr<ResourceManager> resource_manager,
+             const std::shared_ptr<StatService>& stat_service,
+             spd::logger& console);
+  void HandleInput(const Uint8* currentKeyStates) override final;
+  void Update() override final;
 
  private:
-  SDL2pp::Renderer& renderer;
-
   std::shared_ptr<Ship> ship;
-  std::shared_ptr<GamePanel> game_panel = nullptr;
+  std::shared_ptr<ResourceManager> resource_manager;
   const std::shared_ptr<SDL2pp::Texture>& bg_texture;
+  std::shared_ptr<GamePanel> game_panel = nullptr;
 };

@@ -26,8 +26,8 @@ Game::~Game() {
 }
 
 void Game::MainLoop() {
-  auto stage = std::make_unique<Stage>(renderer, resource_manager, stat_service,
-                                       console);
+  auto stage = std::make_unique<LevelStage>(renderer, resource_manager,
+                                            stat_service, console);
   while (!quit) {
     renderer.Clear();
     renderer.SetViewport(SCREEN_RECT);
