@@ -147,9 +147,9 @@ int main() {
         "modular_ships_tinted", "resources/gfx/modular_ships.png", 13, 107,
         178);
     resource_manager->AddSurfaceWithTransparency(
-        "bullets1", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
+        "bullets1", "resources/gfx/M484BulletCollection1.png", 0, 0, 0);
     resource_manager->AddSurfaceWithTransparencyAndTint(
-        "bullets1_tinted", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
+        "bullets1_tinted", "resources/gfx/M484BulletCollection1.png", 0, 0, 0);
 
     resource_manager->AddTexture(
         "bg1",
