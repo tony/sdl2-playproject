@@ -30,6 +30,6 @@ class Ship : public Actor {
   void SpawnBullet(void);
   std::array<SDL2pp::Rect, ShipState::TOTAL> subsprites;
   enum ShipState state = ShipState::DEFAULT;
-  std::vector<Bullet*> bullets;
+  std::vector<std::shared_ptr<Bullet>> bullets;
   Uint32 last_shot = 0;
 };

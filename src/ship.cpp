@@ -89,6 +89,6 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     bullets.push_back(
-        new Bullet(renderer, resource_manager, position, velocity));
+        std::make_shared<Bullet>(renderer, resource_manager, position, velocity));
   }
 }
