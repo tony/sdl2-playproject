@@ -26,6 +26,7 @@ class Actor {
   const std::shared_ptr<ResourceManager>& resource_manager;
   SDL2pp::Rect position;
   SDL2pp::Point velocity;
+  SDL2pp::Optional<SDL2pp::Rect> subsprite_rect;
   SDL2pp::Texture sprite = nullptr;
   SDL2pp::Texture shadow = nullptr;
 };
