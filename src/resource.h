@@ -5,6 +5,7 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
 #include <map>
+#include <memory>
 
 class ResourceManager {
  public:

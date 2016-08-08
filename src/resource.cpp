@@ -1,6 +1,7 @@
 #include "resource.h"
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
+#include <memory>
 
 ResourceManager::ResourceManager() {}
 

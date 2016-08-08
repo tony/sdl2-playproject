@@ -3,6 +3,7 @@
 #include <SDL2pp/Font.hh>
 #include <SDL2pp/SDL2pp.hh>
 #include <algorithm>
+#include <memory>
 
 template <typename T>
 constexpr const T& clamp(const T& v, const T& lo, const T& hi) {
