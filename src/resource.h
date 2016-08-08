@@ -20,15 +20,15 @@ class ResourceManager {
                                          Uint8 r,
                                          Uint8 g,
                                          Uint8 b);
-  std::shared_ptr<SDL2pp::Surface> GetSurface(std::string key) const {
+  const std::shared_ptr<SDL2pp::Surface>& GetSurface(std::string key) const {
     return surfaces_.at(key);
   }
   void AddTexture(std::string key, SDL2pp::Texture texture);
-  std::shared_ptr<SDL2pp::Texture> GetTexture(std::string key) const {
+  const std::shared_ptr<SDL2pp::Texture>& GetTexture(std::string key) const {
     return textures_.at(key);
   }
   void AddFont(std::string key, SDL2pp::Font& font);
-  std::shared_ptr<SDL2pp::Font> GetFont(std::string key) const {
+  const std::shared_ptr<SDL2pp::Font>& GetFont(std::string key) const {
     return fonts_.at(key);
   }
 
