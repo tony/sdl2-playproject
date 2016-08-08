@@ -153,6 +153,8 @@ int main() {
         "bullets1_tinted", "resources/gfx/m484BulletCollection1.png", 0, 0, 0);
 
     resource_manager->AddTexture(
+        "bg1", SDL2pp::Texture(renderer, *resource_manager->GetSurface("bg1")));
+    resource_manager->AddTexture(
         "modular_ships",
         SDL2pp::Texture(renderer,
                         *resource_manager->GetSurface("modular_ships")));

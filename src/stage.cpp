@@ -4,10 +4,8 @@ Stage::Stage(SDL2pp::Renderer& renderer,
              std::shared_ptr<ResourceManager> resource_manager,
              const std::shared_ptr<StatService>& stat_service,
              spd::logger& console)
-    : renderer(renderer) {
+    : renderer(renderer), bg_texture(resource_manager->GetTexture("bg1")) {
   console.info("Game started.");
-  bg_texture =
-      SDL2pp::Texture(renderer, "resources/gfx/side-bg/green-mountain.png"),
   game_panel =
       std::make_shared<GamePanel>(stat_service, renderer, resource_manager);
   ship = std::make_shared<Ship>(renderer, resource_manager);
@@ -19,7 +17,7 @@ void Stage::HandleInput(const Uint8* currentKeyStates) {
 }
 
 void Stage::Update() {
-  renderer.Copy(bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
+  renderer.Copy(*bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
   game_panel->Update();
   ship->Update();
 }

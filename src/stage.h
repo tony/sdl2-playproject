@@ -21,5 +21,5 @@ class Stage {
 
   std::shared_ptr<Ship> ship;
   std::shared_ptr<GamePanel> game_panel = nullptr;
-  SDL2pp::Texture bg_texture = nullptr;
+  const std::shared_ptr<SDL2pp::Texture>& bg_texture;
 };
