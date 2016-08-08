@@ -2,7 +2,6 @@
 #include "input.h"
 #include "game.h"
 #include "game_panel.h"
-#include "resource.h"
 #include "stage.h"
 
 namespace spd = spdlog;

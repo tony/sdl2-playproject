@@ -1,7 +1,5 @@
 #include "bullet.h"
 #include "config.h"
-#include "resource.h"
-#include "util.h"
 
 Bullet::Bullet(SDL2pp::Renderer& renderer,
                const std::shared_ptr<ResourceManager>& resource_manager,
