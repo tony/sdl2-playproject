@@ -20,6 +20,6 @@ void Stage::HandleInput(const Uint8* currentKeyStates) {
 
 void Stage::Update() {
   renderer.Copy(bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
-  game_panel->DrawStats();
+  game_panel->Update();
   ship->Update();
 }

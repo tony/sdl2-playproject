@@ -11,6 +11,10 @@ GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
       renderer(renderer),
       resource_manager(resource_manager) {}
 
+void GamePanel::Update() {
+  DrawStats();
+}
+
 void GamePanel::DrawStats() {
   std::stringstream ship_text;
   renderer.SetViewport(BOTTOM_VIEWPORT_RECT);
