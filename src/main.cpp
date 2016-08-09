@@ -15,7 +15,6 @@ Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       input(std::make_shared<Input>()),
       console(console) {
   console.info("Game started.");
-  renderer->SetDrawColor(0xFF, 0xFF, 0xFF, 0xFF);
 }
 
 void Game::MainLoop() {

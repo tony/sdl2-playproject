@@ -13,6 +13,7 @@ SDL2pp::Texture DrawText(const std::string text,
   SDL2pp::Texture target1(*renderer, SDL_PIXELFORMAT_ARGB8888,
                           SDL_TEXTUREACCESS_TARGET, SCREEN_RECT.w,
                           SCREEN_RECT.h);
+  target1.SetBlendMode(SDL_BLENDMODE_BLEND);
   renderer->SetTarget(target1);
   renderer->Clear();
   renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
@@ -22,9 +23,6 @@ SDL2pp::Texture DrawText(const std::string text,
 
   auto message_texture(SDL2pp::Texture(*renderer, message));
   auto message_texture_shadow(SDL2pp::Texture(*renderer, message_shadow));
-
-  message_texture_shadow.SetBlendMode(SDL_BLENDMODE_BLEND);
-  message_texture.SetBlendMode(SDL_BLENDMODE_BLEND);
 
   SDL2pp::Rect message_shadow_rect = {x + 1, y + 1, message_shadow.GetWidth(),
                                       message_shadow.GetHeight()};
