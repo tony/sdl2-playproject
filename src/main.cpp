@@ -126,7 +126,8 @@ int main() {
                           SDL_WINDOW_RESIZABLE);
 
     auto renderer = std::make_unique<SDL2pp::Renderer>(
-        window, -1, SDL_RENDERER_ACCELERATED);
+        window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
+    renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
     // add resources
     auto resource_manager = std::make_unique<ResourceManager>();
