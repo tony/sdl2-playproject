@@ -21,8 +21,9 @@ void GamePanel::DrawStats() {
 
   ship_text << "health " << stat_service->ship->health << " / "
             << stat_service->ship->health_max;
-  auto message = DrawText(ship_text.str(), 5, 25,
-                          resource_manager->GetFont("terminus-18"), renderer);
+  auto message =
+      DrawText(ship_text.str(), 5, 25, resource_manager->GetFont("terminus-18"),
+               renderer, true);
   SDL2pp::Rect message_rect = {5, 25, message.GetWidth(), message.GetHeight()};
   renderer->Copy(message, message_rect, message_rect);
   renderer->SetViewport(MAIN_VIEWPORT_RECT);
