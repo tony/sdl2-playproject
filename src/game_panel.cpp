@@ -6,11 +6,13 @@
 
 GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
                      const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                     const std::unique_ptr<ResourceManager>& resource_manager)
+                     const std::unique_ptr<ResourceManager>& resource_manager,
+                     spdlog::logger& console)
     : stat_service(stat_service),
       renderer(renderer),
       resource_manager(resource_manager),
-      last_message_string("") {}
+      last_message_string(""),
+      console(console) {}
 
 void GamePanel::Update() {
   DrawStats();
@@ -28,9 +30,9 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
     ship_text = "ship not loaded";
   }
 
-  if (!last_message_string.empty() && last_message_string.length() > 0 &&
+  if (last_message_string.empty() ||
       last_message_string.compare(ship_text) != 0) {
-  } else {
+    console.info("game_panel rendering new texture for message: {}", ship_text);
     last_message_string = ship_text;
     resource_manager->AddTexture(
         "game_panel_text",

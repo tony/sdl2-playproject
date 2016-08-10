@@ -38,6 +38,11 @@ void ResourceManager::AddTexture(std::string key, SDL2pp::Texture texture) {
   textures_[key] = std::make_shared<SDL2pp::Texture>(std::move(texture));
 }
 
+void ResourceManager::AddTexture(std::string key,
+                                 std::shared_ptr<SDL2pp::Texture> texture) {
+  textures_[key] = std::move(texture);
+}
+
 void ResourceManager::AddFont(std::string key, SDL2pp::Font& font) {
   fonts_[key] = std::make_shared<SDL2pp::Font>(std::move(font));
 }

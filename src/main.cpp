@@ -4,11 +4,9 @@
 #include "game_panel.h"
 #include "stage.h"
 
-namespace spd = spdlog;
-
 Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::unique_ptr<ResourceManager>& resource_manager,
-           spd::logger& console)
+           spdlog::logger& console)
     : renderer(renderer),
       resource_manager(resource_manager),
       stat_service(std::make_shared<StatService>()),
@@ -18,8 +16,8 @@ Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 }
 
 void Game::MainLoop() {
-  auto stage =
-      std::make_unique<LevelStage>(renderer, resource_manager, stat_service);
+  auto stage = std::make_unique<LevelStage>(renderer, resource_manager,
+                                            stat_service, console);
   while (!quit) {
     renderer->Clear();
     renderer->SetViewport(SCREEN_RECT);
@@ -113,7 +111,7 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
 int main() {
   try {
     // console logger (multithreaded and with color)
-    const auto& console(spd::stdout_logger_mt("console", true));
+    const auto& console(spdlog::stdout_logger_mt("console", true));
     console->info("Welcome to spdlog!");
 
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);

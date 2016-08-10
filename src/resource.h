@@ -25,6 +25,7 @@ class ResourceManager {
     return surfaces_.at(key);
   }
   void AddTexture(std::string key, SDL2pp::Texture texture);
+  void AddTexture(std::string key, std::shared_ptr<SDL2pp::Texture> texture);
   const std::shared_ptr<SDL2pp::Texture>& GetTexture(std::string key) const {
     return textures_.at(key);
   }

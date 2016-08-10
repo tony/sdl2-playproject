@@ -1,5 +1,6 @@
 #pragma once
 
+#include "spdlog/spdlog.h"
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Font.hh>
 #include <memory>
@@ -10,7 +11,8 @@ class GamePanel {
  public:
   GamePanel(const std::shared_ptr<StatService>& stat_service,
             const std::unique_ptr<SDL2pp::Renderer>& renderer,
-            const std::unique_ptr<ResourceManager>& resource_manager);
+            const std::unique_ptr<ResourceManager>& resource_manager,
+            spdlog::logger& console);
   void Update();
   const std::shared_ptr<StatService>& stat_service;
   const std::shared_ptr<SDL2pp::Texture>& GetStatsTexture();
@@ -20,4 +22,5 @@ class GamePanel {
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
   std::string last_message_string;
+  spdlog::logger& console;
 };

@@ -2,20 +2,21 @@
 #include "util.h"
 #include <memory>
 
-SDL2pp::Texture&& DrawText(const std::string text,
-                           const int x,
-                           const int y,
-                           const std::shared_ptr<SDL2pp::Font>& font,
-                           const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                           bool underline = true) {
+std::shared_ptr<SDL2pp::Texture> DrawText(
+    const std::string text,
+    const int x,
+    const int y,
+    const std::shared_ptr<SDL2pp::Font>& font,
+    const std::unique_ptr<SDL2pp::Renderer>& renderer,
+    bool underline = true) {
   SDL_Color text_fg_color{255, 255, 255, 255};
   SDL_Color text_shadow_color{0, 0, 0, 255};
 
-  SDL2pp::Texture target1(*renderer, SDL_PIXELFORMAT_ARGB8888,
-                          SDL_TEXTUREACCESS_TARGET, SCREEN_RECT.w,
-                          SCREEN_RECT.h);
-  target1.SetBlendMode(SDL_BLENDMODE_BLEND);
-  renderer->SetTarget(target1);
+  auto target1 = std::make_shared<SDL2pp::Texture>(
+      *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+      SCREEN_RECT.w, SCREEN_RECT.h);
+  target1->SetBlendMode(SDL_BLENDMODE_BLEND);
+  renderer->SetTarget(*target1);
   renderer->Clear();
   renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
@@ -34,7 +35,7 @@ SDL2pp::Texture&& DrawText(const std::string text,
   renderer->Copy(message_texture, SDL2pp::NullOpt, message_rect);
 
   renderer->SetTarget();
-  return std::move(target1);
+  return target1;
 }
 
 std::string GetFullPath(const char* path) {
