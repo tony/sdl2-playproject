@@ -2,12 +2,12 @@
 #include "util.h"
 #include <memory>
 
-SDL2pp::Texture DrawText(const std::string text,
-                         const int x,
-                         const int y,
-                         const std::shared_ptr<SDL2pp::Font>& font,
-                         const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                         bool underline = true) {
+SDL2pp::Texture&& DrawText(const std::string text,
+                           const int x,
+                           const int y,
+                           const std::shared_ptr<SDL2pp::Font>& font,
+                           const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                           bool underline = true) {
   SDL_Color text_fg_color{255, 255, 255, 255};
   SDL_Color text_shadow_color{0, 0, 0, 255};
 
@@ -34,7 +34,7 @@ SDL2pp::Texture DrawText(const std::string text,
   renderer->Copy(message_texture, SDL2pp::NullOpt, message_rect);
 
   renderer->SetTarget();
-  return target1;
+  return std::move(target1);
 }
 
 std::string GetFullPath(const char* path) {
