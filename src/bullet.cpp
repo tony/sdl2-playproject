@@ -16,7 +16,7 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   position.x += 30;
   position.h = 9;
   position.w = 9;
-};
+}
 
 bool Bullet::InBounds() {
   return MAIN_VIEWPORT_RECT.Contains(position);
