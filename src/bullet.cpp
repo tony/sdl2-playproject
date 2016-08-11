@@ -3,7 +3,7 @@
 
 Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
-               SDL2pp::Rect p,
+               SDL2pp::Point p,
                SDL2pp::Point v)
     : Actor{renderer,
             resource_manager,
@@ -14,8 +14,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             resource_manager->GetTexture("bullets1_tinted")} {
   position.y += 12;
   position.x += 30;
-  position.h = 9;
-  position.w = 9;
+  // position.h = 9;
+  // position.w = 9;
 }
 
 bool Bullet::InBounds() {
