@@ -14,8 +14,6 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             resource_manager->GetTexture("bullets1_tinted")} {
   position.y += 12;
   position.x += 30;
-  // position.h = 9;
-  // position.w = 9;
 }
 
 bool Bullet::InBounds() {
@@ -33,6 +31,7 @@ void Bullet::Update() {
 
     renderer->Copy(*shadow, shadow_dimensions, shadow_position);
 
-    renderer->Copy(*sprite, subsprite_rect, position);
+    renderer->Copy(*sprite, subsprite_rect,
+                   SDL2pp::Rect(position, SDL2pp::Point{9, 9}));
   }
 }
