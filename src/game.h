@@ -13,8 +13,6 @@
 #include <memory>
 #include <vector>
 
-namespace spd = spdlog;
-
 class Actor;
 class GamePanel;
 class ResourceManager;
@@ -26,7 +24,7 @@ class Game {
  public:
   Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
        const std::unique_ptr<ResourceManager>& resource_manager,
-       spd::logger& console);
+       const std::shared_ptr<spdlog::logger>& console);
   void MainLoop();
 
  private:
@@ -37,5 +35,5 @@ class Game {
   bool quit = false;
   void HandleEvent(const SDL_Event* e, bool* quit);
   std::shared_ptr<Input> input;
-  spd::logger& console;
+  const std::shared_ptr<spdlog::logger>& console;
 };

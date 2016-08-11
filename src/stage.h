@@ -16,7 +16,7 @@ class LevelStage : Stage {
   LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<StatService>& stat_service,
-             spdlog::logger& console);
+             const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
 

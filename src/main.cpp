@@ -6,13 +6,13 @@
 
 Game::Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::unique_ptr<ResourceManager>& resource_manager,
-           spdlog::logger& console)
+           const std::shared_ptr<spdlog::logger>& console)
     : renderer(renderer),
       resource_manager(resource_manager),
       stat_service(std::make_shared<StatService>()),
       input(std::make_shared<Input>()),
       console(console) {
-  console.info("Game started.");
+  console->info("Game started.");
 }
 
 void Game::MainLoop() {
@@ -55,53 +55,53 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
     case SDL_WINDOWEVENT:
       switch (e->window.event) {
         case SDL_WINDOWEVENT_SHOWN:
-          console.info("Window {} shown", e->window.windowID);
+          console->info("Window {} shown", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_HIDDEN:
-          console.info("Window {} hidden", e->window.windowID);
+          console->info("Window {} hidden", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_EXPOSED:
-          console.info("Window {} exposed", e->window.windowID);
+          console->info("Window {} exposed", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_MOVED:
-          console.info("Window {} moved to {},{}", e->window.windowID,
-                       e->window.data1, e->window.data2);
+          console->info("Window {} moved to {},{}", e->window.windowID,
+                        e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_RESIZED:
-          console.info("Window {} resized to {}x{}", e->window.windowID,
-                       e->window.data1, e->window.data2);
+          console->info("Window {} resized to {}x{}", e->window.windowID,
+                        e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_SIZE_CHANGED:
-          console.info("Window {} size changed to {}x{}", e->window.windowID,
-                       e->window.data1, e->window.data2);
+          console->info("Window {} size changed to {}x{}", e->window.windowID,
+                        e->window.data1, e->window.data2);
           break;
         case SDL_WINDOWEVENT_MINIMIZED:
-          console.info("Window {} minimized", e->window.windowID);
+          console->info("Window {} minimized", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_MAXIMIZED:
-          console.info("Window {} maximized", e->window.windowID);
+          console->info("Window {} maximized", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_RESTORED:
-          console.info("Window {} restored", e->window.windowID);
+          console->info("Window {} restored", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_ENTER:
-          console.info("Mouse entered window {}", e->window.windowID);
+          console->info("Mouse entered window {}", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_LEAVE:
-          console.info("Mouse left window {}", e->window.windowID);
+          console->info("Mouse left window {}", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_FOCUS_GAINED:
-          console.info("Window {} gained keyboard focus", e->window.windowID);
+          console->info("Window {} gained keyboard focus", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_FOCUS_LOST:
-          console.info("Window {} lost keyboard focus", e->window.windowID);
+          console->info("Window {} lost keyboard focus", e->window.windowID);
           break;
         case SDL_WINDOWEVENT_CLOSE:
-          console.info("Window {} closed", e->window.windowID);
+          console->info("Window {} closed", e->window.windowID);
           break;
         default:
-          console.info("Window {} got unknown event {}", e->window.windowID,
-                       e->window.event);
+          console->info("Window {} got unknown event {}", e->window.windowID,
+                        e->window.event);
           break;
       }
       break;
@@ -111,7 +111,8 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
 int main() {
   try {
     // console logger (multithreaded and with color)
-    const auto& console(spdlog::stdout_logger_mt("console", true));
+    const std::shared_ptr<spdlog::logger>& console(
+        spdlog::stdout_logger_mt("console", true));
     console->info("Welcome to spdlog!");
 
     SDL2pp::SDL sdl(SDL_INIT_VIDEO);
@@ -163,7 +164,7 @@ int main() {
         "bullets1",
         SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
 
-    auto game = std::make_unique<Game>(renderer, resource_manager, *console);
+    auto game = std::make_unique<Game>(renderer, resource_manager, console);
     game->MainLoop();
     resource_manager = nullptr;
     font = nullptr;
