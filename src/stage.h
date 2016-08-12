@@ -30,5 +30,6 @@ class LevelStage : Stage {
   std::shared_ptr<Ship> ship;
   const std::unique_ptr<ResourceManager>& resource_manager;
   std::shared_ptr<GamePanel> game_panel = nullptr;
-  std::vector<std::shared_ptr<Actor>> enemies;
+  std::vector<std::shared_ptr<Enemy>> enemies;
+  Uint32 last_enemy = 0;
 };

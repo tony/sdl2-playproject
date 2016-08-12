@@ -23,6 +23,11 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 }
 
 void Enemy::Update() {
+  position.x--;
+  // position.x =
+  //     clamp(position.x - static_cast<int>(MAIN_VIEWPORT_RECT.w * 0.01), 0,
+  //           MAIN_VIEWPORT_RECT.w - subsprite_rect.w);
+
   auto shadow_dimensions = subsprites[static_cast<int>(state)];
   auto shadow_position = position;
   shadow_position.x += 1;
@@ -38,46 +43,11 @@ void Enemy::Update() {
 }
 
 void Enemy::HandleInput(const Uint8* currentKeyStates) {
-  if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
-      currentKeyStates[SDL_SCANCODE_W] != 0 ||
-      currentKeyStates[SDL_SCANCODE_K] != 0) {
-    state = EnemyState::UP;
-    position.y =
-        clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
-  }
-
-  if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ||
-      currentKeyStates[SDL_SCANCODE_S] != 0 ||
-      currentKeyStates[SDL_SCANCODE_J] != 0) {
-    state = EnemyState::DOWN;
-    position.y =
-        clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
-  }
-
-  if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 ||
-      currentKeyStates[SDL_SCANCODE_A] != 0 ||
-      currentKeyStates[SDL_SCANCODE_H] != 0) {
-    state = EnemyState::LEFT;
-    position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - subsprite_rect.w);
-  }
-
-  if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
-      currentKeyStates[SDL_SCANCODE_D] != 0 ||
-      currentKeyStates[SDL_SCANCODE_L] != 0) {
-    state = EnemyState::RIGHT;
-    position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - subsprite_rect.w);
-  }
-
-  if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
-    Uint32 now = SDL_GetTicks();
-    if (now - last_shot >= shooting_delay) {
-      SpawnBullet();
-      last_shot = now;
-    }
+  std::ignore = currentKeyStates;
+  Uint32 now = SDL_GetTicks();
+  if (now - last_shot >= shooting_delay) {
+    SpawnBullet();
+    last_shot = now;
   }
 
   // bullet drawing and clean up
