@@ -24,7 +24,7 @@ void LevelStage::SpawnEnemy() {
   int y_position = 0 + (arc4random() % (SCREEN_RECT.h - 0 + 1));
   auto position = SDL2pp::Point(SCREEN_RECT.w, y_position);
 
-  enemies.push_back(std::make_shared<Enemy>(renderer, resource_manager,
+  enemies.push_back(std::make_shared<Enemy>(renderer, resource_manager, console,
                                             position, SDL2pp::Point{-1, 0}));
 }
 
@@ -42,7 +42,7 @@ void LevelStage::Update() {
     for (auto& bullet : ship->bullets) {
       if (SDL2pp::Rect(enemy->position, enemy->subsprite_rect.GetSize())
               .Contains(bullet->position)) {
-        console->info("hit!");
+        enemy->Strike(bullet);
       }
     }
   }

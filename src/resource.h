@@ -21,6 +21,11 @@ class ResourceManager {
                                          Uint8 r,
                                          Uint8 g,
                                          Uint8 b);
+  void AddSurfaceWithTransparencyAndTintRed(std::string key,
+                                            std::string file_path,
+                                            Uint8 r,
+                                            Uint8 g,
+                                            Uint8 b);
   const std::shared_ptr<SDL2pp::Surface>& GetSurface(std::string key) const {
     return surfaces_.at(key);
   }

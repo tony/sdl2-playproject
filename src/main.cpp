@@ -140,6 +140,9 @@ int main() {
     resource_manager->AddSurfaceWithTransparencyAndTint(
         "modular_ships_tinted", "resources/gfx/modular_ships.png", 13, 107,
         178);
+    resource_manager->AddSurfaceWithTransparencyAndTintRed(
+        "modular_ships_tinted_red", "resources/gfx/modular_ships.png", 13, 107,
+        178);
     resource_manager->AddSurfaceWithTransparency(
         "bullets1", "resources/gfx/M484BulletCollection1.png", 0, 0, 0);
     resource_manager->AddSurfaceWithTransparencyAndTint(
@@ -156,6 +159,10 @@ int main() {
         "modular_ships_tinted",
         SDL2pp::Texture(*renderer,
                         *resource_manager->GetSurface("modular_ships_tinted")));
+    resource_manager->AddTexture(
+        "modular_ships_tinted_red",
+        SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
+                                       "modular_ships_tinted_red")));
     resource_manager->AddTexture(
         "bullets1_tinted",
         SDL2pp::Texture(*renderer,
