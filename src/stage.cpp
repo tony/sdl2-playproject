@@ -8,7 +8,8 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                        const std::shared_ptr<spdlog::logger>& console)
     : renderer(renderer),
       bg_texture(resource_manager->GetTexture("bg1")),
-      resource_manager(resource_manager) {
+      resource_manager(resource_manager),
+      console(console) {
   game_panel = std::make_shared<GamePanel>(stat_service, renderer,
                                            resource_manager, console);
   ship = std::make_shared<Ship>(renderer, resource_manager);
@@ -38,5 +39,11 @@ void LevelStage::Update() {
   }
   for (auto& enemy : enemies) {
     enemy->Update();
+    for (auto& bullet : ship->bullets) {
+      if (SDL2pp::Rect(enemy->position, enemy->subsprite_rect.GetSize())
+              .Contains(bullet->position)) {
+        console->info("hit!");
+      }
+    }
   }
 }

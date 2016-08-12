@@ -24,12 +24,12 @@ class Ship : public Actor {
   void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
   std::shared_ptr<ShipStats> stats;
+  std::vector<std::shared_ptr<Bullet>> bullets;
 
  private:
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
   std::array<SDL2pp::Rect, (int)ShipState::TOTAL> subsprites;
   ShipState state = ShipState::DEFAULT;
-  std::vector<std::shared_ptr<Bullet>> bullets;
   Uint32 last_shot = 0;
 };

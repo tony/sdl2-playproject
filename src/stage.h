@@ -31,5 +31,6 @@ class LevelStage : Stage {
   const std::unique_ptr<ResourceManager>& resource_manager;
   std::shared_ptr<GamePanel> game_panel = nullptr;
   std::vector<std::shared_ptr<Enemy>> enemies;
+  const std::shared_ptr<spdlog::logger>& console;
   Uint32 last_enemy = 0;
 };
