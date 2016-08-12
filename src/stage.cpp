@@ -21,8 +21,8 @@ void LevelStage::HandleInput(const Uint8* currentKeyStates) {
 }
 
 void LevelStage::SpawnEnemy() {
-  int y_position = 0 + (arc4random() % (SCREEN_RECT.h - 0 + 1));
-  auto position = SDL2pp::Point(SCREEN_RECT.w, y_position);
+  int y_position = 0 + (arc4random() % (MAIN_VIEWPORT_RECT.h - 0 + 1));
+  auto position = SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y_position);
 
   enemies.push_back(std::make_shared<Enemy>(renderer, resource_manager, console,
                                             position, SDL2pp::Point{-1, 0}));
