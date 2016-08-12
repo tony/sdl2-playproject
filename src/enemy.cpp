@@ -42,11 +42,14 @@ void Enemy::Update() {
   }
 }
 
-void Enemy::Strike(std::shared_ptr<Bullet> bullet) {
+void Enemy::OnHitByBullet(std::shared_ptr<Bullet> bullet) {
   std::ignore = bullet;
-  console->info("hit!");
+
   hit = true;
   last_hit = SDL_GetTicks();
+  stats->health -= bullet->stats->damage;
+  console->info("hit for {}, {}/{}", bullet->stats->damage, stats->health,
+                stats->health_max);
 }
 
 void Enemy::HandleInput(const Uint8* currentKeyStates) {
@@ -57,7 +60,7 @@ void Enemy::HandleInput(const Uint8* currentKeyStates) {
     last_shot = now;
   }
 
-  // bullet drawing and clean up
+  // sweep out of bounds bullets
   bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
                                [](auto& b) { return !b->InBounds(); }),
                 bullets.end());

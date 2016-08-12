@@ -9,9 +9,9 @@
 #include "resource.h"
 
 typedef struct EnemyStats {
-  int health = 100;
-  int health_max = 100;
-  int level = 1;
+  unsigned int health = 2;
+  unsigned int health_max = 2;
+  unsigned int level = 1;
 } EnemyStats;
 
 class Enemy : public Actor {
@@ -23,7 +23,7 @@ class Enemy : public Actor {
         SDL2pp::Point velocity = {-1, 0});
   void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;
-  void Strike(std::shared_ptr<Bullet> bullet);
+  void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   std::shared_ptr<EnemyStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
 

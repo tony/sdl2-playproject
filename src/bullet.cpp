@@ -11,7 +11,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             std::move(v),
             SDL2pp::Rect{12, 142, 3, 3},
             resource_manager->GetTexture("bullets1"),
-            resource_manager->GetTexture("bullets1_tinted")} {
+            resource_manager->GetTexture("bullets1_tinted")},
+      stats(std::make_shared<BulletStats>()) {
   position.y += 12;
   position.x += 30;
 }
