@@ -12,37 +12,29 @@ void ResourceManager::AddSurface(std::string key, std::string file_path) {
 
 void ResourceManager::AddSurfaceWithTransparency(std::string key,
                                                  std::string file_path,
-                                                 Uint8 r,
-                                                 Uint8 g,
-                                                 Uint8 b) {
+                                                 Uint8 alpha_r,
+                                                 Uint8 alpha_g,
+                                                 Uint8 alpha_b) {
   auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
-  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), r, g, b));
+  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha_r,
+                                        alpha_g, alpha_b));
   surfaces_[key] = surface;
 }
 
 void ResourceManager::AddSurfaceWithTransparencyAndTint(std::string key,
                                                         std::string file_path,
-                                                        Uint8 r,
-                                                        Uint8 g,
-                                                        Uint8 b) {
+                                                        Uint8 alpha_r,
+                                                        Uint8 alpha_g,
+                                                        Uint8 alpha_b,
+                                                        Uint8 r_tint,
+                                                        Uint8 g_tint,
+                                                        Uint8 b_tint) {
   auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
-  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), r, g, b));
-  surface->SetColorMod(0, 0, 0);
-  surface->SetAlphaMod(205);
-  surfaces_[key] = surface;
-}
-void ResourceManager::AddSurfaceWithTransparencyAndTintRed(
-    std::string key,
-    std::string file_path,
-    Uint8 r,
-    Uint8 g,
-    Uint8 b) {
-  auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
-  surface->SetBlendMode(SDL_BLENDMODE_NONE);
-  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), r, g, b));
-  surface->SetColorMod(0xFF, 0, 0);
+  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha_r,
+                                        alpha_g, alpha_b));
+  surface->SetColorMod(r_tint, g_tint, b_tint);
   surface->SetAlphaMod(205);
   surfaces_[key] = surface;
 }

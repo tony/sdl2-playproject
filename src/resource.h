@@ -13,19 +13,17 @@ class ResourceManager {
   void AddSurface(std::string key, std::string file_path);
   void AddSurfaceWithTransparency(std::string key,
                                   std::string file_path,
-                                  Uint8 r,
-                                  Uint8 g,
-                                  Uint8 b);
+                                  Uint8 alpha_r,
+                                  Uint8 alpha_g,
+                                  Uint8 alpha_b);
   void AddSurfaceWithTransparencyAndTint(std::string key,
                                          std::string file_path,
-                                         Uint8 r,
-                                         Uint8 g,
-                                         Uint8 b);
-  void AddSurfaceWithTransparencyAndTintRed(std::string key,
-                                            std::string file_path,
-                                            Uint8 r,
-                                            Uint8 g,
-                                            Uint8 b);
+                                         Uint8 alpha_r,
+                                         Uint8 alpha_g,
+                                         Uint8 alpha_b,
+                                         Uint8 tint_r,
+                                         Uint8 tint_g,
+                                         Uint8 tint_b);
   const std::shared_ptr<SDL2pp::Surface>& GetSurface(std::string key) const {
     return surfaces_.at(key);
   }

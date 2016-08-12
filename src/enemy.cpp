@@ -13,7 +13,7 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             position,
             velocity,
             SDL2pp::Rect{126, 79, 33, 33},
-            resource_manager->GetTexture("modular_ships"),
+            resource_manager->GetTexture("modular_ships_tinted_tan"),
             resource_manager->GetTexture("modular_ships_tinted")),
       stats(std::make_shared<EnemyStats>()),
       console(console) {
