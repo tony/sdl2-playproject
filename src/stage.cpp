@@ -21,11 +21,9 @@ void LevelStage::HandleInput(const Uint8* currentKeyStates) {
 }
 
 void LevelStage::SpawnEnemy() {
-  int y_position = arc4random() % (MAIN_VIEWPORT_RECT.h + 1);
-  auto position = SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y_position);
-
-  enemies.push_back(std::make_shared<Enemy>(renderer, resource_manager, console,
-                                            position, SDL2pp::Point{-1, 0}));
+  auto enemy = std::make_shared<Enemy>(renderer, resource_manager, console,
+                                       SDL2pp::Point{-1, 0});
+  enemies.push_back(enemy);
 }
 
 void LevelStage::Update() {
@@ -41,8 +39,9 @@ void LevelStage::Update() {
     bool enemy_destroyed = false;
     (*enemy)->Update();
     for (auto it = ship->bullets.begin(); it != ship->bullets.end();) {
-      if (SDL2pp::Rect((*enemy)->position, (*enemy)->subsprite_rect.GetSize())
-              .Contains((*it)->position)) {
+      if (SDL2pp::Rect((*enemy)->GetPosition(),
+                       (*enemy)->GetSubspriteRect().GetSize())
+              .Contains((*it)->GetPosition())) {
         (*enemy)->OnHitByBullet(*it);
         ship->bullets.erase(it);
         if ((*enemy)->stats->health < 1) {

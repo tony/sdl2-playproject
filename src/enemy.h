@@ -6,6 +6,7 @@
 #include <vector>
 #include "actor.h"
 #include "bullet.h"
+#include "config.h"
 #include "resource.h"
 
 typedef struct EnemyStats {
@@ -19,7 +20,6 @@ class Enemy : public Actor {
   Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::shared_ptr<spdlog::logger>& console,
-        SDL2pp::Point position,
         SDL2pp::Point velocity = {-1, 0});
   void HandleInput(const Uint8* currentKeyStates) override final;
   void Update() override final;

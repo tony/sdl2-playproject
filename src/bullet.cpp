@@ -5,13 +5,13 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
                SDL2pp::Point p,
                SDL2pp::Point v)
-    : Actor{renderer,
+    : Actor(renderer,
             resource_manager,
-            std::move(p),
-            std::move(v),
-            SDL2pp::Rect{12, 142, 3, 3},
             resource_manager->GetTexture("bullets1"),
-            resource_manager->GetTexture("bullets1_tinted")},
+            resource_manager->GetTexture("bullets1_tinted"),
+            SDL2pp::Rect{12, 142, 3, 3},
+            std::move(v),
+            std::move(p)),
       stats(std::make_shared<BulletStats>()) {
   position.y += 12;
   position.x += 30;

@@ -9,11 +9,11 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            SDL2pp::Point velocity)
     : Actor(renderer,
             resource_manager,
-            position,
-            velocity,
-            SDL2pp::Rect{126, 79, 33, 33},
             resource_manager->GetTexture("modular_ships"),
-            resource_manager->GetTexture("modular_ships_tinted")),
+            resource_manager->GetTexture("modular_ships_tinted"),
+            SDL2pp::Rect{126, 79, 33, 33},
+            velocity,
+            position),
       stats(std::make_shared<ShipStats>()) {
   subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;

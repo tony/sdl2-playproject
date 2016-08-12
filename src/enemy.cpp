@@ -6,18 +6,18 @@
 Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<spdlog::logger>& console,
-             SDL2pp::Point position,
              SDL2pp::Point velocity)
     : Actor(renderer,
             resource_manager,
-            position,
-            velocity,
-            SDL2pp::Rect{126, 79, 33, 33},
             resource_manager->GetTexture("modular_ships_tinted_tan"),
-            resource_manager->GetTexture("modular_ships_tinted")),
+            resource_manager->GetTexture("modular_ships_tinted"),
+            SDL2pp::Rect{126, 79, 33, 33},
+            velocity,
+            SDL2pp::NullOpt),
       stats(std::make_shared<EnemyStats>()),
       console(console) {
   subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
+  console->info("spawned new enemy at {}, {}", position.x, position.y);
 }
 
 void Enemy::Update() {
