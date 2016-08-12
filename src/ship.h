@@ -1,13 +1,10 @@
 #pragma once
 
-#include <array>
 #include <memory>
 #include <vector>
 #include "actor.h"
 #include "bullet.h"
 #include "resource.h"
-
-enum class ShipState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
 
 typedef struct ShipStats {
   int health = 100;
@@ -29,7 +26,5 @@ class Ship : public Actor {
  private:
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  std::array<SDL2pp::Rect, (int)ShipState::TOTAL> subsprites;
-  ShipState state = ShipState::DEFAULT;
   Uint32 last_shot = 0;
 };

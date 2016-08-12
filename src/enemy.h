@@ -8,8 +8,6 @@
 #include "bullet.h"
 #include "resource.h"
 
-enum class EnemyState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
-
 typedef struct EnemyStats {
   int health = 100;
   int health_max = 100;
@@ -32,9 +30,8 @@ class Enemy : public Actor {
  private:
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  std::array<SDL2pp::Rect, (int)EnemyState::TOTAL> subsprites;
   const std::shared_ptr<spdlog::logger>& console;
-  EnemyState state = EnemyState::DEFAULT;
+
   Uint32 last_shot = 0;
   bool hit = false;
   Uint32 last_hit = 0;

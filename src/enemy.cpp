@@ -17,11 +17,7 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             resource_manager->GetTexture("modular_ships_tinted")),
       stats(std::make_shared<EnemyStats>()),
       console(console) {
-  subsprites[static_cast<int>(EnemyState::DEFAULT)] = subsprite_rect;
-  subsprites[static_cast<int>(EnemyState::UP)] = subsprite_rect;
-  subsprites[static_cast<int>(EnemyState::DOWN)] = subsprite_rect;
-  subsprites[static_cast<int>(EnemyState::LEFT)] = subsprite_rect;
-  subsprites[static_cast<int>(EnemyState::RIGHT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
 }
 
 void Enemy::Update() {
@@ -29,16 +25,16 @@ void Enemy::Update() {
 
   auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
 
-  renderer->Copy(*shadow, subsprites[static_cast<int>(state)], shadow_position);
+  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position);
   if (hit) {
     renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
-                   subsprites[static_cast<int>(state)], position);
+                   GetSubspriteRect(), position);
     Uint32 now = SDL_GetTicks();
     if (now - last_hit >= 100) {
       hit = false;
     }
   } else {
-    renderer->Copy(*sprite, subsprites[static_cast<int>(state)], position);
+    renderer->Copy(*sprite, GetSubspriteRect(), position);
   }
 
   for (auto& bullet : bullets) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include <SDL2pp/SDL2pp.hh>
 #include "resource.h"
 
@@ -36,4 +37,11 @@ class Actor {
   SDL2pp::Point velocity;
   const std::shared_ptr<SDL2pp::Texture>& sprite;
   const std::shared_ptr<SDL2pp::Texture>& shadow;
+
+  enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
+  ActorState state = ActorState::DEFAULT;
+  std::array<SDL2pp::Rect, (int)ActorState::TOTAL> subsprites;
+  SDL2pp::Rect GetSubspriteRect() {
+    return subsprites[static_cast<int>(state)];
+  }
 };

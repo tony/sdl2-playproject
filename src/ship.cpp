@@ -15,18 +15,18 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             resource_manager->GetTexture("modular_ships"),
             resource_manager->GetTexture("modular_ships_tinted")),
       stats(std::make_shared<ShipStats>()) {
-  subsprites[static_cast<int>(ShipState::DEFAULT)] = subsprite_rect;
-  subsprites[static_cast<int>(ShipState::UP)] = subsprite_rect;
-  subsprites[static_cast<int>(ShipState::DOWN)] = subsprite_rect;
-  subsprites[static_cast<int>(ShipState::LEFT)] = subsprite_rect;
-  subsprites[static_cast<int>(ShipState::RIGHT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
 }
 
 void Ship::Update() {
   auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
 
-  renderer->Copy(*shadow, subsprites[static_cast<int>(state)], shadow_position);
-  renderer->Copy(*sprite, subsprites[static_cast<int>(state)], position);
+  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position);
+  renderer->Copy(*sprite, GetSubspriteRect(), position);
 
   for (auto& bullet : bullets) {
     bullet->Update();
@@ -37,7 +37,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
       currentKeyStates[SDL_SCANCODE_W] != 0 ||
       currentKeyStates[SDL_SCANCODE_K] != 0) {
-    state = ShipState::UP;
+    state = ActorState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
@@ -46,7 +46,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ||
       currentKeyStates[SDL_SCANCODE_S] != 0 ||
       currentKeyStates[SDL_SCANCODE_J] != 0) {
-    state = ShipState::DOWN;
+    state = ActorState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
@@ -55,7 +55,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 ||
       currentKeyStates[SDL_SCANCODE_A] != 0 ||
       currentKeyStates[SDL_SCANCODE_H] != 0) {
-    state = ShipState::LEFT;
+    state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - subsprite_rect.w);
   }
@@ -63,7 +63,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
       currentKeyStates[SDL_SCANCODE_D] != 0 ||
       currentKeyStates[SDL_SCANCODE_L] != 0) {
-    state = ShipState::RIGHT;
+    state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - subsprite_rect.w);
   }
