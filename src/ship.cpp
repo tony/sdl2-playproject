@@ -23,13 +23,9 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 }
 
 void Ship::Update() {
-  auto shadow_dimensions = subsprites[static_cast<int>(state)];
-  auto shadow_position = position;
-  shadow_position.x += 1;
-  shadow_position.y += 1;
+  auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
 
-  renderer->Copy(*shadow, shadow_dimensions, shadow_position);
-
+  renderer->Copy(*shadow, subsprites[static_cast<int>(state)], shadow_position);
   renderer->Copy(*sprite, subsprites[static_cast<int>(state)], position);
 
   for (auto& bullet : bullets) {
