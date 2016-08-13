@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_SHIP_H_INCLUDED
+#define HAVE_SHIP_H_INCLUDED
 
 #include <memory>
 #include <vector>
@@ -28,3 +29,4 @@ class Ship : public Actor {
   void SpawnBullet(void);
   Uint32 last_shot = 0;
 };
+#endif  // HAVE_SHIP_H_INCLUDED

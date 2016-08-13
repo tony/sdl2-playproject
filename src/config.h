@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_CONFIG_H_INCLUDED
+#define HAVE_CONFIG_H_INCLUDED
 
 #include <SDL2pp/Rect.hh>
 
@@ -12,3 +13,4 @@ const SDL2pp::Rect BOTTOM_VIEWPORT_RECT = {
 
 const SDL2pp::Rect MAIN_VIEWPORT_RECT = {0, 0, SCREEN_RECT.w,
                                          static_cast<int>(SCREEN_RECT.h * .9)};
+#endif  // HAVE_CONFIG_H_INCLUDED

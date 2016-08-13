@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_STAGE_H_INCLUDED
+#define HAVE_STAGE_H_INCLUDED
 
 #include <spdlog/spdlog.h>
 #include "actor.h"
@@ -34,3 +35,4 @@ class LevelStage : Stage {
   const std::shared_ptr<spdlog::logger>& console;
   Uint32 last_enemy = 0;
 };
+#endif  // HAVE_STAGE_H_INCLUDED

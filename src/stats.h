@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_STATS_H_INCLUDED
+#define HAVE_STATS_H_INCLUDED
 
 #include <memory>
 #include "ship.h"
@@ -11,3 +12,4 @@ class StatService {
   }
   std::shared_ptr<ShipStats> ship;
 };
+#endif  // HAVE_STATS_H_INCLUDED

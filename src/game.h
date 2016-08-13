@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_GAME_H_INCLUDED
+#define HAVE_GAME_H_INCLUDED
 
 #include "spdlog/spdlog.h"
 #include <SDL2/SDL.h>
@@ -37,3 +38,4 @@ class Game {
   std::shared_ptr<Input> input;
   const std::shared_ptr<spdlog::logger>& console;
 };
+#endif  // HAVE_GAME_H_INCLUDED

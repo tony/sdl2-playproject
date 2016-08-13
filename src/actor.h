@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_ACTOR_H_INCLUDED
+#define HAVE_ACTOR_H_INCLUDED
 
 #include <array>
 #include <SDL2pp/SDL2pp.hh>
@@ -55,3 +56,4 @@ class Actor {
   ActorState state = ActorState::DEFAULT;
   std::array<SDL2pp::Rect, (int)ActorState::TOTAL> subsprites;
 };
+#endif  // HAVE_ACTOR_H_INCLUDED

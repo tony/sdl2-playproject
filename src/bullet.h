@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_BULLET_H_INCLUDED
+#define HAVE_BULLET_H_INCLUDED
 
 #include <SDL2pp/Rect.hh>
 #include <SDL2pp/SDL2pp.hh>
@@ -27,3 +28,4 @@ class Bullet : public Actor {
  private:
   SDL2pp::Point velocity{9, 0};
 };
+#endif  // HAVE_BULLET_H_INCLUDED

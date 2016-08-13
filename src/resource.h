@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_RESOURCE_H_INCLUDED
+#define HAVE_RESOURCE_H_INCLUDED
 
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Font.hh>
@@ -42,3 +43,4 @@ class ResourceManager {
   std::map<std::string, std::shared_ptr<SDL2pp::Texture>> textures_;
   std::map<std::string, std::shared_ptr<SDL2pp::Surface>> surfaces_;
 };
+#endif  // HAVE_RESOURCE_H_INCLUDED

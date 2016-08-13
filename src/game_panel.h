@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_GAME_PANEL_H_INCLUDED
+#define HAVE_GAME_PANEL_H_INCLUDED
 
 #include "spdlog/spdlog.h"
 #include <SDL2pp/SDL.hh>
@@ -24,3 +25,4 @@ class GamePanel {
   std::string last_message_string;
   const std::shared_ptr<spdlog::logger>& console;
 };
+#endif  // HAVE_GAME_PANEL_H_INCLUDED

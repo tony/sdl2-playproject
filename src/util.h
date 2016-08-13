@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_UTIL_H_INCLUDED
+#define HAVE_UTIL_H_INCLUDED
 
 #include <SDL2pp/Font.hh>
 #include <SDL2pp/SDL2pp.hh>
@@ -19,3 +20,4 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
     bool underline);
 
 std::string GetFullPath(const char* path);
+#endif  // HAVE_UTIL_H_INCLUDED

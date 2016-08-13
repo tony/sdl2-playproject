@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HAVE_ENEMY_H_INCLUDED
+#define HAVE_ENEMY_H_INCLUDED
 
 #include <spdlog/spdlog.h>
 #include <array>
@@ -36,3 +37,4 @@ class Enemy : public Actor {
   bool hit = false;
   Uint32 last_hit = 0;
 };
+#endif  // HAVE_ENEMY_H_INCLUDED
