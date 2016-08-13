@@ -29,8 +29,9 @@ void LevelStage::SpawnEnemy() {
 
 void LevelStage::Update() {
   Uint32 now = SDL_GetTicks();
-  if (now - last_bg_scroll >= 600) {
+  if (now - last_bg_scroll >= 150) {
     bg_x_scroll++;
+    last_bg_scroll = now;
   }
   renderer->Copy(*bg_texture, SCREEN_RECT + SDL2pp::Point(bg_x_scroll, 0),
                  SDL2pp::NullOpt);
