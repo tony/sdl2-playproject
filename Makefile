@@ -1,3 +1,13 @@
+WATCH_FILES= find . -type f -not -path '*/\.*' -and -not -path '*/build/*' | grep -i '.*[.][cc,cpp,c,h,hh]\|CMakeLists.txt$$' 2> /dev/null
+
+entr_warn:
+	@echo "----------------------------------------------------------"
+	@echo "     ! File watching functionality non-operational !      "
+	@echo "                                                          "
+	@echo "Install entr(1) to automatically run tasks on file change."
+	@echo "See http://entrproject.org/                               "
+	@echo "----------------------------------------------------------"
+
 all: build
 
 mkdir_build:
@@ -26,10 +36,10 @@ run:
 	./build/game
 
 watch_debug:
-	if command -v entr > /dev/null; then find . -type f -not -path '*/\.*' -and -not -path '*/build/*' | grep -i '.*[.][cpp,h]' | entr -c make debug_ninja; else make debug_ninja; echo "\nInstall entr(1) to automatically run tests on file change.\n See http://entrproject.org/"; fi
+	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) debug_ninja; else $(MAKE) debug_ninja entr_warn; fi
 
 watch_run:
-	if command -v entr > /dev/null; then find . -type f -not -path '*/\.*' -and -not -path '*/build/*' | grep -i '.*[.][cpp,h]' | entr -c make debug_ninja run; else make debug_ninja run; echo "\nInstall entr(1) to automatically run tests on file change.\n See http://entrproject.org/"; fi
+	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) debug run; else $(MAKE) debug run entr_warn; fi
 
 install_osx_deps:
 	brew install ninja sdl2 sdl2_image sdl2_ttf entr
