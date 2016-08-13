@@ -33,7 +33,7 @@ format:
 	clang-format -style=Chromium src/* -i || clang-format37 -style=Chromium src/* -i
 
 cpplint:
-	cpplint.py src/*
+	cpplint.py --filter=-build/include src/*
 
 run:
 	./build/game
