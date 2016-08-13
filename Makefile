@@ -32,8 +32,14 @@ debug_ninja: mkdir_build
 format:
 	clang-format -style=Chromium src/* -i || clang-format37 -style=Chromium src/* -i
 
+cpplint:
+	cpplint.py src/*
+
 run:
 	./build/game
+
+watch_cpplint:
+	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) cpplint; else $(MAKE) cpplint entr_warn; fi
 
 watch_debug:
 	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) debug_ninja; else $(MAKE) debug_ninja entr_warn; fi
