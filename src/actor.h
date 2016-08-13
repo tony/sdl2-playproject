@@ -35,8 +35,7 @@ class Actor {
     std::ignore = currentKeyStates;
   }
   SDL2pp::Point GenerateSpawnPosition() {
-    // console->info("subsprite_rect.h: {}", subsprite_rect.h);
-    int y = subsprite_rect.h + (arc4random() % (MAIN_VIEWPORT_RECT.h + 1));
+    int y = arc4random() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
   }
 
