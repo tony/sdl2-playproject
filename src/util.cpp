@@ -44,3 +44,10 @@ std::string GetFullPath(const char* path) {
   std::string full_path = std::string(base_path) + std::string(path);
   return full_path;
 }
+
+int RandInt(int lo, int hi) {
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<int> dist(lo, hi);
+  return dist(mt);
+}

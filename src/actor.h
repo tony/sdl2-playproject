@@ -7,6 +7,7 @@
 #include <SDL2pp/Optional.hh>
 #include "config.h"
 #include "resource.h"
+#include "util.h"
 
 class Actor {
  public:
@@ -37,8 +38,7 @@ class Actor {
     std::ignore = currentKeyStates;
   }
   SDL2pp::Point GenerateSpawnPosition() {
-    unsigned int seed = time(nullptr);
-    int y = rand_r(&seed) % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
+    int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
   }
 
