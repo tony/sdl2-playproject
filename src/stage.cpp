@@ -39,17 +39,17 @@ void LevelStage::Update() {
   for (auto enemy = enemies.begin(); enemy != enemies.end();) {
     bool enemy_destroyed = false;
     (*enemy)->Update();
-    for (auto it = ship->bullets.begin(); it != ship->bullets.end();) {
+    for (auto bullet = ship->bullets.begin(); bullet != ship->bullets.end();) {
       if (SDL2pp::Rect((*enemy)->GetPosition(),
                        (*enemy)->GetSubspriteRect().GetSize())
-              .Contains((*it)->GetPosition())) {
-        (*enemy)->OnHitByBullet(*it);
-        ship->bullets.erase(it);
+              .Contains((*bullet)->GetPosition())) {
+        (*enemy)->OnHitByBullet(*bullet);
+        ship->bullets.erase(bullet);
         if ((*enemy)->stats->health < 1) {
           enemy_destroyed = true;
         }
       } else {
-        ++it;
+        ++bullet;
       }
     }
 
