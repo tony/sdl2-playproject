@@ -24,14 +24,16 @@ struct ShipStats;
 
 class Game {
  public:
-  Game(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-       const std::unique_ptr<ResourceManager>& resource_manager,
-       const std::shared_ptr<spdlog::logger>& console);
+  explicit Game(const std::shared_ptr<spdlog::logger>& console);
   void MainLoop();
 
  private:
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::unique_ptr<ResourceManager>& resource_manager;
+  SDL2pp::SDL sdl;
+  SDL2pp::SDLTTF sdl_ttf;
+  SDL2pp::SDLImage image;
+  SDL2pp::Window window;
+  std::unique_ptr<SDL2pp::Renderer> renderer;
+  std::unique_ptr<ResourceManager> resource_manager;
   std::shared_ptr<StatService> stat_service;
   SDL_Event e;
   bool quit = false;
