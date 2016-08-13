@@ -28,10 +28,16 @@ void LevelStage::SpawnEnemy() {
 }
 
 void LevelStage::Update() {
-  renderer->Copy(*bg_texture, SDL2pp::NullOpt, SDL2pp::NullOpt);
+  Uint32 now = SDL_GetTicks();
+  if (now - last_bg_scroll >= 600) {
+    bg_x_scroll++;
+  }
+  renderer->Copy(*bg_texture, SCREEN_RECT + SDL2pp::Point(bg_x_scroll, 0),
+                 SDL2pp::NullOpt);
+
   game_panel->Update();
   ship->Update();
-  Uint32 now = SDL_GetTicks();
+
   if (now - last_enemy >= 600) {
     SpawnEnemy();
     last_enemy = now;

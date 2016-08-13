@@ -35,5 +35,7 @@ class LevelStage : Stage {
   std::vector<std::shared_ptr<Enemy>> enemies;
   const std::shared_ptr<spdlog::logger>& console;
   Uint32 last_enemy = 0;
+  int bg_x_scroll = 0;
+  Uint32 last_bg_scroll = 0;
 };
 #endif  // SRC_STAGE_H_
