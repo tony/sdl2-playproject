@@ -13,29 +13,23 @@ void ResourceManager::AddSurface(std::string key, std::string file_path) {
 
 void ResourceManager::AddSurfaceWithTransparency(std::string key,
                                                  std::string file_path,
-                                                 Uint8 alpha_r,
-                                                 Uint8 alpha_g,
-                                                 Uint8 alpha_b) {
+                                                 SDL_Color alpha) {
   auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
-  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha_r,
-                                        alpha_g, alpha_b));
+  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha.r,
+                                        alpha.g, alpha.b));
   surfaces_[key] = surface;
 }
 
 void ResourceManager::AddSurfaceWithTransparencyAndTint(std::string key,
                                                         std::string file_path,
-                                                        Uint8 alpha_r,
-                                                        Uint8 alpha_g,
-                                                        Uint8 alpha_b,
-                                                        Uint8 r_tint,
-                                                        Uint8 g_tint,
-                                                        Uint8 b_tint) {
+                                                        SDL_Color alpha,
+                                                        SDL_Color tint) {
   auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
-  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha_r,
-                                        alpha_g, alpha_b));
-  surface->SetColorMod(r_tint, g_tint, b_tint);
+  surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha.r,
+                                        alpha.g, alpha.b));
+  surface->SetColorMod(tint.r, tint.g, tint.b);
   surface->SetAlphaMod(205);
   surfaces_[key] = surface;
 }

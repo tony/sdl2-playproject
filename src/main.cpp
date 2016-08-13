@@ -13,21 +13,23 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   resource_manager->AddSurface("bg1",
                                "resources/gfx/side-bg/green-mountain.png");
   resource_manager->AddSurfaceWithTransparency(
-      "modular_ships", "resources/gfx/modular_ships.png", 13, 107, 178);
+      "modular_ships", "resources/gfx/modular_ships.png",
+      SDL_Color{13, 107, 178, 255});
   resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted", "resources/gfx/modular_ships.png", 13, 107, 178,
-      0, 0, 0);
+      "modular_ships_tinted", "resources/gfx/modular_ships.png",
+      SDL_Color{13, 107, 178, 255}, SDL_Color{0, 0, 0, 255});
   resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_red", "resources/gfx/modular_ships.png", 13, 107,
-      178, 0xFF, 0, 0);
+      "modular_ships_tinted_red", "resources/gfx/modular_ships.png",
+      SDL_Color{13, 107, 178, 255}, SDL_Color{0xFF, 0, 0, 0});
   resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_tan", "resources/gfx/modular_ships.png", 13, 107,
-      178, 0xF5, 0xDE, 0xB3);
+      "modular_ships_tinted_tan", "resources/gfx/modular_ships.png",
+      SDL_Color{13, 107, 178, 255}, SDL_Color{0xF5, 0xDE, 0xB3, 255});
   resource_manager->AddSurfaceWithTransparency(
-      "bullets1", "resources/gfx/M484BulletCollection1.png", 0, 0, 0);
+      "bullets1", "resources/gfx/M484BulletCollection1.png",
+      SDL_Color{0, 0, 0, 255});
   resource_manager->AddSurfaceWithTransparencyAndTint(
-      "bullets1_tinted", "resources/gfx/M484BulletCollection1.png", 0, 0, 0, 0,
-      0, 0);
+      "bullets1_tinted", "resources/gfx/M484BulletCollection1.png",
+      SDL_Color{0, 0, 0, 255}, SDL_Color{0, 0, 0, 255});
 
   resource_manager->AddTexture(
       "bg1", SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
