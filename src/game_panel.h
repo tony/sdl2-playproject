@@ -1,5 +1,6 @@
-#ifndef HAVE_GAME_PANEL_H_INCLUDED
-#define HAVE_GAME_PANEL_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_GAME_PANEL_H_
+#define SRC_GAME_PANEL_H_
 
 #include "spdlog/spdlog.h"
 #include <SDL2pp/SDL.hh>
@@ -25,4 +26,4 @@ class GamePanel {
   std::string last_message_string;
   const std::shared_ptr<spdlog::logger>& console;
 };
-#endif  // HAVE_GAME_PANEL_H_INCLUDED
+#endif  // SRC_GAME_PANEL_H_

@@ -1,3 +1,4 @@
+/* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "bullet.h"
 #include "stage.h"
 #include "config.h"

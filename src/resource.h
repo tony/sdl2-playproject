@@ -1,5 +1,6 @@
-#ifndef HAVE_RESOURCE_H_INCLUDED
-#define HAVE_RESOURCE_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_RESOURCE_H_
+#define SRC_RESOURCE_H_
 
 #include <SDL2pp/SDL2pp.hh>
 #include <SDL2pp/Font.hh>
@@ -33,7 +34,7 @@ class ResourceManager {
   const std::shared_ptr<SDL2pp::Texture>& GetTexture(std::string key) const {
     return textures_.at(key);
   }
-  void AddFont(std::string key, SDL2pp::Font& font);
+  void AddFont(std::string key, std::string file_path, int font_size);
   const std::shared_ptr<SDL2pp::Font>& GetFont(std::string key) const {
     return fonts_.at(key);
   }
@@ -43,4 +44,4 @@ class ResourceManager {
   std::map<std::string, std::shared_ptr<SDL2pp::Texture>> textures_;
   std::map<std::string, std::shared_ptr<SDL2pp::Surface>> surfaces_;
 };
-#endif  // HAVE_RESOURCE_H_INCLUDED
+#endif  // SRC_RESOURCE_H_

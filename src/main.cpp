@@ -1,3 +1,4 @@
+/* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "config.h"
 #include "input.h"
 #include "game.h"
@@ -130,8 +131,8 @@ int main() {
     // add resources
     auto resource_manager = std::make_unique<ResourceManager>();
 
-    SDL2pp::Font font("resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
-    resource_manager->AddFont("terminus-18", font);
+    resource_manager->AddFont("terminus-18",
+                              "resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
 
     resource_manager->AddSurface("bg1",
                                  "resources/gfx/side-bg/green-mountain.png");
@@ -182,7 +183,6 @@ int main() {
     auto game = std::make_unique<Game>(renderer, resource_manager, console);
     game->MainLoop();
     resource_manager = nullptr;
-    font = nullptr;
     renderer = nullptr;
     IMG_Quit();
     SDL_Quit();

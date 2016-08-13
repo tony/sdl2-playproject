@@ -1,5 +1,6 @@
-#ifndef HAVE_SHIP_H_INCLUDED
-#define HAVE_SHIP_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_SHIP_H_
+#define SRC_SHIP_H_
 
 #include <memory>
 #include <vector>
@@ -19,8 +20,8 @@ class Ship : public Actor {
        const std::unique_ptr<ResourceManager>& resource_manager,
        SDL2pp::Point position = {30, 30},
        SDL2pp::Point velocity = {0, 0});
-  void HandleInput(const Uint8* currentKeyStates) override final;
-  void Update() override final;
+  void HandleInput(const Uint8* currentKeyStates) final;
+  void Update() final;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
 
@@ -29,4 +30,4 @@ class Ship : public Actor {
   void SpawnBullet(void);
   Uint32 last_shot = 0;
 };
-#endif  // HAVE_SHIP_H_INCLUDED
+#endif  // SRC_SHIP_H_

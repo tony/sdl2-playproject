@@ -1,3 +1,4 @@
+/* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "resource.h"
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Surface.hh>
@@ -48,6 +49,8 @@ void ResourceManager::AddTexture(std::string key,
   textures_[key] = std::move(texture);
 }
 
-void ResourceManager::AddFont(std::string key, SDL2pp::Font& font) {
-  fonts_[key] = std::make_shared<SDL2pp::Font>(std::move(font));
+void ResourceManager::AddFont(std::string key,
+                              std::string file_path,
+                              int font_size) {
+  fonts_[key] = std::make_shared<SDL2pp::Font>(file_path, font_size);
 }

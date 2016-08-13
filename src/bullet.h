@@ -1,5 +1,6 @@
-#ifndef HAVE_BULLET_H_INCLUDED
-#define HAVE_BULLET_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_BULLET_H_
+#define SRC_BULLET_H_
 
 #include <SDL2pp/Rect.hh>
 #include <SDL2pp/SDL2pp.hh>
@@ -22,10 +23,10 @@ class Bullet : public Actor {
          SDL2pp::Point position,
          SDL2pp::Point velocity);
   bool InBounds();
-  void Update() override final;
+  void Update() final;
   std::shared_ptr<BulletStats> stats;
 
  private:
   SDL2pp::Point velocity{9, 0};
 };
-#endif  // HAVE_BULLET_H_INCLUDED
+#endif  // SRC_BULLET_H_

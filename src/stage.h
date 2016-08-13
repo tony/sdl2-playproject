@@ -1,5 +1,6 @@
-#ifndef HAVE_STAGE_H_INCLUDED
-#define HAVE_STAGE_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_STAGE_H_
+#define SRC_STAGE_H_
 
 #include <spdlog/spdlog.h>
 #include "actor.h"
@@ -21,8 +22,8 @@ class LevelStage : Stage {
              const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<StatService>& stat_service,
              const std::shared_ptr<spdlog::logger>& console);
-  void HandleInput(const Uint8* currentKeyStates) override final;
-  void Update() override final;
+  void HandleInput(const Uint8* currentKeyStates) final;
+  void Update() final;
   void SpawnEnemy();
 
  private:
@@ -35,4 +36,4 @@ class LevelStage : Stage {
   const std::shared_ptr<spdlog::logger>& console;
   Uint32 last_enemy = 0;
 };
-#endif  // HAVE_STAGE_H_INCLUDED
+#endif  // SRC_STAGE_H_

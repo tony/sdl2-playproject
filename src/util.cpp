@@ -1,6 +1,7 @@
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#include <memory>
 #include "config.h"
 #include "util.h"
-#include <memory>
 
 std::shared_ptr<SDL2pp::Texture> DrawText(
     const std::string text,

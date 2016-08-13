@@ -1,5 +1,6 @@
-#ifndef HAVE_ACTOR_H_INCLUDED
-#define HAVE_ACTOR_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_ACTOR_H_
+#define SRC_ACTOR_H_
 
 #include <array>
 #include <SDL2pp/SDL2pp.hh>
@@ -40,7 +41,7 @@ class Actor {
     return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
   }
 
-  virtual void Update(){};
+  virtual void Update() {}
 
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
@@ -54,6 +55,6 @@ class Actor {
 
   enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
   ActorState state = ActorState::DEFAULT;
-  std::array<SDL2pp::Rect, (int)ActorState::TOTAL> subsprites;
+  std::array<SDL2pp::Rect, static_cast<int>(ActorState::TOTAL)> subsprites;
 };
-#endif  // HAVE_ACTOR_H_INCLUDED
+#endif  // SRC_ACTOR_H_

@@ -1,5 +1,6 @@
-#ifndef HAVE_GAME_H_INCLUDED
-#define HAVE_GAME_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_GAME_H_
+#define SRC_GAME_H_
 
 #include "spdlog/spdlog.h"
 #include <SDL2/SDL.h>
@@ -38,4 +39,4 @@ class Game {
   std::shared_ptr<Input> input;
   const std::shared_ptr<spdlog::logger>& console;
 };
-#endif  // HAVE_GAME_H_INCLUDED
+#endif  // SRC_GAME_H_

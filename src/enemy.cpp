@@ -1,3 +1,4 @@
+/* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "config.h"
 #include "resource.h"
 #include "enemy.h"

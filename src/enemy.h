@@ -1,5 +1,6 @@
-#ifndef HAVE_ENEMY_H_INCLUDED
-#define HAVE_ENEMY_H_INCLUDED
+/* Copyright 2016 Tony Narlock. All rights reserved. */
+#ifndef SRC_ENEMY_H_
+#define SRC_ENEMY_H_
 
 #include <spdlog/spdlog.h>
 #include <array>
@@ -22,8 +23,8 @@ class Enemy : public Actor {
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::shared_ptr<spdlog::logger>& console,
         SDL2pp::Point velocity = {-1, 0});
-  void HandleInput(const Uint8* currentKeyStates) override final;
-  void Update() override final;
+  void HandleInput(const Uint8* currentKeyStates) final;
+  void Update() final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   std::shared_ptr<EnemyStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
@@ -37,4 +38,4 @@ class Enemy : public Actor {
   bool hit = false;
   Uint32 last_hit = 0;
 };
-#endif  // HAVE_ENEMY_H_INCLUDED
+#endif  // SRC_ENEMY_H_
