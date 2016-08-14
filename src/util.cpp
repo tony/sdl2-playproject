@@ -5,8 +5,7 @@
 
 std::shared_ptr<SDL2pp::Texture> DrawText(
     const std::string text,
-    const int x,
-    const int y,
+    const SDL2pp::Point position,
     const std::shared_ptr<SDL2pp::Font>& font,
     const std::unique_ptr<SDL2pp::Renderer>& renderer,
     bool underline = true) {
@@ -24,7 +23,8 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
   if (underline) {
     auto message_shadow(font->RenderText_Blended(text, text_shadow_color));
     auto message_texture_shadow(SDL2pp::Texture(*renderer, message_shadow));
-    SDL2pp::Rect message_shadow_rect = {x + 1, y + 1, message_shadow.GetWidth(),
+    SDL2pp::Rect message_shadow_rect = {position.x + 1, position.y + 1,
+                                        message_shadow.GetWidth(),
                                         message_shadow.GetHeight()};
     renderer->Copy(message_texture_shadow, SDL2pp::NullOpt,
                    message_shadow_rect);
@@ -32,7 +32,8 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
 
   auto message(font->RenderText_Blended(text, text_fg_color));
   auto message_texture(SDL2pp::Texture(*renderer, message));
-  SDL2pp::Rect message_rect = {x, y, message.GetWidth(), message.GetHeight()};
+  SDL2pp::Rect message_rect = {position.x, position.y, message.GetWidth(),
+                               message.GetHeight()};
   renderer->Copy(message_texture, SDL2pp::NullOpt, message_rect);
 
   renderer->SetTarget();

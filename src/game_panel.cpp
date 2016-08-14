@@ -38,8 +38,8 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
     last_message_string = ship_text;
     resource_manager->AddTexture(
         "game_panel_text",
-        DrawText(ship_text, 5, 25, resource_manager->GetFont("terminus-18"),
-                 renderer, true));
+        DrawText(ship_text, SDL2pp::Point{5, 25},
+                 resource_manager->GetFont("terminus-18"), renderer, true));
   }
   return resource_manager->GetTexture("game_panel_text");
 }
