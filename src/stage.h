@@ -29,11 +29,13 @@ class LevelStage : Stage {
  private:
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::shared_ptr<SDL2pp::Texture>& bg_texture;
-  std::shared_ptr<Ship> ship;
+
   const std::unique_ptr<ResourceManager>& resource_manager;
-  std::shared_ptr<GamePanel> game_panel = nullptr;
-  std::vector<std::shared_ptr<Enemy>> enemies;
   const std::shared_ptr<spdlog::logger>& console;
+
+  std::shared_ptr<GamePanel> game_panel;
+  std::shared_ptr<Ship> ship;
+  std::vector<std::shared_ptr<Enemy>> enemies;
   Uint32 last_enemy = 0;
   int bg_x_scroll = 0;
   Uint32 last_bg_scroll = 0;
