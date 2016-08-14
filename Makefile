@@ -35,11 +35,17 @@ format:
 cpplint:
 	cpplint.py --filter=-build/include src/*
 
+cppcheck:
+	cppcheck --enable=all --inconclusive --std=c11 src/*
+
 run:
 	./build/game
 
 watch_cpplint:
 	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) cpplint; else $(MAKE) cpplint entr_warn; fi
+
+watch_cppcheck:
+	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) cppcheck; else $(MAKE) cppcheck entr_warn; fi
 
 watch_debug:
 	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) debug_ninja; else $(MAKE) debug_ninja entr_warn; fi
