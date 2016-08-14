@@ -21,6 +21,7 @@ void GamePanel::Update() {
 
 const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
   std::stringstream stats_stream;
+  auto text_position = SDL2pp::Point{5, 25};
 
   std::string ship_text;
   if (stat_service->ship) {
@@ -38,7 +39,7 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
     last_message_string = ship_text;
     resource_manager->AddTexture(
         "game_panel_text",
-        DrawText(ship_text, SDL2pp::Point{5, 25},
+        DrawText(ship_text, text_position,
                  resource_manager->GetFont("terminus-18"), renderer, true));
   }
   return resource_manager->GetTexture("game_panel_text");

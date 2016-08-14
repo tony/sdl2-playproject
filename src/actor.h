@@ -27,7 +27,7 @@ class Actor {
         position(position ? position.value() : GenerateSpawnPosition()) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
-  SDL2pp::Rect GetSubspriteRect() {
+  SDL2pp::Rect GetSubspriteRect() const {
     return subsprite_rect;
     // return subsprites[static_cast<int>(state)];
   }
@@ -37,7 +37,7 @@ class Actor {
   virtual void HandleInput(const Uint8* currentKeyStates) {
     std::ignore = currentKeyStates;
   }
-  SDL2pp::Point GenerateSpawnPosition() {
+  static SDL2pp::Point GenerateSpawnPosition() {
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
   }

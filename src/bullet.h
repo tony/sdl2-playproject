@@ -21,12 +21,9 @@ class Bullet : public Actor {
   Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
          const std::unique_ptr<ResourceManager>& resource_manager,
          SDL2pp::Point position,
-         SDL2pp::Point velocity);
+         SDL2pp::Point velocity = {9, 0});
   bool InBounds();
   void Update() final;
   std::shared_ptr<BulletStats> stats;
-
- private:
-  SDL2pp::Point velocity{9, 0};
 };
 #endif  // SRC_BULLET_H_
