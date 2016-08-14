@@ -64,14 +64,14 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::unique_ptr<ResourceManager>& resource_manager,
            const std::shared_ptr<spdlog::logger>& console,
-           const std::shared_ptr<SDL2pp::Texture>& sprite,
+           const std::shared_ptr<SDL2pp::Texture>& sprite_sheet,
            SDL2pp::Optional<SDL2pp::Point> position,
            SDL2pp::Point velocity,
            ShipStats stats,
            int flip)
     : Actor(renderer,
             resource_manager,
-            sprite,
+            sprite_sheet,
             resource_manager->GetTexture("modular_ships_tinted"),
             SDL2pp::Rect{126, 79, 33, 33},
             velocity,
@@ -89,10 +89,10 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 void Ship::Update() {
   auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
 
-  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position, 0,
+  renderer->Copy(*shadow_sheet, GetSubspriteRect(), shadow_position, 0,
                  SDL2pp::NullOpt, flip);
-  renderer->Copy(*sprite, GetSubspriteRect(), position, 0, SDL2pp::NullOpt,
-                 flip);
+  renderer->Copy(*sprite_sheet, GetSubspriteRect(), position, 0,
+                 SDL2pp::NullOpt, flip);
 
   if (hit) {
     renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
@@ -102,8 +102,8 @@ void Ship::Update() {
       hit = false;
     }
   } else {
-    renderer->Copy(*sprite, GetSubspriteRect(), position, 0, SDL2pp::NullOpt,
-                   flip);
+    renderer->Copy(*sprite_sheet, GetSubspriteRect(), position, 0,
+                   SDL2pp::NullOpt, flip);
   }
 
   // bullet drawing and clean up

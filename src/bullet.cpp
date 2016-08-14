@@ -31,9 +31,9 @@ void Bullet::Update() {
     shadow_position.x += 1;
     shadow_position.y += 1;
 
-    renderer->Copy(*shadow, shadow_dimensions, shadow_position);
+    renderer->Copy(*shadow_sheet, shadow_dimensions, shadow_position);
 
-    renderer->Copy(*sprite, subsprite_rect,
+    renderer->Copy(*sprite_sheet, subsprite_rect,
                    SDL2pp::Rect(position, SDL2pp::Point{9, 9}));
   }
 }

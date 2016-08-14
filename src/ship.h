@@ -20,7 +20,7 @@ class Ship : public Actor {
   Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
        const std::unique_ptr<ResourceManager>& resource_manager,
        const std::shared_ptr<spdlog::logger>& console,
-       const std::shared_ptr<SDL2pp::Texture>& sprite,
+       const std::shared_ptr<SDL2pp::Texture>& sprite_sheet,
        SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
        SDL2pp::Point velocity = {0, 0},
        ShipStats stats = ShipStats(),
