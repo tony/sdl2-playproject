@@ -23,18 +23,15 @@ class Enemy : public Actor {
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::shared_ptr<spdlog::logger>& console,
         SDL2pp::Point velocity = {-1, 0});
-  void HandleInput(const Uint8* currentKeyStates) final;
   void Update() final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   std::shared_ptr<EnemyStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
 
  private:
-  const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
   const std::shared_ptr<spdlog::logger>& console;
 
-  Uint32 last_shot = 0;
   bool hit = false;
   Uint32 last_hit = 0;
 };

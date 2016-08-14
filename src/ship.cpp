@@ -4,34 +4,14 @@
 #include "ship.h"
 #include "util.h"
 
-Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-           const std::unique_ptr<ResourceManager>& resource_manager,
-           SDL2pp::Point position,
-           SDL2pp::Point velocity)
-    : Actor(renderer,
-            resource_manager,
-            resource_manager->GetTexture("modular_ships"),
-            resource_manager->GetTexture("modular_ships_tinted"),
-            SDL2pp::Rect{126, 79, 33, 33},
-            velocity,
-            position),
-      stats(std::make_shared<ShipStats>()) {
-  subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
-}
+Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+               const std::unique_ptr<ResourceManager>& resource_manager
 
-void Ship::Update() {
-  auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
+               )
+    : ship(std::make_unique<Ship>(renderer, resource_manager)) {}
 
-  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position);
-  renderer->Copy(*sprite, GetSubspriteRect(), position);
-
-  for (auto& bullet : bullets) {
-    bullet->Update();
-  }
+void Player::HandleInput(const Uint8* currentKeyStates) {
+  ship->HandleInput(currentKeyStates);
 }
 
 void Ship::HandleInput(const Uint8* currentKeyStates) {
@@ -81,6 +61,36 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
   bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
                                [](auto& b) { return !b->InBounds(); }),
                 bullets.end());
+}
+
+Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+           const std::unique_ptr<ResourceManager>& resource_manager,
+           SDL2pp::Point position,
+           SDL2pp::Point velocity)
+    : Actor(renderer,
+            resource_manager,
+            resource_manager->GetTexture("modular_ships"),
+            resource_manager->GetTexture("modular_ships_tinted"),
+            SDL2pp::Rect{126, 79, 33, 33},
+            velocity,
+            position),
+      stats(std::make_shared<ShipStats>()) {
+  subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
+  subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
+}
+
+void Ship::Update() {
+  auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
+
+  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position);
+  renderer->Copy(*sprite, GetSubspriteRect(), position);
+
+  for (auto& bullet : bullets) {
+    bullet->Update();
+  }
 }
 
 void Ship::SpawnBullet() {

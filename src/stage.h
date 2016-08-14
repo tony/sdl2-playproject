@@ -34,7 +34,7 @@ class LevelStage : Stage {
   const std::shared_ptr<spdlog::logger>& console;
 
   std::shared_ptr<GamePanel> game_panel;
-  std::shared_ptr<Ship> ship;
+  std::shared_ptr<Player> player;
   std::vector<std::shared_ptr<Enemy>> enemies;
   Uint32 last_enemy = 0;
   int bg_x_scroll = 0;

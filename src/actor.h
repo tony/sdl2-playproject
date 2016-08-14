@@ -34,9 +34,6 @@ class Actor {
   SDL2pp::Point GetPosition() const { return position; }
 
  protected:
-  virtual void HandleInput(const Uint8* currentKeyStates) {
-    std::ignore = currentKeyStates;
-  }
   static SDL2pp::Point GenerateSpawnPosition() {
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);

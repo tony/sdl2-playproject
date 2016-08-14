@@ -44,6 +44,11 @@ void Enemy::Update() {
   for (auto& bullet : bullets) {
     bullet->Update();
   }
+
+  // sweep out of bounds bullets
+  bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+                               [](auto& b) { return !b->InBounds(); }),
+                bullets.end());
 }
 
 void Enemy::OnHitByBullet(std::shared_ptr<Bullet> bullet) {
@@ -54,20 +59,6 @@ void Enemy::OnHitByBullet(std::shared_ptr<Bullet> bullet) {
   stats->health -= bullet->stats->damage;
   console->info("hit for {}, {}/{}", bullet->stats->damage, stats->health,
                 stats->health_max);
-}
-
-void Enemy::HandleInput(const Uint8* currentKeyStates) {
-  std::ignore = currentKeyStates;
-  Uint32 now = SDL_GetTicks();
-  if (now - last_shot >= shooting_delay) {
-    SpawnBullet();
-    last_shot = now;
-  }
-
-  // sweep out of bounds bullets
-  bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
-                               [](auto& b) { return !b->InBounds(); }),
-                bullets.end());
 }
 
 void Enemy::SpawnBullet() {

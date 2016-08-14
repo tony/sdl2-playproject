@@ -15,12 +15,12 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                                              renderer,
                                              resource_manager,
                                              console)),
-      ship(std::make_shared<Ship>(renderer, resource_manager)) {
-  stat_service->set_ship_stats(ship->stats);
+      player(std::make_shared<Player>(renderer, resource_manager)) {
+  stat_service->set_ship_stats(player->ship->stats);
 }
 
 void LevelStage::HandleInput(const Uint8* currentKeyStates) {
-  ship->HandleInput(currentKeyStates);
+  player->HandleInput(currentKeyStates);
 }
 
 void LevelStage::SpawnEnemy() {
@@ -39,7 +39,7 @@ void LevelStage::Update() {
                  SDL2pp::NullOpt);
 
   game_panel->Update();
-  ship->Update();
+  player->ship->Update();
 
   if (now - last_enemy >= 600) {
     SpawnEnemy();
@@ -48,12 +48,13 @@ void LevelStage::Update() {
   for (auto enemy = enemies.begin(); enemy != enemies.end();) {
     bool enemy_destroyed = false;
     (*enemy)->Update();
-    for (auto bullet = ship->bullets.begin(); bullet != ship->bullets.end();) {
+    for (auto bullet = player->ship->bullets.begin();
+         bullet != player->ship->bullets.end();) {
       if (SDL2pp::Rect((*enemy)->GetPosition(),
                        (*enemy)->GetSubspriteRect().GetSize())
               .Contains((*bullet)->GetPosition())) {
         (*enemy)->OnHitByBullet(*bullet);
-        ship->bullets.erase(bullet);
+        player->ship->bullets.erase(bullet);
         if ((*enemy)->stats->health < 1) {
           enemy_destroyed = true;
         }

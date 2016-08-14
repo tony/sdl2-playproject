@@ -20,8 +20,8 @@ class Ship : public Actor {
        const std::unique_ptr<ResourceManager>& resource_manager,
        SDL2pp::Point position = {30, 30},
        SDL2pp::Point velocity = {0, 0});
-  void HandleInput(const Uint8* currentKeyStates) final;
   void Update() final;
+  void HandleInput(const Uint8* currentKeyStates);
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
 
@@ -29,5 +29,14 @@ class Ship : public Actor {
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
   Uint32 last_shot = 0;
+};
+
+class Player {
+ public:
+  Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+         const std::unique_ptr<ResourceManager>& resource_manager);
+
+  void HandleInput(const Uint8* currentKeyStates);
+  std::unique_ptr<Ship> ship;
 };
 #endif  // SRC_SHIP_H_
