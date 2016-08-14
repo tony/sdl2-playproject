@@ -26,16 +26,16 @@ void Enemy::Update() {
 
   auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
 
-  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position);
+  renderer->Copy(*shadow, GetSubspriteRect(), shadow_position, 0, SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
   if (hit) {
     renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
-                   GetSubspriteRect(), position);
+                   GetSubspriteRect(), position, 0, SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
     Uint32 now = SDL_GetTicks();
     if (now - last_hit >= 100) {
       hit = false;
     }
   } else {
-    renderer->Copy(*sprite, GetSubspriteRect(), position);
+    renderer->Copy(*sprite, GetSubspriteRect(), position, 0, SDL2pp::NullOpt, SDL_FLIP_HORIZONTAL);
   }
 
   for (auto& bullet : bullets) {
