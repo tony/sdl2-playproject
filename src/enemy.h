@@ -10,6 +10,7 @@
 #include "bullet.h"
 #include "config.h"
 #include "resource.h"
+#include "ship.h"
 
 typedef struct EnemyStats {
   unsigned int health = 2;
@@ -17,22 +18,15 @@ typedef struct EnemyStats {
   unsigned int level = 1;
 } EnemyStats;
 
-class Enemy : public Actor {
+class Enemy {
  public:
   Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::shared_ptr<spdlog::logger>& console,
-        SDL2pp::Point velocity = {-1, 0});
-  void Update() final;
-  void OnHitByBullet(std::shared_ptr<Bullet> bullet);
-  std::shared_ptr<EnemyStats> stats;
-  std::vector<std::shared_ptr<Bullet>> bullets;
-
- private:
-  void SpawnBullet(void);
-  const std::shared_ptr<spdlog::logger>& console;
-
-  bool hit = false;
-  Uint32 last_hit = 0;
+        SDL2pp::Optional<SDL2pp::Point> position,
+        SDL2pp::Point velocity = {-1, 0},
+        int flip = 0);
+  std::unique_ptr<Ship> ship;
+  void Update();
 };
 #endif  // SRC_ENEMY_H_

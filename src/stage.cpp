@@ -15,7 +15,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                                              renderer,
                                              resource_manager,
                                              console)),
-      player(std::make_shared<Player>(renderer, resource_manager)) {
+      player(std::make_shared<Player>(renderer, resource_manager, console)) {
   stat_service->set_ship_stats(player->ship->stats);
 }
 
@@ -25,7 +25,8 @@ void LevelStage::HandleInput(const Uint8* currentKeyStates) {
 
 void LevelStage::SpawnEnemy() {
   auto enemy = std::make_shared<Enemy>(renderer, resource_manager, console,
-                                       SDL2pp::Point{-1, 0});
+                                       SDL2pp::NullOpt, SDL2pp::Point{-1, 0},
+                                       SDL_FLIP_HORIZONTAL);
   enemies.push_back(enemy);
 }
 
@@ -50,12 +51,12 @@ void LevelStage::Update() {
     (*enemy)->Update();
     for (auto bullet = player->ship->bullets.begin();
          bullet != player->ship->bullets.end();) {
-      if (SDL2pp::Rect((*enemy)->GetPosition(),
-                       (*enemy)->GetSubspriteRect().GetSize())
+      if (SDL2pp::Rect((*enemy)->ship->GetPosition(),
+                       (*enemy)->ship->GetSubspriteRect().GetSize())
               .Contains((*bullet)->GetPosition())) {
-        (*enemy)->OnHitByBullet(*bullet);
+        (*enemy)->ship->OnHitByBullet(*bullet);
         player->ship->bullets.erase(bullet);
-        if ((*enemy)->stats->health < 1) {
+        if ((*enemy)->ship->stats->health < 1) {
           enemy_destroyed = true;
         }
       } else {
