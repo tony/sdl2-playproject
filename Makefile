@@ -30,7 +30,7 @@ debug_ninja: mkdir_build
 	ninja -C build
 
 format:
-	clang-format -style=Chromium src/* -i || clang-format37 -style=Chromium src/* -i
+	clang-format -style=Chromium src/* -i || clang-format38 -style=Chromium src/* -i
 
 cpplint:
 	cpplint.py --filter=-build/include src/*
