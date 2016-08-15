@@ -13,7 +13,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             SDL2pp::Rect{12, 142, 3, 3},
             std::move(v),
             std::move(p)),
-      stats(std::make_shared<BulletStats>()) {
+      stats(std::make_shared<BulletStats>()),
+      scale(3) {
   position.y += 12;
   position.x += 30;
   LoadResources();
@@ -21,21 +22,20 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 
 void Bullet::LoadResources() {
   if (!resource_manager->HasTexture("bullet1")) {
-    static auto target1 = std::make_shared<SDL2pp::Texture>(
+    auto target3 = std::make_shared<SDL2pp::Texture>(
         *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-        GetSubspriteRect().w, GetSubspriteRect().h);
+        GetSubspriteRect().w * scale, GetSubspriteRect().h * scale);
 
-    target1->SetBlendMode(SDL_BLENDMODE_BLEND);
-    renderer->SetTarget(*target1);
+    target3->SetBlendMode(SDL_BLENDMODE_BLEND);
+    renderer->SetTarget(*target3);
     renderer->Clear();
     renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
-
-    renderer->Copy(*shadow_sheet, GetSubspriteRect() + SDL2pp::Point{1, 1},
-                   SDL2pp::NullOpt);
+    renderer->Copy(
+        *shadow_sheet, GetSubspriteRect(),
+        (GetSubspriteRect().GetTopLeft() + SDL2pp::Point{1, 1}) * scale);
     renderer->Copy(*sprite_sheet, GetSubspriteRect(), SDL2pp::NullOpt);
-
+    resource_manager->AddTexture("bullet1", target3);
     renderer->SetTarget();
-    resource_manager->AddTexture("bullet1", target1);
   }
 }
 
@@ -46,9 +46,7 @@ bool Bullet::InBounds() {
 void Bullet::Update() {
   position += velocity;
   if (InBounds()) {
-    renderer->Copy(
-        *resource_manager->GetTexture("bullet1"),
-        SDL2pp::Rect{0, 0, GetSubspriteRect().w * 3, GetSubspriteRect().h * 3},
-        position);
+    renderer->Copy(*resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
+                   position);
   }
 }

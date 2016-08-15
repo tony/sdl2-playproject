@@ -102,8 +102,8 @@ void Ship::LoadResources() {
                    SDL2pp::NullOpt);
     renderer->Copy(*sprite_sheet, GetSubspriteRect(), SDL2pp::NullOpt);
 
-    renderer->SetTarget();
     resource_manager->AddTexture("modular_ships_shadowed", target1);
+    renderer->SetTarget();
   }
   if (!resource_manager->HasTexture("modular_ships_hit")) {
     static auto target2 = std::make_shared<SDL2pp::Texture>(
@@ -111,11 +111,14 @@ void Ship::LoadResources() {
         GetSubspriteRect().w, GetSubspriteRect().h);
 
     target2->SetBlendMode(SDL_BLENDMODE_BLEND);
+    renderer->SetTarget(*target2);
+    renderer->Clear();
+    renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
     renderer->Copy(*resource_manager->GetTexture("modular_ships_shadowed"),
                    GetSubspriteRect(), SDL2pp::NullOpt);
-    renderer->SetTarget();
     resource_manager->AddTexture("modular_ships_hit", target2);
+    renderer->SetTarget();
   }
 }
 

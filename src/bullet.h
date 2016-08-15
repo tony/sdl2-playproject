@@ -26,5 +26,8 @@ class Bullet : public Actor {
   void Update() final;
   void LoadResources();
   std::shared_ptr<BulletStats> stats;
+
+ private:
+  int scale = 1;
 };
 #endif  // SRC_BULLET_H_

@@ -49,12 +49,12 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
                                      "modular_ships_tinted_tan")));
   resource_manager->AddTexture(
+      "bullets1",
+      SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
+  resource_manager->AddTexture(
       "bullets1_tinted",
       SDL2pp::Texture(*renderer,
                       *resource_manager->GetSurface("bullets1_tinted")));
-  resource_manager->AddTexture(
-      "bullets1",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
 }
 
 Game::Game(const std::shared_ptr<spdlog::logger>& console)
