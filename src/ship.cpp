@@ -84,9 +84,10 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
+  LoadResources();
 }
 
-void Ship::Update() {
+void Ship::LoadResources() {
   if (!resource_manager->HasTexture("modular_ships_shadowed")) {
     static auto target1 = std::make_shared<SDL2pp::Texture>(
         *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
@@ -106,6 +107,21 @@ void Ship::Update() {
     renderer->SetTarget();
     resource_manager->AddTexture("modular_ships_shadowed", target1);
   }
+  if (!resource_manager->HasTexture("modular_ships_hit")) {
+    static auto target2 = std::make_shared<SDL2pp::Texture>(
+        *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+        GetSubspriteRect().w, GetSubspriteRect().h);
+
+    target2->SetBlendMode(SDL_BLENDMODE_BLEND);
+
+    renderer->Copy(*resource_manager->GetTexture("modular_ships_shadowed"),
+                   GetSubspriteRect(), SDL2pp::NullOpt);
+    renderer->SetTarget();
+    resource_manager->AddTexture("modular_ships_hit", target2);
+  }
+}
+
+void Ship::Update() {
   if (hit) {
     renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
                    GetSubspriteRect(), position, 0, SDL2pp::NullOpt, flip);
