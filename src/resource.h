@@ -29,6 +29,16 @@ class ResourceManager {
     return textures_.at(key);
   }
   bool HasTexture(std::string key) const { return textures_.count(key) > 0; }
+  void AddTextureSheet(std::string key, SDL2pp::Texture texture);
+  void AddTextureSheet(std::string key,
+                       std::shared_ptr<SDL2pp::Texture> texture);
+  const std::shared_ptr<SDL2pp::Texture>& GetTextureSheet(
+      std::string key) const {
+    return texture_sheets_.at(key);
+  }
+  bool HasTextureSheet(std::string key) const {
+    return texture_sheets_.count(key) > 0;
+  }
 
   void AddFont(std::string key, std::string file_path, int font_size);
   const std::shared_ptr<SDL2pp::Font>& GetFont(std::string key) const {
@@ -38,6 +48,7 @@ class ResourceManager {
  private:
   std::map<std::string, std::shared_ptr<SDL2pp::Font>> fonts_;
   std::map<std::string, std::shared_ptr<SDL2pp::Texture>> textures_;
+  std::map<std::string, std::shared_ptr<SDL2pp::Texture>> texture_sheets_;
   std::map<std::string, std::shared_ptr<SDL2pp::Surface>> surfaces_;
 };
 #endif  // SRC_RESOURCE_H_

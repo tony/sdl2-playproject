@@ -8,7 +8,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                        const std::shared_ptr<StatService>& stat_service,
                        const std::shared_ptr<spdlog::logger>& console)
     : renderer(renderer),
-      bg_texture(resource_manager->GetTexture("bg1")),
+      bg_texture(resource_manager->GetTextureSheet("bg1")),
       resource_manager(resource_manager),
       console(console),
       game_panel(std::make_shared<GamePanel>(stat_service,

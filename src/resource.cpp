@@ -43,6 +43,17 @@ void ResourceManager::AddTexture(std::string key,
   textures_[key] = std::move(texture);
 }
 
+void ResourceManager::AddTextureSheet(std::string key,
+                                      SDL2pp::Texture texture) {
+  texture_sheets_[key] = std::make_shared<SDL2pp::Texture>(std::move(texture));
+}
+
+void ResourceManager::AddTextureSheet(
+    std::string key,
+    std::shared_ptr<SDL2pp::Texture> texture) {
+  texture_sheets_[key] = std::move(texture);
+}
+
 void ResourceManager::AddFont(std::string key,
                               std::string file_path,
                               int font_size) {

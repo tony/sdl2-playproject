@@ -7,11 +7,12 @@
 Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
                const std::shared_ptr<spdlog::logger>& console)
-    : ship(std::make_unique<Ship>(renderer,
-                                  resource_manager,
-                                  console,
-                                  resource_manager->GetTexture("modular_ships"),
-                                  SDL2pp::Point{30, 30})) {}
+    : ship(std::make_unique<Ship>(
+          renderer,
+          resource_manager,
+          console,
+          resource_manager->GetTextureSheet("modular_ships"),
+          SDL2pp::Point{30, 30})) {}
 
 void Player::HandleInput(const Uint8* currentKeyStates) {
   ship->HandleInput(currentKeyStates);
@@ -72,7 +73,7 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
     : Actor(renderer,
             resource_manager,
             sprite_sheet,
-            resource_manager->GetTexture("modular_ships_tinted"),
+            resource_manager->GetTextureSheet("modular_ships_tinted"),
             SDL2pp::Rect{126, 79, 33, 33},
             velocity,
             position),
@@ -115,8 +116,9 @@ void Ship::LoadResources() {
     renderer->Clear();
     renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
-    renderer->Copy(*resource_manager->GetTexture("modular_ships_shadowed"),
-                   GetSubspriteRect(), SDL2pp::NullOpt);
+    renderer->Copy(
+        *resource_manager->GetTextureSheet("modular_ships_tinted_red"),
+        GetSubspriteRect(), SDL2pp::NullOpt);
     resource_manager->AddTexture("modular_ships_hit", target2);
     renderer->SetTarget();
   }
@@ -124,8 +126,10 @@ void Ship::LoadResources() {
 
 void Ship::Update() {
   if (hit) {
-    renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
-                   GetSubspriteRect(), position, 0, SDL2pp::NullOpt, flip);
+    renderer->Copy(
+        *resource_manager->GetTexture("modular_ships_hit"),
+        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
+        position, 0, SDL2pp::NullOpt, flip);
     Uint32 now = SDL_GetTicks();
     if (now - last_hit >= 100) {
       hit = false;

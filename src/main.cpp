@@ -31,27 +31,27 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       "bullets1_tinted", "resources/gfx/M484BulletCollection1.png",
       SDL_Color{0, 0, 0, 255}, SDL_Color{0, 0, 0, 255});
 
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "bg1", SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "modular_ships", SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
                                                       "modular_ships")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "modular_ships_tinted",
       SDL2pp::Texture(*renderer,
                       *resource_manager->GetSurface("modular_ships_tinted")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "modular_ships_tinted_red",
       SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
                                      "modular_ships_tinted_red")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "modular_ships_tinted_tan",
       SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
                                      "modular_ships_tinted_tan")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "bullets1",
       SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
-  resource_manager->AddTexture(
+  resource_manager->AddTextureSheet(
       "bullets1_tinted",
       SDL2pp::Texture(*renderer,
                       *resource_manager->GetSurface("bullets1_tinted")));
