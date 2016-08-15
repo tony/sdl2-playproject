@@ -24,6 +24,7 @@ class Bullet : public Actor {
          SDL2pp::Point velocity = {9, 0});
   bool InBounds();
   void Update() final;
+  void LoadResources();
   std::shared_ptr<BulletStats> stats;
 };
 #endif  // SRC_BULLET_H_

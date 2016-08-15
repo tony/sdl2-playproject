@@ -98,9 +98,7 @@ void Ship::LoadResources() {
     renderer->Clear();
     renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
-    auto shadow_position = SDL2pp::Point{1, 1};
-
-    renderer->Copy(*shadow_sheet, GetSubspriteRect() + shadow_position,
+    renderer->Copy(*shadow_sheet, GetSubspriteRect() + SDL2pp::Point{1, 1},
                    SDL2pp::NullOpt);
     renderer->Copy(*sprite_sheet, GetSubspriteRect(), SDL2pp::NullOpt);
 
