@@ -19,35 +19,31 @@ void Player::HandleInput(const Uint8* currentKeyStates) {
 }
 
 void Ship::HandleInput(const Uint8* currentKeyStates) {
-  if (currentKeyStates[SDL_SCANCODE_UP] != 0 ||
-      currentKeyStates[SDL_SCANCODE_W] != 0 ||
-      currentKeyStates[SDL_SCANCODE_K] != 0) {
+  if (currentKeyStates[SDL_SCANCODE_UP] | currentKeyStates[SDL_SCANCODE_W] |
+      currentKeyStates[SDL_SCANCODE_K]) {
     state = ActorState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_DOWN] != 0 ||
-      currentKeyStates[SDL_SCANCODE_S] != 0 ||
-      currentKeyStates[SDL_SCANCODE_J] != 0) {
+  if (currentKeyStates[SDL_SCANCODE_DOWN] | currentKeyStates[SDL_SCANCODE_S] |
+      currentKeyStates[SDL_SCANCODE_J]) {
     state = ActorState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_LEFT] != 0 ||
-      currentKeyStates[SDL_SCANCODE_A] != 0 ||
-      currentKeyStates[SDL_SCANCODE_H] != 0) {
+  if (currentKeyStates[SDL_SCANCODE_LEFT] | currentKeyStates[SDL_SCANCODE_A] |
+      currentKeyStates[SDL_SCANCODE_H]) {
     state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - subsprite_rect.w);
   }
 
-  if (currentKeyStates[SDL_SCANCODE_RIGHT] != 0 ||
-      currentKeyStates[SDL_SCANCODE_D] != 0 ||
-      currentKeyStates[SDL_SCANCODE_L] != 0) {
+  if (currentKeyStates[SDL_SCANCODE_RIGHT] | currentKeyStates[SDL_SCANCODE_D] |
+      currentKeyStates[SDL_SCANCODE_L]) {
     state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - subsprite_rect.w);
