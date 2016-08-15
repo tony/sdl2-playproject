@@ -87,13 +87,25 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
 }
 
 void Ship::Update() {
-  auto shadow_position = SDL2pp::Point{position.x + 1, position.y + 1};
+  if (!resource_manager->HasTexture("modular_ships_shadowed")) {
+    static auto target1 = std::make_shared<SDL2pp::Texture>(
+        *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+        GetSubspriteRect().w, GetSubspriteRect().h);
 
-  renderer->Copy(*shadow_sheet, GetSubspriteRect(), shadow_position, 0,
-                 SDL2pp::NullOpt, flip);
-  renderer->Copy(*sprite_sheet, GetSubspriteRect(), position, 0,
-                 SDL2pp::NullOpt, flip);
+    target1->SetBlendMode(SDL_BLENDMODE_BLEND);
+    renderer->SetTarget(*target1);
+    renderer->Clear();
+    renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
+    auto shadow_position = SDL2pp::Point{1, 1};
+
+    renderer->Copy(*shadow_sheet, GetSubspriteRect() + shadow_position,
+                   SDL2pp::NullOpt);
+    renderer->Copy(*sprite_sheet, GetSubspriteRect(), SDL2pp::NullOpt);
+
+    renderer->SetTarget();
+    resource_manager->AddTexture("modular_ships_shadowed", target1);
+  }
   if (hit) {
     renderer->Copy(*resource_manager->GetTexture("modular_ships_tinted_red"),
                    GetSubspriteRect(), position, 0, SDL2pp::NullOpt, flip);
@@ -102,8 +114,10 @@ void Ship::Update() {
       hit = false;
     }
   } else {
-    renderer->Copy(*sprite_sheet, GetSubspriteRect(), position, 0,
-                   SDL2pp::NullOpt, flip);
+    renderer->Copy(
+        *resource_manager->GetTexture("modular_ships_shadowed"),
+        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
+        position, 0, SDL2pp::NullOpt, flip);
   }
 
   // bullet drawing and clean up

@@ -28,6 +28,8 @@ class ResourceManager {
   const std::shared_ptr<SDL2pp::Texture>& GetTexture(std::string key) const {
     return textures_.at(key);
   }
+  bool HasTexture(std::string key) const { return textures_.count(key) > 0; }
+
   void AddFont(std::string key, std::string file_path, int font_size);
   const std::shared_ptr<SDL2pp::Font>& GetFont(std::string key) const {
     return fonts_.at(key);
