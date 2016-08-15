@@ -40,12 +40,6 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
   return target1;
 }
 
-std::string GetFullPath(const char* path) {
-  auto base_path = SDL_GetBasePath();
-  std::string full_path = std::string(base_path) + std::string(path);
-  return full_path;
-}
-
 int RandInt(int lo, int hi) {
   std::random_device rd;
   std::mt19937 mt(rd());

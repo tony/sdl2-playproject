@@ -36,9 +36,6 @@ class ResourceManager {
       std::string key) const {
     return texture_sheets_.at(key);
   }
-  bool HasTextureSheet(std::string key) const {
-    return texture_sheets_.count(key) > 0;
-  }
 
   void AddFont(std::string key, std::string file_path, int font_size);
   const std::shared_ptr<SDL2pp::Font>& GetFont(std::string key) const {

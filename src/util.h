@@ -21,8 +21,6 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
     const std::unique_ptr<SDL2pp::Renderer>& renderer,
     bool underline);
 
-std::string GetFullPath(const char* path);
-
 int RandInt(int lo = 0, int hi = RAND_MAX);
 
 #endif  // SRC_UTIL_H_
