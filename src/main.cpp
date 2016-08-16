@@ -1,60 +1,60 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
+#include <fstream>
 #include "config.h"
 #include "input.h"
 #include "game.h"
 #include "game_panel.h"
 #include "stage.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+SDL_Color TintToSDL_Color(json::iterator o) {
+  std::array<uint8_t, 4> a;
+  int idx = 0;
+  for (json::iterator i = o->begin(); i != o->end(); ++i) {
+    a[idx] = i->get<uint8_t>();
+    idx++;
+  }
+  return SDL_Color{a[0], a[1], a[2], a[3]};
+}
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
-  resource_manager->AddFont("terminus-18",
-                            "resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
+  std::ifstream ifs("resources/manifests/fonts.json");
+  json j(ifs);
 
-  resource_manager->AddSurface("bg1",
-                               "resources/gfx/side-bg/green-mountain.png");
-  resource_manager->AddSurfaceWithTransparency(
-      "modular_ships", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0, 0, 0, 255});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_red", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0xFF, 0, 0, 0});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_tan", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0xF5, 0xDE, 0xB3, 255});
-  resource_manager->AddSurfaceWithTransparency(
-      "bullets1", "resources/gfx/M484BulletCollection1.png",
-      SDL_Color{0, 0, 0, 255});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "bullets1_tinted", "resources/gfx/M484BulletCollection1.png",
-      SDL_Color{0, 0, 0, 255}, SDL_Color{0, 0, 0, 255});
+  for (auto& f : j) {
+    if (f.count("name") && f.count("location") && f.count("size")) {
+      resource_manager->AddFont(f.find("name").value(),
+                                f.find("location").value(),
+                                f.find("size").value());
+    }
+  }
 
-  resource_manager->AddTextureSheet(
-      "bg1", SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
-  resource_manager->AddTextureSheet(
-      "modular_ships", SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                                      "modular_ships")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted",
-      SDL2pp::Texture(*renderer,
-                      *resource_manager->GetSurface("modular_ships_tinted")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted_red",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                     "modular_ships_tinted_red")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted_tan",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                     "modular_ships_tinted_tan")));
-  resource_manager->AddTextureSheet(
-      "bullets1",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
-  resource_manager->AddTextureSheet(
-      "bullets1_tinted",
-      SDL2pp::Texture(*renderer,
-                      *resource_manager->GetSurface("bullets1_tinted")));
+  std::ifstream ifs2("resources/manifests/spritesheets.json");
+  json j2(ifs2);
+
+  for (auto& f : j2) {
+    if (f.count("name") && f.count("location")) {
+      if (f.count("alpha") && f.count("tint")) {
+        resource_manager->AddSurfaceWithTransparencyAndTint(
+            f.find("name").value(), f.find("location").value(),
+            TintToSDL_Color(f.find("alpha")), TintToSDL_Color(f.find("tint")));
+      } else if (f.count("alpha")) {
+        resource_manager->AddSurfaceWithTransparency(
+            f.find("name").value(), f.find("location").value(),
+            TintToSDL_Color(f.find("alpha")));
+      } else {
+        resource_manager->AddSurface(f.find("name").value(),
+                                     f.find("location").value());
+      }
+    }
+    resource_manager->AddTextureSheet(
+        f.find("name").value(),
+        SDL2pp::Texture(*renderer,
+                        *resource_manager->GetSurface(f.find("name").value())));
+  }
 }
 
 Game::Game(const std::shared_ptr<spdlog::logger>& console)
