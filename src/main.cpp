@@ -52,16 +52,6 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
     }
   }
 
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_tan", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{245, 222, 179, 255});
-  resource_manager->AddSurfaceWithTransparency(
-      "bullets1", "resources/gfx/M484BulletCollection1.png",
-      SDL_Color{0, 0, 0, 255});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "bullets1_tinted", "resources/gfx/M484BulletCollection1.png",
-      SDL_Color{0, 0, 0, 255}, SDL_Color{0, 0, 0, 255});
-
   resource_manager->AddTextureSheet(
       "bg1", SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
   resource_manager->AddTextureSheet(
