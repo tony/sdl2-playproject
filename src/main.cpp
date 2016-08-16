@@ -50,32 +50,11 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                                      f.find("location").value());
       }
     }
+    resource_manager->AddTextureSheet(
+        f.find("name").value(),
+        SDL2pp::Texture(*renderer,
+                        *resource_manager->GetSurface(f.find("name").value())));
   }
-
-  resource_manager->AddTextureSheet(
-      "bg1", SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bg1")));
-  resource_manager->AddTextureSheet(
-      "modular_ships", SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                                      "modular_ships")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted",
-      SDL2pp::Texture(*renderer,
-                      *resource_manager->GetSurface("modular_ships_tinted")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted_red",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                     "modular_ships_tinted_red")));
-  resource_manager->AddTextureSheet(
-      "modular_ships_tinted_tan",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface(
-                                     "modular_ships_tinted_tan")));
-  resource_manager->AddTextureSheet(
-      "bullets1",
-      SDL2pp::Texture(*renderer, *resource_manager->GetSurface("bullets1")));
-  resource_manager->AddTextureSheet(
-      "bullets1_tinted",
-      SDL2pp::Texture(*renderer,
-                      *resource_manager->GetSurface("bullets1_tinted")));
 }
 
 Game::Game(const std::shared_ptr<spdlog::logger>& console)
