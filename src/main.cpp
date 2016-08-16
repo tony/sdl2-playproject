@@ -9,6 +9,21 @@
 
 using json = nlohmann::json;
 
+SDL_Color TintToSDL_Color(json::iterator o) {
+  // std::array<uint8_t, 4> a = o;
+  std::array<uint8_t, 4> a;
+  for (uint8_t& value : a) {
+    const auto& x = *(o++);
+    value = x.get<uint8_t>();
+  }
+  return SDL_Color{a[0], a[1], a[2], a[3]};
+
+  // return SDL_Color{o->at(0), o->at(1), o->at(2), o->at(3)};
+  // for (json::iterator color = o.begin(); it != o.end(); ++color) {
+  //   std::cout << color.key() << " : " << color.value() << "\n";
+  // }
+}
+
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
   std::ifstream ifs("resources/etc/fonts.json");
@@ -22,11 +37,26 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
     }
   }
 
-  resource_manager->AddSurface("bg1",
-                               "resources/gfx/side-bg/green-mountain.png");
-  resource_manager->AddSurfaceWithTransparency(
-      "modular_ships", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255});
+  std::ifstream ifs2("resources/etc/spritesheets.json");
+  json j2(ifs2);
+
+  for (auto& f : j2) {
+    if (f.count("name") && f.count("location")) {
+      if (f.count("alpha") && f.count("tint")) {
+        resource_manager->AddSurfaceWithTransparencyAndTint(
+            f.find("name").value(), f.find("location").value(),
+            TintToSDL_Color(f.find("alpha")), TintToSDL_Color(f.find("tint")));
+      } else if (f.count("alpha")) {
+        resource_manager->AddSurfaceWithTransparency(
+            f.find("name").value(), f.find("location").value(),
+            TintToSDL_Color(f.find("alpha")));
+      } else {
+        resource_manager->AddSurface(f.find("name").value(),
+                                     f.find("location").value());
+      }
+    }
+  }
+
   resource_manager->AddSurfaceWithTransparencyAndTint(
       "modular_ships_tinted", "resources/gfx/modular_ships.png",
       SDL_Color{13, 107, 178, 255}, SDL_Color{0, 0, 0, 255});
