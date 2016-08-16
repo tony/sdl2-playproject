@@ -1,12 +1,8 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
-#include <fstream>
 #include "config.h"
 #include "resource.h"
 #include "ship.h"
 #include "util.h"
-#include "json.hpp"
-
-using json = nlohmann::json;
 
 Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
@@ -90,44 +86,7 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   LoadResources();
 }
 
-SDL2pp::Rect GetJSONCoords(json::iterator o) {
-  std::array<uint8_t, 4> a;
-  int idx = 0;
-  for (json::iterator i = o->begin(); i != o->end(); ++i) {
-    a[idx] = i->get<uint8_t>();
-    idx++;
-  }
-  return SDL2pp::Rect{a[0], a[1], a[2], a[3]};
-}
-
-void Ship::LoadResources() {
-  std::ifstream ifs("resources/manifests/sprites.json");
-  json j(ifs);
-  for (auto& f : j) {
-    auto name = f.find("name").value();
-    auto sheet = f.find("sheet").value();
-    auto shadow_sheet2 = f.find("shadow_sheet").value();
-    auto coords = GetJSONCoords(f.find("coords"));
-    if (!resource_manager->HasTexture(name)) {
-      auto target1 = std::make_shared<SDL2pp::Texture>(
-          *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
-          GetSubspriteRect().w, GetSubspriteRect().h);
-
-      target1->SetBlendMode(SDL_BLENDMODE_BLEND);
-      renderer->SetTarget(*target1);
-      renderer->Clear();
-      renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
-
-      renderer->Copy(*resource_manager->GetTextureSheet(shadow_sheet2),
-                     coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
-      renderer->Copy(*resource_manager->GetTextureSheet(sheet), coords,
-                     SDL2pp::NullOpt);
-
-      resource_manager->AddTexture(name, target1);
-      renderer->SetTarget();
-    }
-  }
-}
+void Ship::LoadResources() {}
 
 void Ship::Update() {
   if (hit) {

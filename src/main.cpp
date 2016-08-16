@@ -9,6 +9,16 @@
 
 using json = nlohmann::json;
 
+SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
+  std::array<uint8_t, 4> a;
+  int idx = 0;
+  for (json::iterator i = o->begin(); i != o->end(); ++i) {
+    a[idx] = i->get<uint8_t>();
+    idx++;
+  }
+  return SDL2pp::Rect{a[0], a[1], a[2], a[3]};
+}
+
 SDL_Color TintToSDL_Color(json::iterator o) {
   std::array<uint8_t, 4> a;
   int idx = 0;
@@ -54,6 +64,33 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         f.find("name").value(),
         SDL2pp::Texture(*renderer,
                         *resource_manager->GetSurface(f.find("name").value())));
+  }
+
+  std::ifstream ifs3("resources/manifests/sprites.json");
+  json j3(ifs3);
+  for (auto& f : j3) {
+    auto name = f.find("name").value();
+    auto sheet = f.find("sheet").value();
+    auto shadow_sheet2 = f.find("shadow_sheet").value();
+    auto coords = TintToSDL_Rect(f.find("coords"));
+    if (!resource_manager->HasTexture(name)) {
+      auto target1 = std::make_shared<SDL2pp::Texture>(
+          *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+          coords.w, coords.h);
+
+      target1->SetBlendMode(SDL_BLENDMODE_BLEND);
+      renderer->SetTarget(*target1);
+      renderer->Clear();
+      renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+
+      renderer->Copy(*resource_manager->GetTextureSheet(shadow_sheet2),
+                     coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
+      renderer->Copy(*resource_manager->GetTextureSheet(sheet), coords,
+                     SDL2pp::NullOpt);
+
+      resource_manager->AddTexture(name, target1);
+      renderer->SetTarget();
+    }
   }
 }
 
