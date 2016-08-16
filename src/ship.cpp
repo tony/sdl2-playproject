@@ -65,7 +65,8 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            SDL2pp::Optional<SDL2pp::Point> position,
            SDL2pp::Point velocity,
            ShipStats stats,
-           int flip)
+           int flip,
+           std::string texture_key)
     : Actor(renderer,
             resource_manager,
             sprite_sheet,
@@ -75,7 +76,8 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             position),
       stats(std::make_shared<ShipStats>(stats)),
       console(console),
-      flip(flip) {
+      flip(flip),
+      texture_key(texture_key) {
   subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
@@ -118,6 +120,25 @@ void Ship::LoadResources() {
     resource_manager->AddTexture("modular_ships_hit", target2);
     renderer->SetTarget();
   }
+  if (!resource_manager->HasTexture("modular_ships_tinted_shadowed")) {
+    static auto target1 = std::make_shared<SDL2pp::Texture>(
+        *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
+        GetSubspriteRect().w, GetSubspriteRect().h);
+
+    target1->SetBlendMode(SDL_BLENDMODE_BLEND);
+    renderer->SetTarget(*target1);
+    renderer->Clear();
+    renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+
+    renderer->Copy(*shadow_sheet, GetSubspriteRect() + SDL2pp::Point{1, 1},
+                   SDL2pp::NullOpt);
+    renderer->Copy(
+        *resource_manager->GetTextureSheet("modular_ships_tinted_tan"),
+        GetSubspriteRect(), SDL2pp::NullOpt);
+
+    resource_manager->AddTexture("modular_ships_tinted_shadowed", target1);
+    renderer->SetTarget();
+  }
 }
 
 void Ship::Update() {
@@ -132,7 +153,7 @@ void Ship::Update() {
     }
   } else {
     renderer->Copy(
-        *resource_manager->GetTexture("modular_ships_shadowed"),
+        *resource_manager->GetTexture(texture_key),
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, flip);
   }

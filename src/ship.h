@@ -24,7 +24,8 @@ class Ship : public Actor {
        SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
        SDL2pp::Point velocity = {0, 0},
        ShipStats stats = ShipStats(),
-       int flip = 0);
+       int flip = 0,
+       std::string texture_key = "modular_ships_shadowed");
 
   void Update() final;
   void HandleInput(const Uint8* currentKeyStates);
@@ -41,6 +42,7 @@ class Ship : public Actor {
   bool hit = false;
   Uint32 last_hit = 0;
   int flip = 0;
+  std::string texture_key;
 };
 
 class Player {
