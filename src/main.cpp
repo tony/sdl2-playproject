@@ -10,18 +10,13 @@
 using json = nlohmann::json;
 
 SDL_Color TintToSDL_Color(json::iterator o) {
-  // std::array<uint8_t, 4> a = o;
   std::array<uint8_t, 4> a;
-  for (uint8_t& value : a) {
-    const auto& x = *(o++);
-    value = x.get<uint8_t>();
+  int idx = 0;
+  for (json::iterator i = o->begin(); i != o->end(); ++i) {
+    a[idx] = i->get<uint8_t>();
+    idx++;
   }
   return SDL_Color{a[0], a[1], a[2], a[3]};
-
-  // return SDL_Color{o->at(0), o->at(1), o->at(2), o->at(3)};
-  // for (json::iterator color = o.begin(); it != o.end(); ++color) {
-  //   std::cout << color.key() << " : " << color.value() << "\n";
-  // }
 }
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
@@ -58,14 +53,8 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   }
 
   resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0, 0, 0, 255});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
-      "modular_ships_tinted_red", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0xFF, 0, 0, 0});
-  resource_manager->AddSurfaceWithTransparencyAndTint(
       "modular_ships_tinted_tan", "resources/gfx/modular_ships.png",
-      SDL_Color{13, 107, 178, 255}, SDL_Color{0xF5, 0xDE, 0xB3, 255});
+      SDL_Color{13, 107, 178, 255}, SDL_Color{245, 222, 179, 255});
   resource_manager->AddSurfaceWithTransparency(
       "bullets1", "resources/gfx/M484BulletCollection1.png",
       SDL_Color{0, 0, 0, 255});
