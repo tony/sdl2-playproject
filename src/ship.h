@@ -37,7 +37,6 @@ class Ship : public Actor {
   const std::shared_ptr<spdlog::logger>& console;
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  void LoadResources(void);
   Uint32 last_shot = 0;
   bool hit = false;
   Uint32 last_hit = 0;

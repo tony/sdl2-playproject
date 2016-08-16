@@ -83,10 +83,7 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
   subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
-  LoadResources();
 }
-
-void Ship::LoadResources() {}
 
 void Ship::Update() {
   if (hit) {
