@@ -21,7 +21,7 @@ SDL_Color TintToSDL_Color(json::iterator o) {
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
-  std::ifstream ifs("resources/etc/fonts.json");
+  std::ifstream ifs("resources/manifests/fonts.json");
   json j(ifs);
 
   for (auto& f : j) {
@@ -32,7 +32,7 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
     }
   }
 
-  std::ifstream ifs2("resources/etc/spritesheets.json");
+  std::ifstream ifs2("resources/manifests/spritesheets.json");
   json j2(ifs2);
 
   for (auto& f : j2) {
