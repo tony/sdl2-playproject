@@ -19,7 +19,7 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
           velocity,
           ShipStats{2, 2, 1},
           flip,
-          "modular_ships_tinted_shadowed")) {
+          "ship1_tinted")) {
   ship->subsprites[static_cast<int>(Actor::ActorState::DEFAULT)] =
       ship->subsprite_rect;
   console->info("spawned new enemy at {}, {}", ship->position.x,
