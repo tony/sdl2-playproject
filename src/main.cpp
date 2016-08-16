@@ -1,14 +1,26 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
+#include <fstream>
 #include "config.h"
 #include "input.h"
 #include "game.h"
 #include "game_panel.h"
 #include "stage.h"
+#include "json.hpp"
+
+using json = nlohmann::json;
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
-  resource_manager->AddFont("terminus-18",
-                            "resources/fonts/TerminusTTF-Bold-4.39.ttf", 18);
+  std::ifstream ifs("resources/etc/fonts.json");
+  json j(ifs);
+
+  for (auto& f : j) {
+    if (f.count("name") && f.count("location") && f.count("size")) {
+      resource_manager->AddFont(f.find("name").value(),
+                                f.find("location").value(),
+                                f.find("size").value());
+    }
+  }
 
   resource_manager->AddSurface("bg1",
                                "resources/gfx/side-bg/green-mountain.png");

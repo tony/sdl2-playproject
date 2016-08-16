@@ -48,9 +48,12 @@ file (GLOB MY_PROJECT_GFX_RESOURCES resources/gfx/*)
 file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources/gfx)
 file (GLOB MY_PROJECT_FONTS_RESOURCES resources/fonts/*)
 file (COPY ${MY_PROJECT_FONTS_RESOURCES} DESTINATION resources/fonts)
+file (GLOB MY_PROJECT_ETC_RESOURCES resources/etc/*)
+file (COPY ${MY_PROJECT_ETC_RESOURCES} DESTINATION resources/etc)
 
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
+include_directories("./vendor/json/src")
 
 file (GLOB game_SOURCES src/*.cpp)
 
