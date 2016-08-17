@@ -10,14 +10,15 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              SDL2pp::Optional<SDL2pp::Point> position,
              SDL2pp::Point velocity,
              int flip)
-    : ship(std::make_unique<Ship>(renderer,
-                                  resource_manager,
-                                  console,
-                                  "ship1_tinted",
-                                  position,
-                                  velocity,
-                                  ShipStats{2, 2, 1},
-                                  flip)) {
+    : ship(std::make_unique<Ship>(
+          renderer,
+          resource_manager,
+          console,
+          "ship1_tinted",
+          position,
+          velocity,
+          std::make_shared<ShipStats>(ShipStats{2, 2, 1}),
+          flip)) {
   console->info("spawned new enemy at {}, {}", ship->position.x,
                 ship->position.y);
 }

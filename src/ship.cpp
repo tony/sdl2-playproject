@@ -64,10 +64,10 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::string& texture_key,
            SDL2pp::Optional<SDL2pp::Point> position,
            SDL2pp::Point velocity,
-           ShipStats stats,
+           const std::shared_ptr<ShipStats>& stats,
            int flip)
     : Actor(renderer, resource_manager, texture_key, velocity, position),
-      stats(std::make_shared<ShipStats>(stats)),
+      stats(stats),
       console(console),
       flip(flip) {}
 

@@ -23,7 +23,7 @@ class Ship : public Actor {
        const std::string& texture_key = "ship1",
        SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
        SDL2pp::Point velocity = {0, 0},
-       ShipStats stats = ShipStats(),
+       const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
        int flip = 0);
 
   void Update() final;
