@@ -19,7 +19,6 @@
 {
   "name": "bullet1",
   "sheet": "bullets1",
-  "shadow_sheet": "bullets1_tinted",
   "coords": [12, 142, 3, 3]
 }
 ]

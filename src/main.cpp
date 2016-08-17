@@ -71,8 +71,8 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   for (auto& f : j3) {
     auto name = f.find("name").value();
     auto sheet = f.find("sheet").value();
-    auto shadow_sheet2 = f.find("shadow_sheet").value();
     auto coords = TintToSDL_Rect(f.find("coords"));
+
     if (!resource_manager->HasTexture(name)) {
       auto target1 = std::make_shared<SDL2pp::Texture>(
           *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
@@ -83,8 +83,11 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       renderer->Clear();
       renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
-      renderer->Copy(*resource_manager->GetTextureSheet(shadow_sheet2),
-                     coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
+      if (f.count("shadow_sheet")) {
+        renderer->Copy(
+            *resource_manager->GetTextureSheet(f.find("shadow_sheet").value()),
+            coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
+      }
       renderer->Copy(*resource_manager->GetTextureSheet(sheet), coords,
                      SDL2pp::NullOpt);
 
