@@ -13,9 +13,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             std::move(v),
             std::move(p)),
       stats(std::make_shared<BulletStats>()) {
-  position.y += GetSize().y / 2;
-  position.x += 30;
-  scale = 9;
+  position.y -= GetSize().y;
+  scale = 3;
 }
 
 bool Bullet::InBounds() {
@@ -24,11 +23,19 @@ bool Bullet::InBounds() {
 
 void Bullet::Update() {
   position += velocity;
+
+  Uint32 now = SDL_GetTicks();
+  if (now - last_scale >= 50 and scale < 5) {
+    scale++;
+    last_scale = now;
+  }
+  angle += 15;
   if (InBounds()) {
     renderer->Copy(
         *resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
         SDL2pp::Rect(
             position,
-            (resource_manager->GetTexture("bullet1")->GetSize() * scale)));
+            (resource_manager->GetTexture("bullet1")->GetSize() * scale)),
+        angle);
   }
 }
