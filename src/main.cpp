@@ -5,29 +5,10 @@
 #include "game.h"
 #include "game_panel.h"
 #include "stage.h"
+#include "util.h"
 #include "json.hpp"
 
 using json = nlohmann::json;
-
-SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
-  std::array<uint8_t, 4> a;
-  int idx = 0;
-  for (json::iterator i = o->begin(); i != o->end(); ++i) {
-    a[idx] = i->get<uint8_t>();
-    idx++;
-  }
-  return SDL2pp::Rect{a[0], a[1], a[2], a[3]};
-}
-
-SDL_Color TintToSDL_Color(json::iterator o) {
-  std::array<uint8_t, 4> a;
-  int idx = 0;
-  for (json::iterator i = o->begin(); i != o->end(); ++i) {
-    a[idx] = i->get<uint8_t>();
-    idx++;
-  }
-  return SDL_Color{a[0], a[1], a[2], a[3]};
-}
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {

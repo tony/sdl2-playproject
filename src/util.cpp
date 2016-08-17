@@ -1,7 +1,10 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include <memory>
 #include "config.h"
+#include "json.hpp"
 #include "util.h"
+
+using json = nlohmann::json;
 
 std::shared_ptr<SDL2pp::Texture> DrawText(
     const std::string& text,
@@ -45,4 +48,24 @@ int RandInt(int lo, int hi) {
   std::mt19937 mt(rd());
   std::uniform_int_distribution<int> dist(lo, hi);
   return dist(mt);
+}
+
+SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
+  std::array<uint8_t, 4> a;
+  int idx = 0;
+  for (json::iterator i = o->begin(); i != o->end(); ++i) {
+    a[idx] = i->get<uint8_t>();
+    idx++;
+  }
+  return SDL2pp::Rect{a[0], a[1], a[2], a[3]};
+}
+
+SDL_Color TintToSDL_Color(json::iterator o) {
+  std::array<uint8_t, 4> a;
+  int idx = 0;
+  for (json::iterator i = o->begin(); i != o->end(); ++i) {
+    a[idx] = i->get<uint8_t>();
+    idx++;
+  }
+  return SDL_Color{a[0], a[1], a[2], a[3]};
 }
