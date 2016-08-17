@@ -51,9 +51,8 @@ void LevelStage::Update() {
     (*enemy)->Update();
     for (auto bullet = player->ship->bullets.begin();
          bullet != player->ship->bullets.end();) {
-      if (SDL2pp::Rect((*enemy)->ship->GetPosition(),
-                       (*enemy)->ship->GetSubspriteRect().GetSize())
-              .Intersects((*bullet)->GetSubspriteRect())) {
+      if ((*enemy)->ship->GetSubspriteRect().Intersects(
+              (*bullet)->GetSubspriteRect())) {
         (*enemy)->ship->OnHitByBullet(*bullet);
         player->ship->bullets.erase(bullet);
         if ((*enemy)->ship->stats->health < 1) {
