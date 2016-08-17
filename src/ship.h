@@ -20,12 +20,11 @@ class Ship : public Actor {
   Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
        const std::unique_ptr<ResourceManager>& resource_manager,
        const std::shared_ptr<spdlog::logger>& console,
-       const std::shared_ptr<SDL2pp::Texture>& sprite_sheet,
+       std::string texture_key = "ship1",
        SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
        SDL2pp::Point velocity = {0, 0},
        ShipStats stats = ShipStats(),
-       int flip = 0,
-       std::string texture_key = "ship1");
+       int flip = 0);
 
   void Update() final;
   void HandleInput(const Uint8* currentKeyStates);
@@ -41,7 +40,6 @@ class Ship : public Actor {
   bool hit = false;
   Uint32 last_hit = 0;
   int flip = 0;
-  std::string texture_key;
 };
 
 class Player {

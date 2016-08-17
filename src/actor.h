@@ -15,23 +15,21 @@ class Actor {
  public:
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
-        const std::shared_ptr<SDL2pp::Texture>& sprite_sheet,
-        const std::shared_ptr<SDL2pp::Texture>& shadow_sheet,
-        SDL2pp::Rect subsprite_rect,
+        std::string texture_key,
         SDL2pp::Point velocity,
         SDL2pp::Optional<SDL2pp::Point> position)
       : renderer(renderer),
         resource_manager(resource_manager),
-        sprite_sheet(sprite_sheet),
-        shadow_sheet(shadow_sheet),
-        subsprite_rect(subsprite_rect),
+        texture_key(texture_key),
         velocity(velocity),
         position(position ? position.value() : GenerateSpawnPosition()) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
+  const std::shared_ptr<SDL2pp::Texture>& GetSprite() const {
+    return resource_manager->GetTexture(texture_key);
+  }
   SDL2pp::Rect GetSubspriteRect() const {
-    return subsprite_rect;
-    // return subsprites[static_cast<int>(state)];
+    return SDL2pp::Rect(GetPosition(), GetSprite()->GetSize());
   }
   SDL2pp::Point GetPosition() const { return position; }
 
@@ -46,10 +44,7 @@ class Actor {
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
 
-  const std::shared_ptr<SDL2pp::Texture>& sprite_sheet;
-  const std::shared_ptr<SDL2pp::Texture>& shadow_sheet;
-
-  SDL2pp::Rect subsprite_rect;
+  std::string texture_key;
   SDL2pp::Point velocity;
   SDL2pp::Point position;
 

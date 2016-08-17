@@ -15,5 +15,11 @@
   "sheet": "modular_ships_tinted_tan",
   "shadow_sheet": "modular_ships_tinted",
   "coords": [126, 79, 33, 33]
+},
+{
+  "name": "bullet1",
+  "sheet": "bullets1",
+  "shadow_sheet": "bullets1_tinted",
+  "coords": [12, 142, 3, 3]
 }
 ]

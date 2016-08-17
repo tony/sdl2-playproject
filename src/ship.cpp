@@ -7,12 +7,12 @@
 Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
                const std::shared_ptr<spdlog::logger>& console)
-    : ship(std::make_unique<Ship>(
-          renderer,
-          resource_manager,
-          console,
-          resource_manager->GetTextureSheet("modular_ships"),
-          SDL2pp::Point{30, 30})) {}
+    : ship(std::make_unique<Ship>(renderer,
+                                  resource_manager,
+                                  console,
+                                  "ship1",
+                                  SDL2pp::Point{30, 30},
+                                  SDL2pp::Point{0, 0})) {}
 
 void Player::HandleInput(const Uint8* currentKeyStates) {
   ship->HandleInput(currentKeyStates);
@@ -24,7 +24,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
     state = ActorState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
+              MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
   if (currentKeyStates[SDL_SCANCODE_DOWN] | currentKeyStates[SDL_SCANCODE_S] |
@@ -32,21 +32,21 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
     state = ActorState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - subsprite_rect.h);
+              MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
   if (currentKeyStates[SDL_SCANCODE_LEFT] | currentKeyStates[SDL_SCANCODE_A] |
       currentKeyStates[SDL_SCANCODE_H]) {
     state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - subsprite_rect.w);
+                       SCREEN_RECT.w - GetSprite()->GetWidth());
   }
 
   if (currentKeyStates[SDL_SCANCODE_RIGHT] | currentKeyStates[SDL_SCANCODE_D] |
       currentKeyStates[SDL_SCANCODE_L]) {
     state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - subsprite_rect.w);
+                       SCREEN_RECT.w - GetSprite()->GetWidth());
   }
 
   if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
@@ -61,29 +61,15 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::unique_ptr<ResourceManager>& resource_manager,
            const std::shared_ptr<spdlog::logger>& console,
-           const std::shared_ptr<SDL2pp::Texture>& sprite_sheet,
+           std::string texture_key,
            SDL2pp::Optional<SDL2pp::Point> position,
            SDL2pp::Point velocity,
            ShipStats stats,
-           int flip,
-           std::string texture_key)
-    : Actor(renderer,
-            resource_manager,
-            sprite_sheet,
-            resource_manager->GetTextureSheet("modular_ships_tinted"),
-            SDL2pp::Rect{126, 79, 33, 33},
-            velocity,
-            position),
+           int flip)
+    : Actor(renderer, resource_manager, texture_key, velocity, position),
       stats(std::make_shared<ShipStats>(stats)),
       console(console),
-      flip(flip),
-      texture_key(texture_key) {
-  subsprites[static_cast<int>(ActorState::DEFAULT)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::UP)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::DOWN)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::LEFT)] = subsprite_rect;
-  subsprites[static_cast<int>(ActorState::RIGHT)] = subsprite_rect;
-}
+      flip(flip) {}
 
 void Ship::Update() {
   if (hit) {
@@ -113,8 +99,8 @@ void Ship::Update() {
 
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
-    bullets.push_back(
-        std::make_shared<Bullet>(renderer, resource_manager, position));
+    bullets.push_back(std::make_shared<Bullet>(renderer, resource_manager,
+                                               "bullet1", position));
   }
 }
 

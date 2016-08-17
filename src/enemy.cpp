@@ -10,18 +10,14 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              SDL2pp::Optional<SDL2pp::Point> position,
              SDL2pp::Point velocity,
              int flip)
-    : ship(std::make_unique<Ship>(
-          renderer,
-          resource_manager,
-          console,
-          resource_manager->GetTextureSheet("modular_ships_tinted_tan"),
-          position,
-          velocity,
-          ShipStats{2, 2, 1},
-          flip,
-          "ship1_tinted")) {
-  ship->subsprites[static_cast<int>(Actor::ActorState::DEFAULT)] =
-      ship->subsprite_rect;
+    : ship(std::make_unique<Ship>(renderer,
+                                  resource_manager,
+                                  console,
+                                  "ship1_tinted",
+                                  position,
+                                  velocity,
+                                  ShipStats{2, 2, 1},
+                                  flip)) {
   console->info("spawned new enemy at {}, {}", ship->position.x,
                 ship->position.y);
 }
