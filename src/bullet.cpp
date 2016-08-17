@@ -13,7 +13,7 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             std::move(v),
             std::move(p)),
       stats(std::make_shared<BulletStats>()) {
-  position.y += 12;
+  position.y += GetSize().y / 2;
   position.x += 30;
   scale = 9;
 }
