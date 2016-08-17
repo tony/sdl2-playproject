@@ -61,7 +61,7 @@ void Ship::HandleInput(const Uint8* currentKeyStates) {
 Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            const std::unique_ptr<ResourceManager>& resource_manager,
            const std::shared_ptr<spdlog::logger>& console,
-           std::string texture_key,
+           const std::string& texture_key,
            SDL2pp::Optional<SDL2pp::Point> position,
            SDL2pp::Point velocity,
            ShipStats stats,
