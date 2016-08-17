@@ -28,9 +28,6 @@ class Actor {
   const std::shared_ptr<SDL2pp::Texture>& GetSprite() const {
     return resource_manager->GetTexture(texture_key);
   }
-  SDL2pp::Rect GetSubspriteRealRect() const {
-    return SDL2pp::Rect(GetPosition(), GetSprite()->GetSize());
-  }
   SDL2pp::Rect GetSubspriteRect() const {
     return SDL2pp::Rect(GetPosition(), GetSize());
   }
