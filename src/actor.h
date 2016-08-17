@@ -28,9 +28,14 @@ class Actor {
   const std::shared_ptr<SDL2pp::Texture>& GetSprite() const {
     return resource_manager->GetTexture(texture_key);
   }
-  SDL2pp::Rect GetSubspriteRect() const {
+  SDL2pp::Rect GetSubspriteRealRect() const {
     return SDL2pp::Rect(GetPosition(), GetSprite()->GetSize());
   }
+  SDL2pp::Rect GetSubspriteRect() const {
+    return SDL2pp::Rect(GetPosition(), GetSize());
+  }
+  SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
+
   SDL2pp::Point GetPosition() const { return position; }
 
  protected:
@@ -47,6 +52,7 @@ class Actor {
   std::string texture_key;
   SDL2pp::Point velocity;
   SDL2pp::Point position;
+  unsigned int scale = 1;
 
   enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
   ActorState state = ActorState::DEFAULT;

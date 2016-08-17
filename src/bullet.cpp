@@ -15,6 +15,7 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       stats(std::make_shared<BulletStats>()) {
   position.y += 12;
   position.x += 30;
+  scale = 9;
 }
 
 bool Bullet::InBounds() {
@@ -24,7 +25,10 @@ bool Bullet::InBounds() {
 void Bullet::Update() {
   position += velocity;
   if (InBounds()) {
-    renderer->Copy(*resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
-                   position);
+    renderer->Copy(
+        *resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
+        SDL2pp::Rect(
+            position,
+            (resource_manager->GetTexture("bullet1")->GetSize() * scale)));
   }
 }
