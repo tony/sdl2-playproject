@@ -15,7 +15,7 @@ class Actor {
  public:
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
-        std::string texture_key,
+        const std::string& texture_key,
         SDL2pp::Point velocity,
         SDL2pp::Optional<SDL2pp::Point> position)
       : renderer(renderer),
@@ -46,7 +46,7 @@ class Actor {
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
 
-  std::string texture_key;
+  const std::string texture_key;
   SDL2pp::Point velocity;
   SDL2pp::Point position;
   unsigned int scale = 1;
