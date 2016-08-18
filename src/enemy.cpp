@@ -10,7 +10,7 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              SDL2pp::Optional<SDL2pp::Point> position,
              SDL2pp::Point velocity,
              int flip)
-    : ship(std::make_unique<Ship>(
+    : ship(std::make_shared<Ship>(
           renderer,
           resource_manager,
           console,

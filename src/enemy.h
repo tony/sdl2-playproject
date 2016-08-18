@@ -26,7 +26,7 @@ class Enemy {
         SDL2pp::Optional<SDL2pp::Point> position,
         SDL2pp::Point velocity = {-1, 0},
         int flip = 0);
-  std::unique_ptr<Ship> ship;
+  std::shared_ptr<Ship> ship;
   void Update();
 };
 #endif  // SRC_ENEMY_H_

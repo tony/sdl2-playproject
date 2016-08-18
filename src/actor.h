@@ -9,6 +9,29 @@
 #include "resource.h"
 #include "util.h"
 
+class Ship;
+
+class GraphicsComponent {
+  friend Ship;
+
+ public:
+  explicit GraphicsComponent(
+      const std::unique_ptr<ResourceManager>& resource_manager);
+  virtual void Update(const std::shared_ptr<Ship>& actor,
+                      const std::unique_ptr<SDL2pp::Renderer>& renderer) = 0;
+  const std::unique_ptr<ResourceManager>& resource_manager;
+};
+
+class ShipGraphicsComponent : public GraphicsComponent {
+ public:
+  explicit ShipGraphicsComponent(
+      const std::unique_ptr<ResourceManager>& resource_manager);
+
+  virtual void Update(
+      const std::shared_ptr<Ship>& actor,
+      const std::unique_ptr<SDL2pp::Renderer>& renderer) override;
+};
+
 class Actor {
   friend class Enemy;
 
@@ -34,6 +57,7 @@ class Actor {
   SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
 
   SDL2pp::Point GetPosition() const { return position; }
+  const std::string& GetTextureKey() const { return texture_key; }
 
  protected:
   static SDL2pp::Point GenerateSpawnPosition() {

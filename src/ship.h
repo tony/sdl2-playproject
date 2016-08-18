@@ -15,7 +15,7 @@ typedef struct ShipStats {
   int level = 1;
 } ShipStats;
 
-class Ship : public Actor {
+class Ship : public Actor, public std::enable_shared_from_this<Ship> {
  public:
   Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
        const std::unique_ptr<ResourceManager>& resource_manager,
@@ -29,16 +29,21 @@ class Ship : public Actor {
   void Update() final;
   void HandleInput(const Uint8* currentKeyStates);
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
+  int GetFlip() const { return flip; }
+  void SetHit(int h) { hit = h; }
+  std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
+  bool hit = false;
+  Uint32 last_hit = 0;
 
  private:
   const std::shared_ptr<spdlog::logger>& console;
+
   const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
   Uint32 last_shot = 0;
-  bool hit = false;
-  Uint32 last_hit = 0;
+
   int flip = 0;
 };
 
@@ -49,6 +54,6 @@ class Player {
          const std::shared_ptr<spdlog::logger>& console);
 
   void HandleInput(const Uint8* currentKeyStates);
-  std::unique_ptr<Ship> ship;
+  std::shared_ptr<Ship> ship;
 };
 #endif  // SRC_SHIP_H_
