@@ -27,13 +27,13 @@ ShipGraphicsComponent::ShipGraphicsComponent(
 void ShipGraphicsComponent::Update(
     const std::shared_ptr<Ship>& actor,
     const std::unique_ptr<SDL2pp::Renderer>& renderer) {
-  if (actor->hit) {
+  if (actor->GetHit()) {
     renderer->Copy(*resource_manager->GetTexture("ship1_hit"),
                    SDL2pp::Rect{0, 0, actor->GetSubspriteRect().w,
                                 actor->GetSubspriteRect().h},
                    actor->GetPosition(), 0, SDL2pp::NullOpt, actor->GetFlip());
     Uint32 now = SDL_GetTicks();
-    if (now - actor->last_hit >= 100) {
+    if (now - actor->GetLastHit() >= 100) {
       actor->SetHit(false);
     }
   } else {
@@ -100,11 +100,10 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(renderer, resource_manager, texture_key, velocity, position),
+    : Actor(renderer, resource_manager, texture_key, velocity, position, flip),
       graphics_(std::make_shared<ShipGraphicsComponent>(resource_manager)),
       stats(stats),
-      console(console),
-      flip(flip) {}
+      console(console) {}
 
 void Ship::Update() {
   graphics_->Update(shared_from_this(), renderer);

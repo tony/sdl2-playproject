@@ -34,17 +34,11 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
   std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
-  bool hit = false;
-  Uint32 last_hit = 0;
 
  private:
   const std::shared_ptr<spdlog::logger>& console;
 
-  const unsigned int shooting_delay = 80;
   void SpawnBullet(void);
-  Uint32 last_shot = 0;
-
-  int flip = 0;
 };
 
 class Player {
