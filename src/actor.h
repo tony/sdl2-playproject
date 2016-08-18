@@ -83,6 +83,8 @@ class Actor {
   unsigned int scale = 1;
 
   int flip = 0;
+  double angle = 0;
+  Uint32 last_scale = 0;
 
   enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
   ActorState state = ActorState::DEFAULT;
