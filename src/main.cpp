@@ -7,6 +7,7 @@
 #include "stage.h"
 #include "util.h"
 #include "json.hpp"
+#include "entityx/entityx.h"
 
 using json = nlohmann::json;
 
@@ -195,6 +196,12 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
 }
 
 int main() {
+  entityx::EntityX ex;
+
+  entityx::Entity entity = ex.entities.create();
+
+  std::ignore = entity;
+
   try {
     // console logger (multithreaded and with color)
     const std::shared_ptr<spdlog::logger>& console(
