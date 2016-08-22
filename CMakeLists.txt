@@ -73,7 +73,6 @@ if(NOT EXISTS ${entityx_LIBRARY})
       -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
       -DENTITYX_MAX_COMPONENTS=256
       -DENTITYX_BUILD_TESTING=false
-      -DCXX_FLAGS="-Wno-unused-param -Wno-error"
   )
 
   add_custom_target(entityx_target
