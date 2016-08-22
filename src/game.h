@@ -14,7 +14,6 @@
 #include <SDL2pp/Window.hh>
 #include <memory>
 #include <vector>
-#include "entityx/entityx.h"
 
 class Actor;
 class GamePanel;
@@ -23,11 +22,10 @@ class Ship;
 class StatService;
 struct ShipStats;
 
-class Game : public entityx::EntityX {
+class Game {
  public:
   explicit Game(const std::shared_ptr<spdlog::logger>& console);
   void MainLoop();
-  void update(entityx::TimeDelta dt);
 
  private:
   SDL2pp::SDL sdl;
@@ -43,20 +41,4 @@ class Game : public entityx::EntityX {
   std::shared_ptr<Input> input;
   const std::shared_ptr<spdlog::logger>& console;
 };
-
-// Render all Renderable entities and draw some informational text.
-class RenderSystem : public entityx::System<RenderSystem> {
- public:
-  explicit RenderSystem(
-      const std::unique_ptr<SDL2pp::Renderer>& renderer,
-      const std::unique_ptr<ResourceManager>& resource_manager);
-
-  virtual void update(entityx::EntityManager& entities,
-                      entityx::EventManager& events,
-                      entityx::TimeDelta dt) override;
-
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::unique_ptr<ResourceManager>& resource_manager;
-};
-
 #endif  // SRC_GAME_H_
