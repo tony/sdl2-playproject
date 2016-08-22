@@ -79,6 +79,19 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   }
 }
 
+RenderSystem::RenderSystem(
+    const std::unique_ptr<SDL2pp::Renderer>& renderer,
+    const std::unique_ptr<ResourceManager>& resource_manager)
+    : renderer(renderer), resource_manager(resource_manager) {}
+
+void RenderSystem::update(entityx::EntityManager& entities,
+                          entityx::EventManager& events,
+                          entityx::TimeDelta dt) {
+  std::ignore = entities;
+  std::ignore = events;
+  std::ignore = dt;
+}
+
 Game::Game(const std::shared_ptr<spdlog::logger>& console)
     : sdl(SDL_INIT_VIDEO),
       image(IMG_INIT_PNG),
@@ -97,9 +110,14 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
       input(std::make_shared<Input>()),
       console(console) {
   console->info("Game started.");
-
+  systems.add<RenderSystem>(renderer, resource_manager);
+  systems.configure();
   renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   LoadResources(renderer, resource_manager);
+}
+
+void Game::update(entityx::TimeDelta dt) {
+  systems.update<RenderSystem>(dt);
 }
 
 void Game::MainLoop() {
@@ -117,6 +135,7 @@ void Game::MainLoop() {
     stage->Update();
 
     renderer->Present();
+    update(SDL_GetTicks());
     SDL_Delay(16);
   }
 }
@@ -196,12 +215,6 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
 }
 
 int main() {
-  entityx::EntityX ex;
-
-  entityx::Entity entity = ex.entities.create();
-
-  std::ignore = entity;
-
   try {
     // console logger (multithreaded and with color)
     const std::shared_ptr<spdlog::logger>& console(
