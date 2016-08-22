@@ -39,22 +39,6 @@ SET(SDL2PP_WITH_IMAGE TRUE)
 SET(SDL2PP_WITH_TTF TRUE)
 ADD_SUBDIRECTORY(vendor/libSDL2pp)
 
-# ADD_SUBDIRECTORY(vendor/entityx)
-# SET(ENTITY_INCLUDE_DIR vendor/entityx)
-# include(ExternalProject)
-#
-# set(ENTITYX_DIR "${game_SOURCE_DIR}/vendor/entityx")
-# # Later should handle multiple possible build configurations per:
-# # https://stackoverflow.com/questions/6351609/cmake-linking-to-library-downloaded-from-externalproject-add
-# set(ENTITYX_INCLUDE_DIR "${ENTITYX_DIR}/entityx")
-# ExternalProject_Add(entityx
-#         PREFIX ${ENTITYX_DIR}
-#         GIT_REPOSITORY https://github.com/alecthomas/entityx.git
-#         GIT_TAG origin/1.2.0
-#         INSTALL_DIR ${ENTITYX_DIR}
-#         CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${ENTITYX_DIR}
-# )
-
 find_package(SDL2 REQUIRED)
 find_package(SDL2_Image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
@@ -70,14 +54,17 @@ file (COPY ${MY_PROJECT_MANIFESTS_RESOURCES} DESTINATION resources/manifests)
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
 include_directories("./vendor/json/src")
-include_directories("./vendor/entityx")
+#include_directories("./vendor/entityx")
 
 file (GLOB game_SOURCES src/*.cpp)
-
+add_executable(game ${game_SOURCES})
 include(ExternalProject)
 
-
-ExternalProject_Add(entityx_project
+set(entityx_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external)
+set(entityx_LIBRARY ${entityx_INSTALL_DIR}/lib/libentityx-d.a)
+include_directories(${entityx_INSTALL_DIR}/include)
+if(NOT EXISTS ${entityx_LIBRARY})
+  ExternalProject_Add(entityx
   GIT_REPOSITORY https://github.com/alecthomas/entityx.git
   GIT_TAG 1.2.0
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/tmp/entityx
@@ -88,15 +75,16 @@ ExternalProject_Add(entityx_project
     -DENTITYX_BUILD_TESTING=false
     -DCXX_FLAGS="-Wno-unused-param -Wno-error"
   )
-set(entityx_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external)
-set(entityx_LIBRARY ${entityx_INSTALL_DIR}/lib/libentityx-d.a)
-include_directories(${entityx_INSTALL_DIR}/include)
 
 
-add_custom_target(entityx_target
-  cmake --build . --target entityx_project
-  BYPRODUCTS ${entityx_LIBRARY}
-)
+
+  add_custom_target(entityx_target
+    cmake --build . --target entityx
+    BYPRODUCTS ${entityx_LIBRARY}
+    DEPENDS entityx
+  )
+  add_dependencies(game entityx)
+endif()
 
 # set_property(
 # 	TARGET entityx
@@ -113,8 +101,7 @@ endif()
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 
-add_executable(game ${game_SOURCES})
-add_dependencies(game entityx_project)
+
 
 target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${entityx_LIBRARY})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
