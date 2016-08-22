@@ -7,6 +7,7 @@
 #include "stage.h"
 #include "util.h"
 #include "json.hpp"
+#include "anax/anax.hpp"
 
 using json = nlohmann::json;
 

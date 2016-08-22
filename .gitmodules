@@ -7,3 +7,6 @@
 [submodule "vendor/json"]
 	path = vendor/json
 	url = https://github.com/nlohmann/json
+[submodule "vendor/anax"]
+	path = vendor/anax
+	url = https://github.com/miguelmartin75/anax
