@@ -2,30 +2,20 @@
 #include "bullet.h"
 #include "stage.h"
 #include "config.h"
+#include "systems/spawn.h"
 #include "entityx/entityx.h"
-
-RenderSystem::RenderSystem(
-    const std::unique_ptr<SDL2pp::Renderer>& renderer,
-    const std::unique_ptr<ResourceManager>& resource_manager)
-    : renderer(renderer), resource_manager(resource_manager) {}
-
-void RenderSystem::update(entityx::EntityManager& entities,
-                          entityx::EventManager& events,
-                          entityx::TimeDelta dt) {
-  std::ignore = entities;
-  std::ignore = events;
-  std::ignore = dt;
-}
 
 struct Body {
   Body(const SDL2pp::Point& position,
        const SDL2pp::Point& direction,
-       float rotationd = 0.0)
-      : position(position), direction(direction), rotationd(rotationd) {}
+       double angle = 0.0,
+       int flip = 0)
+      : position(position), direction(direction), angle(angle), flip(flip) {}
 
   SDL2pp::Point position;
   SDL2pp::Point direction;
-  float rotation = 0.0, rotationd;
+  float angle = 0.0;
+  int flip = 0;
 };
 
 struct Renderable {
@@ -48,6 +38,44 @@ struct CollisionEvent {
   entityx::Entity left, right;
 };
 
+RenderSystem::RenderSystem(
+    const std::unique_ptr<SDL2pp::Renderer>& renderer,
+    const std::unique_ptr<ResourceManager>& resource_manager)
+    : renderer(renderer), resource_manager(resource_manager) {}
+
+void RenderSystem::update(entityx::EntityManager& entities,
+                          entityx::EventManager& events,
+                          entityx::TimeDelta dt) {
+  std::ignore = events;
+  std::ignore = dt;
+
+  entities.each<Body, Renderable>(
+      [this](entityx::Entity entity, Body& body, Renderable& renderable) {
+        renderer->Copy(*renderable.texture,
+                       SDL2pp::Rect{0, 0, renderable.texture->GetWidth(),
+                                    renderable.texture->GetHeight()},
+                       body.position, 0, SDL2pp::NullOpt, body.flip);
+      });
+}
+
+SpawnSystem::SpawnSystem(
+    const std::unique_ptr<SDL2pp::Renderer>& renderer,
+    const std::unique_ptr<ResourceManager>& resource_manager)
+    : renderer(renderer), resource_manager(resource_manager) {}
+
+void SpawnSystem::update(entityx::EntityManager& entities,
+                         entityx::EventManager& events,
+                         entityx::TimeDelta dt) {
+  std::ignore = events;
+  std::ignore = dt;
+  int current_ships = 0;
+  entityx::ComponentHandle<Collideable> collideable;
+  entities.each<Collideable>(
+      [&](entityx::Entity entity, Collideable&) { ++current_ships; });
+  for (int i = 0; i < max_ships - current_ships; i++) {
+  }
+}
+
 LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                        const std::unique_ptr<ResourceManager>& resource_manager,
                        const std::shared_ptr<StatService>& stat_service,
@@ -63,6 +91,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       player(std::make_shared<Player>(renderer, resource_manager, console)) {
   stat_service->set_ship_stats(player->ship->stats);
   systems.add<RenderSystem>(renderer, resource_manager);
+  systems.add<SpawnSystem>(renderer, resource_manager);
   systems.configure();
 }
 
@@ -80,6 +109,7 @@ void LevelStage::SpawnEnemy() {
 void LevelStage::update(entityx::TimeDelta dt) {
   Uint32 now = SDL_GetTicks();
   systems.update<RenderSystem>(dt);
+  systems.update<SpawnSystem>(dt);
   if (now - last_bg_scroll >= 150) {
     bg_x_scroll++;
     last_bg_scroll = now;
