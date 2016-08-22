@@ -54,7 +54,6 @@ file (COPY ${MY_PROJECT_MANIFESTS_RESOURCES} DESTINATION resources/manifests)
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
 include_directories("./vendor/json/src")
-#include_directories("./vendor/entityx")
 
 file (GLOB game_SOURCES src/*.cpp)
 add_executable(game ${game_SOURCES})
@@ -65,18 +64,17 @@ set(entityx_LIBRARY ${entityx_INSTALL_DIR}/lib/libentityx-d.a)
 include_directories(${entityx_INSTALL_DIR}/include)
 if(NOT EXISTS ${entityx_LIBRARY})
   ExternalProject_Add(entityx
-  GIT_REPOSITORY https://github.com/alecthomas/entityx.git
-  GIT_TAG 1.2.0
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/tmp/entityx
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external
-    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-    -DENTITYX_MAX_COMPONENTS=256
-    -DENTITYX_BUILD_TESTING=false
-    -DCXX_FLAGS="-Wno-unused-param -Wno-error"
+    # GIT_REPOSITORY https://github.com/alecthomas/entityx.git
+    # GIT_TAG 1.2.0
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/vendor/entityx/
+    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/tmp/entityx
+    CMAKE_ARGS
+      -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external
+      -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+      -DENTITYX_MAX_COMPONENTS=256
+      -DENTITYX_BUILD_TESTING=false
+      -DCXX_FLAGS="-Wno-unused-param -Wno-error"
   )
-
-
 
   add_custom_target(entityx_target
     cmake --build . --target entityx
@@ -86,12 +84,6 @@ if(NOT EXISTS ${entityx_LIBRARY})
   add_dependencies(game entityx)
 endif()
 
-# set_property(
-# 	TARGET entityx
-# 	PROPERTY CXX_FLAGS "-Wno-unused-parameter -Wno-error"
-# )
-
-
 # include plugin
 include(cmake/clang-format.cmake)
 include(cmake/clang-tidy.cmake)
@@ -100,8 +92,6 @@ if (CLANG_TIDY)  # CMake >= 3.6 runs clang-tidy on build
 endif()
 
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
-
-
 
 target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${entityx_LIBRARY})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
