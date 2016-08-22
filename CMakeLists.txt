@@ -70,13 +70,14 @@ file (COPY ${MY_PROJECT_MANIFESTS_RESOURCES} DESTINATION resources/manifests)
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
 include_directories("./vendor/json/src")
+include_directories("./vendor/entityx")
 
 file (GLOB game_SOURCES src/*.cpp)
 
 include(ExternalProject)
 
 
-ExternalProject_Add(entityx
+ExternalProject_Add(entityx_project
   GIT_REPOSITORY https://github.com/alecthomas/entityx.git
   GIT_TAG 1.2.0
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external/tmp/entityx
@@ -84,16 +85,23 @@ ExternalProject_Add(entityx
     -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/external
     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
     -DENTITYX_MAX_COMPONENTS=256
+    -DENTITYX_BUILD_TESTING=false
     -DCXX_FLAGS="-Wno-unused-param -Wno-error"
   )
 set(entityx_INSTALL_DIR ${CMAKE_CURRENT_BINARY_DIR}/external)
+set(entityx_LIBRARY ${entityx_INSTALL_DIR}/lib/libentityx-d.a)
 include_directories(${entityx_INSTALL_DIR}/include)
-link_directories(${entityx_INSTALL_DIR}/lib)
 
-set_property(
-	TARGET entityx
-	PROPERTY CXX_FLAGS "-Wno-unused-parameter -Wno-error"
+
+add_custom_target(entityx_target
+  cmake --build . --target entityx_project
+  BYPRODUCTS ${entityx_LIBRARY}
 )
+
+# set_property(
+# 	TARGET entityx
+# 	PROPERTY CXX_FLAGS "-Wno-unused-parameter -Wno-error"
+# )
 
 
 # include plugin
@@ -106,7 +114,7 @@ endif()
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 
 add_executable(game ${game_SOURCES})
-add_dependencies(game entityx)
+add_dependencies(game entityx_project)
 
-target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${entityx_LIBRARY})
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
