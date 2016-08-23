@@ -14,8 +14,5 @@ void PhysicsSystem::update(entityx::EntityManager& entities,
         if (geo.position.x <= 0) {
           entity.destroy();
         }
-        if (!MAIN_VIEWPORT_RECT.Intersects(geo.GetArea())) {
-          // entity.destroy();
-        }
       });
 }
