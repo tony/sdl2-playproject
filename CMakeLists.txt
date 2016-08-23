@@ -55,7 +55,7 @@ include_directories("./src")
 include_directories("./vendor/spdlog/include")
 include_directories("./vendor/json/src")
 
-file (GLOB game_SOURCES src/*.cpp)
+file (GLOB game_SOURCES src/*.cpp src/systems/*.cpp)
 add_executable(game ${game_SOURCES})
 include(ExternalProject)
 

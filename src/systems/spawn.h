@@ -2,6 +2,9 @@
 #ifndef SRC_SYSTEMS_SPAWN_H_
 #define SRC_SYSTEMS_SPAWN_H_
 #include "entityx/entityx.h"
+#include "resource.h"
+#include <SDL2pp/Renderer.hh>
+#include <memory>
 
 // Render all Renderable entities and draw some informational text.
 class SpawnSystem : public entityx::System<SpawnSystem> {

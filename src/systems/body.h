@@ -6,6 +6,7 @@
 // Render all Renderable entities and draw some informational text.
 struct BodySystem : public entityx::System<BodySystem> {
  public:
+  explicit BodySystem();
   virtual void update(entityx::EntityManager& entities,
                       entityx::EventManager& events,
                       entityx::TimeDelta dt) override;
