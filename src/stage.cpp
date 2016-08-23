@@ -2,7 +2,7 @@
 #include "bullet.h"
 #include "stage.h"
 #include "systems/spawn.h"
-#include "systems/body.h"
+#include "systems/geometry.h"
 #include "systems/physics.h"
 
 LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
@@ -22,7 +22,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   systems.add<RenderSystem>(renderer, resource_manager);
   systems.add<SpawnSystem>(renderer, resource_manager);
   systems.add<PhysicsSystem>();
-  systems.add<BodySystem>();
+  systems.add<GeometrySystem>();
   systems.configure();
 }
 
@@ -51,7 +51,7 @@ void LevelStage::update(entityx::TimeDelta dt) {
   systems.update<RenderSystem>(dt);
   systems.update<SpawnSystem>(dt);
   systems.update<PhysicsSystem>(dt);
-  systems.update<BodySystem>(dt);
+  systems.update<GeometrySystem>(dt);
 
   if (now - last_enemy >= 600) {
     SpawnEnemy();

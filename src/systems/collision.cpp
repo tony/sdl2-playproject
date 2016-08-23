@@ -1,6 +1,6 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "components/collideable.h"
-#include "components/body.h"
+#include "components/geometry.h"
 #include "systems/collision.h"
 
 // Determines if two Collideable bodies have collided. If they have it emits a
@@ -11,10 +11,7 @@
 // Uses a fairly rudimentary 2D partition system, but performs reasonably well.
 CollisionSystem::CollisionSystem(
     const std::shared_ptr<SDL2pp::Renderer>& renderer)
-    : size(renderer->GetLogicalSize()) {
-  size.x = size.x / PARTITIONS + 1;
-  size.y = size.y / PARTITIONS + 1;
-}
+    : size(renderer->GetLogicalSize()) {}
 
 void CollisionSystem::update(entityx::EntityManager& es,
                              entityx::EventManager& events,
@@ -30,31 +27,9 @@ void CollisionSystem::reset() {
 }
 
 void CollisionSystem::collect(entityx::EntityManager& entities) {
-  entities.each<Body, Collideable>([this](entityx::Entity entity, Body& body,
+  entities.each<Geometry, Collideable>([this](entityx::Entity entity, Geometry& geo,
                                           Collideable& collideable) {
-    unsigned int left = static_cast<int>(body.position.x - collideable.radius) /
-                        PARTITIONS,
-                 top = static_cast<int>(body.position.y - collideable.radius) /
-                       PARTITIONS,
-                 right =
-                     static_cast<int>(body.position.x + collideable.radius) /
-                     PARTITIONS,
-                 bottom =
-                     static_cast<int>(body.position.y + collideable.radius) /
-                     PARTITIONS;
-    CollisionSystem::Candidate candidate{body.position, collideable.radius,
-                                         entity};
-    unsigned int slots[4] = {
-        left + top * size.x, right + top * size.x, left + bottom * size.x,
-        right + bottom * size.x,
-    };
-    grid[slots[0]].push_back(candidate);
-    if (slots[0] != slots[1])
-      grid[slots[1]].push_back(candidate);
-    if (slots[1] != slots[2])
-      grid[slots[2]].push_back(candidate);
-    if (slots[2] != slots[3])
-      grid[slots[3]].push_back(candidate);
+    
   });
 }
 

@@ -2,7 +2,7 @@
 #include "config.h"
 #include "util.h"
 #include "entityx/entityx.h"
-#include "components/body.h"
+#include "components/geometry.h"
 #include "components/collideable.h"
 #include "components/renderable.h"
 #include "systems/spawn.h"
@@ -26,7 +26,7 @@ void SpawnSystem::update(entityx::EntityManager& entities,
     entity.assign<Collideable>(2);
     int x = MAIN_VIEWPORT_RECT.w;
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
-    entity.assign<Body>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, RandInt(-1, 1)});
+    entity.assign<Geometry>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, RandInt(-1, 1)});
     entity.assign<Renderable>(resource_manager->GetTexture("ship1_tinted"));
   }
 }

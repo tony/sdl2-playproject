@@ -1,6 +1,6 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "components/renderable.h"
-#include "components/body.h"
+#include "components/geometry.h"
 #include "systems/render.h"
 
 RenderSystem::RenderSystem(
@@ -14,11 +14,11 @@ void RenderSystem::update(entityx::EntityManager& entities,
   std::ignore = events;
   std::ignore = dt;
 
-  entities.each<Body, Renderable>(
-      [this](entityx::Entity entity, Body& body, Renderable& renderable) {
+  entities.each<Geometry, Renderable>(
+      [this](entityx::Entity entity, Geometry& geometry, Renderable& renderable) {
         renderer->Copy(*renderable.texture,
                        SDL2pp::Rect{0, 0, renderable.texture->GetWidth(),
                                     renderable.texture->GetHeight()},
-                       body.position, 0, SDL2pp::NullOpt, body.flip);
+                       geometry.position, 0, SDL2pp::NullOpt, geometry.flip);
       });
 }
