@@ -23,9 +23,10 @@ endif()
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -Werror -Wno-missing-field-initializers")
 
-	if(CMAKE_BUILD_TYPE MATCHES "Debug")
+	if(CMAKE_BUILD_TYPE MATCHES "Debug" AND NOT APPLE)
+		# disable AddressSanitizer on Apple, https://github.com/alecthomas/entityx/issues/151
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
-		if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR APPLE)
+		if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
 			# OR APPLE: in case using custom llvm/clang and on apple
 			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined-trap -fsanitize-undefined-trap-on-error")
 		else()
