@@ -7,13 +7,12 @@
 struct CollisionEvent {
   CollisionEvent(entityx::Entity left, entityx::Entity right)
       : left(left), right(right) {
-        std::ignore = left;
-        std::ignore = right;
-      }
+    std::ignore = left;
+    std::ignore = right;
+  }
 
   entityx::Entity left, right;
 };
-
 
 // Render all Renderable entities and draw some informational text.
 struct CollisionSystem : public entityx::System<CollisionSystem> {
@@ -26,17 +25,20 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
     float radius;
     entityx::Entity entity;
   };
+
  public:
   explicit CollisionSystem(const std::shared_ptr<SDL2pp::Renderer>& renderer);
   virtual void update(entityx::EntityManager& entities,
                       entityx::EventManager& events,
                       entityx::TimeDelta dt) override;
-bool collided(const CollisionSystem::Candidate &left, const CollisionSystem::Candidate &right);
-float length(const SDL2pp::Point& v);
-  void collide(entityx::EventManager &events) ;
-  void collect(entityx::EntityManager &entities) ;
-  void reset() ;
-private:
+  bool collided(const CollisionSystem::Candidate& left,
+                const CollisionSystem::Candidate& right);
+  float length(const SDL2pp::Point& v);
+  void collide(entityx::EventManager& events);
+  void collect(entityx::EntityManager& entities);
+  void reset();
+
+ private:
   std::vector<Candidate> candidates;
   SDL2pp::Point size;
 };

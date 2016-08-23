@@ -26,24 +26,27 @@ void CollisionSystem::reset() {
 }
 
 void CollisionSystem::collect(entityx::EntityManager& entities) {
-  entities.each<Geometry, Collideable>([this](entityx::Entity entity, Geometry& geo,
-                                          Collideable& collideable) {
-    
-    Candidate candidate{geo.position, geo.size, SDL2pp::Rect{geo.position.x, geo.position.y, geo.size.x, geo.size.y}, collideable.radius, entity};
+  entities.each<Geometry, Collideable>([this](
+      entityx::Entity entity, Geometry& geo, Collideable& collideable) {
+
+    Candidate candidate{
+        geo.position, geo.size,
+        SDL2pp::Rect{geo.position.x, geo.position.y, geo.size.x, geo.size.y},
+        collideable.radius, entity};
     candidates.push_back(candidate);
   });
 }
 
 void CollisionSystem::collide(entityx::EventManager& events) {
-    for (const CollisionSystem::Candidate& left : candidates) {
-      for (const CollisionSystem::Candidate& right : candidates) {
-        if (left.entity == right.entity)
-          continue;
-        if (collided(left, right))
-          std::cout << "HIT" << std::endl;
-          events.emit<CollisionEvent>(left.entity, right.entity);
-      }
+  for (const CollisionSystem::Candidate& left : candidates) {
+    for (const CollisionSystem::Candidate& right : candidates) {
+      if (left.entity == right.entity)
+        continue;
+      if (collided(left, right))
+        std::cout << "HIT" << std::endl;
+      events.emit<CollisionEvent>(left.entity, right.entity);
     }
+  }
 }
 
 bool CollisionSystem::collided(const CollisionSystem::Candidate& left,

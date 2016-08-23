@@ -27,7 +27,9 @@ void SpawnSystem::update(entityx::EntityManager& entities,
     int x = MAIN_VIEWPORT_RECT.w;
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     auto& sprite = resource_manager->GetTexture("ship1_tinted");
-    entity.assign<Geometry>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, RandInt(-1, 1)}, sprite->GetSize());
+    entity.assign<Geometry>(SDL2pp::Point{x, y},
+                            SDL2pp::Point{-1, RandInt(-1, 1)},
+                            sprite->GetSize());
     entity.assign<Renderable>(sprite);
   }
 }

@@ -19,6 +19,7 @@ class SpawnSystem : public entityx::System<SpawnSystem> {
 
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
+
  private:
   int max_ships = 10;
 };

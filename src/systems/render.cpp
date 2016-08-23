@@ -14,11 +14,11 @@ void RenderSystem::update(entityx::EntityManager& entities,
   std::ignore = events;
   std::ignore = dt;
 
-  entities.each<Geometry, Renderable>(
-      [this](entityx::Entity entity, Geometry& geometry, Renderable& renderable) {
-        renderer->Copy(*renderable.texture,
-                       SDL2pp::Rect{0, 0, renderable.texture->GetWidth(),
-                                    renderable.texture->GetHeight()},
-                       geometry.position, 0, SDL2pp::NullOpt, geometry.flip);
-      });
+  entities.each<Geometry, Renderable>([this](
+      entityx::Entity entity, Geometry& geometry, Renderable& renderable) {
+    renderer->Copy(*renderable.texture,
+                   SDL2pp::Rect{0, 0, renderable.texture->GetWidth(),
+                                renderable.texture->GetHeight()},
+                   geometry.position, 0, SDL2pp::NullOpt, geometry.flip);
+  });
 }
