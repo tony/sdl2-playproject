@@ -21,6 +21,8 @@ struct CollisionSystem : public entityx::System<CollisionSystem> {
 
   struct Candidate {
     SDL2pp::Point position;
+    SDL2pp::Point size;
+    SDL2pp::Rect area;
     float radius;
     entityx::Entity entity;
   };
@@ -35,7 +37,7 @@ float length(const SDL2pp::Point& v);
   void collect(entityx::EntityManager &entities) ;
   void reset() ;
 private:
-  std::vector<std::vector<Candidate>> grid;
+  std::vector<Candidate> candidates;
   SDL2pp::Point size;
 };
 #endif  // SRC_SYSTEMS_COLLISION_H_

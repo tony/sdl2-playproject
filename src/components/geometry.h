@@ -5,13 +5,16 @@
 struct Geometry {
   Geometry(const SDL2pp::Point& position,
        const SDL2pp::Point& direction,
+       const SDL2pp::Point size,
        double angle = 0.0,
        int flip = 0)
-      : position(position), direction(direction), angle(angle), flip(flip) {}
+      : position(position), direction(direction), size(size), angle(angle), flip(flip) {}
 
   SDL2pp::Point position;
   SDL2pp::Point direction;
+  SDL2pp::Point size;
   float angle = 0.0;
   int flip = 0;
+  int scale = 0;
 };
 #endif  // SRC_COMPONENTS_GEOMETRY_H_

@@ -22,35 +22,31 @@ void CollisionSystem::update(entityx::EntityManager& es,
 };
 
 void CollisionSystem::reset() {
-  grid.clear();
-  grid.resize(size.x * size.y);
+  candidates.empty();
 }
 
 void CollisionSystem::collect(entityx::EntityManager& entities) {
   entities.each<Geometry, Collideable>([this](entityx::Entity entity, Geometry& geo,
                                           Collideable& collideable) {
     
+    Candidate candidate{geo.position, geo.size, SDL2pp::Rect{geo.position.x, geo.position.y, geo.size.x, geo.size.y}, collideable.radius, entity};
+    candidates.push_back(candidate);
   });
 }
 
 void CollisionSystem::collide(entityx::EventManager& events) {
-  for (const std::vector<CollisionSystem::Candidate>& candidates : grid) {
     for (const CollisionSystem::Candidate& left : candidates) {
       for (const CollisionSystem::Candidate& right : candidates) {
         if (left.entity == right.entity)
           continue;
         if (collided(left, right))
+          std::cout << "HIT" << std::endl;
           events.emit<CollisionEvent>(left.entity, right.entity);
       }
     }
-  }
-}
-
-float CollisionSystem::length(const SDL2pp::Point& v) {
-  return std::sqrt(v.x * v.x + v.y * v.y);
 }
 
 bool CollisionSystem::collided(const CollisionSystem::Candidate& left,
                                const CollisionSystem::Candidate& right) {
-  return length(left.position - right.position) < left.radius + right.radius;
+  return left.area.Contains(right.area);
 }
