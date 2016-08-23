@@ -3,9 +3,9 @@
 #define SRC_COMPONENTS_GEOMETRY_H_
 #include <SDL2pp/SDL2pp.hh>
 struct Geometry {
-  Geometry(const SDL2pp::Point& position,
-           const SDL2pp::Point& direction,
-           const SDL2pp::Point size,
+  Geometry(SDL2pp::Point position,
+           SDL2pp::Point direction,
+           SDL2pp::Point size,
            double angle = 0.0,
            int flip = 0)
       : position(position),
@@ -17,6 +17,9 @@ struct Geometry {
   SDL2pp::Point position;
   SDL2pp::Point direction;
   SDL2pp::Point size;
+  SDL2pp::Rect GetArea() const {
+    return SDL2pp::Rect{position.x, position.y, size.x, size.y};
+  };
   float angle = 0.0;
   int flip = 0;
   int scale = 0;
