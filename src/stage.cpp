@@ -3,6 +3,7 @@
 #include "stage.h"
 #include "config.h"
 #include "systems/spawn.h"
+#include "systems/body.h"
 #include "entityx/entityx.h"
 
 struct Body {
@@ -37,6 +38,14 @@ struct CollisionEvent {
 
   entityx::Entity left, right;
 };
+
+void BodySystem::update(entityx::EntityManager& entities,
+                        entityx::EventManager& events,
+                        entityx::TimeDelta dt) {
+  entities.each<Body>([dt](entityx::Entity entity, Body& body) {
+    body.position += body.direction;
+  });
+}
 
 RenderSystem::RenderSystem(
     const std::unique_ptr<SDL2pp::Renderer>& renderer,
@@ -73,6 +82,10 @@ void SpawnSystem::update(entityx::EntityManager& entities,
   entities.each<Collideable>(
       [&](entityx::Entity entity, Collideable&) { ++current_ships; });
   for (int i = 0; i < max_ships - current_ships; i++) {
+    entityx::Entity entity = entities.create();
+    entity.assign<Collideable>(2);
+    entity.assign<Body>(SDL2pp::Point{0, 2}, SDL2pp::Point{-1, -1});
+    entity.assign<Renderable>(resource_manager->GetTexture("ship1_tinted"));
   }
 }
 
@@ -92,6 +105,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   stat_service->set_ship_stats(player->ship->stats);
   systems.add<RenderSystem>(renderer, resource_manager);
   systems.add<SpawnSystem>(renderer, resource_manager);
+  systems.add<BodySystem>();
   systems.configure();
 }
 
@@ -108,8 +122,6 @@ void LevelStage::SpawnEnemy() {
 
 void LevelStage::update(entityx::TimeDelta dt) {
   Uint32 now = SDL_GetTicks();
-  systems.update<RenderSystem>(dt);
-  systems.update<SpawnSystem>(dt);
   if (now - last_bg_scroll >= 150) {
     bg_x_scroll++;
     last_bg_scroll = now;
@@ -119,6 +131,9 @@ void LevelStage::update(entityx::TimeDelta dt) {
 
   game_panel->Update();
   player->ship->Update();
+  systems.update<RenderSystem>(dt);
+  systems.update<SpawnSystem>(dt);
+  systems.update<BodySystem>(dt);
 
   if (now - last_enemy >= 600) {
     SpawnEnemy();
