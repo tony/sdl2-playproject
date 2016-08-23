@@ -1,6 +1,6 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
-#ifndef SRC_SPAWN_RENDER_H_
-#define SRC_SPAWN_RENDER_H_
+#ifndef SRC_SYSTEMS_SPAWN_H_
+#define SRC_SYSTEMS_SPAWN_H_
 #include "entityx/entityx.h"
 
 // Render all Renderable entities and draw some informational text.
@@ -19,4 +19,4 @@ class SpawnSystem : public entityx::System<SpawnSystem> {
  private:
   int max_ships = 10;
 };
-#endif  // SRC_SPAWN_RENDER_H_
+#endif  // SRC_SYSTEMS_SPAWN_H_

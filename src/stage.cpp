@@ -4,6 +4,7 @@
 #include "config.h"
 #include "systems/spawn.h"
 #include "systems/body.h"
+#include "systems/physics.h"
 #include "entityx/entityx.h"
 
 struct Body {
@@ -45,6 +46,12 @@ void BodySystem::update(entityx::EntityManager& entities,
   entities.each<Body>([dt](entityx::Entity entity, Body& body) {
     body.position += body.direction;
   });
+}
+
+void PhysicsSystem::update(entityx::EntityManager& entities,
+                           entityx::EventManager& events,
+                           entityx::TimeDelta dt) {
+  entities.each<Body>([dt](entityx::Entity entity, Body& body) {});
 }
 
 RenderSystem::RenderSystem(
@@ -107,6 +114,7 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   stat_service->set_ship_stats(player->ship->stats);
   systems.add<RenderSystem>(renderer, resource_manager);
   systems.add<SpawnSystem>(renderer, resource_manager);
+  systems.add<PhysicsSystem>();
   systems.add<BodySystem>();
   systems.configure();
 }
@@ -135,6 +143,7 @@ void LevelStage::update(entityx::TimeDelta dt) {
   player->ship->Update();
   systems.update<RenderSystem>(dt);
   systems.update<SpawnSystem>(dt);
+  systems.update<PhysicsSystem>(dt);
   systems.update<BodySystem>(dt);
 
   if (now - last_enemy >= 600) {
