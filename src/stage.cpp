@@ -84,7 +84,9 @@ void SpawnSystem::update(entityx::EntityManager& entities,
   for (int i = 0; i < max_ships - current_ships; i++) {
     entityx::Entity entity = entities.create();
     entity.assign<Collideable>(2);
-    entity.assign<Body>(SDL2pp::Point{0, 2}, SDL2pp::Point{-1, -1});
+    int x = MAIN_VIEWPORT_RECT.w;
+    int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
+    entity.assign<Body>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, RandInt(-1, 1)});
     entity.assign<Renderable>(resource_manager->GetTexture("ship1_tinted"));
   }
 }
