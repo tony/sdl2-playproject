@@ -3,23 +3,13 @@
 #include "stage.h"
 #include "config.h"
 #include "components/body.h"
+#include "components/renderable.h"
+#include "components/collideable.h"
 #include "systems/spawn.h"
 #include "systems/body.h"
 #include "systems/physics.h"
 #include "systems/collision.h"
 #include "entityx/entityx.h"
-
-struct Renderable {
-  explicit Renderable(const std::shared_ptr<SDL2pp::Texture>& texture)
-      : texture(texture) {}
-  const std::shared_ptr<SDL2pp::Texture>& texture;
-};
-
-struct Collideable {
-  explicit Collideable(float radius) : radius(radius) {}
-
-  float radius;
-};
 
 void BodySystem::update(entityx::EntityManager& entities,
                         entityx::EventManager& events,
