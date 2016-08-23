@@ -21,6 +21,6 @@ class SpawnSystem : public entityx::System<SpawnSystem> {
   const std::unique_ptr<ResourceManager>& resource_manager;
 
  private:
-  int max_ships = 10;
+  int max_enemies = 10;
 };
 #endif  // SRC_SYSTEMS_SPAWN_H_

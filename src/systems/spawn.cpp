@@ -17,11 +17,11 @@ void SpawnSystem::update(entityx::EntityManager& entities,
                          entityx::TimeDelta dt) {
   std::ignore = events;
   std::ignore = dt;
-  int current_ships = 0;
+  int current_enemies = 0;
   entityx::ComponentHandle<Collideable> collideable;
   entities.each<Collideable>(
-      [&](entityx::Entity entity, Collideable&) { ++current_ships; });
-  for (int i = 0; i < max_ships - current_ships; i++) {
+      [&](entityx::Entity entity, Collideable&) { ++current_enemies; });
+  for (int i = 0; i < max_enemies - current_enemies; i++) {
     entityx::Entity entity = entities.create();
     entity.assign<Collideable>(2);
     int x = MAIN_VIEWPORT_RECT.w;
