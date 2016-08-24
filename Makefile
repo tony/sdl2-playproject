@@ -1,5 +1,7 @@
 WATCH_FILES= find . -type f -not -path '*/\.*' -and -not -path '*/build/*' | grep -i '.*[.][cc,cpp,c,h,hh]\|CMakeLists.txt$$' 2> /dev/null
 
+SOURCE_FILES= src/* src/components/* src/systems/*
+
 entr_warn:
 	@echo "----------------------------------------------------------"
 	@echo "     ! File watching functionality non-operational !      "
@@ -30,13 +32,13 @@ debug_ninja: mkdir_build
 	ninja -C build
 
 format:
-	clang-format -style=Chromium src/* -i || clang-format38 -style=Chromium src/* -i
+	clang-format -style=Chromium ${SOURCE_FILES} -i || clang-format38 -style=Chromium ${SOURCE_FILES} -i
 
 cpplint:
-	cpplint.py --filter=-build/include src/*
+	cpplint.py --filter=-build/include ${SOURCE_FILES}
 
 cppcheck:
-	cppcheck --quiet --enable=all --inconclusive --std=c11 src/*
+	cppcheck --quiet --enable=all --inconclusive --std=c11 ${SOURCE_FILES} 
 
 run:
 	./build/game

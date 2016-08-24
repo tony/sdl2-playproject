@@ -7,13 +7,15 @@
 #include "ship.h"
 #include "enemy.h"
 #include "game_panel.h"
+#include "systems/render.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <vector>
+#include "entityx/entityx.h"
 
-class Stage {
+class Stage : public entityx::EntityX {
  public:
   virtual void HandleInput(const Uint8* currentKeyStates) = 0;
-  virtual void Update() = 0;
+  virtual void update(entityx::TimeDelta dt) = 0;
 };
 
 class LevelStage : Stage {
@@ -23,7 +25,8 @@ class LevelStage : Stage {
              const std::shared_ptr<StatService>& stat_service,
              const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const Uint8* currentKeyStates) final;
-  void Update() final;
+  void update(entityx::TimeDelta dt) final;
+
   void SpawnEnemy();
 
  private:

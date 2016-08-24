@@ -78,29 +78,6 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   }
 }
 
-Game::Game(const std::shared_ptr<spdlog::logger>& console)
-    : sdl(SDL_INIT_VIDEO),
-      image(IMG_INIT_PNG),
-      window("sdl2-playproject",
-             SDL_WINDOWPOS_CENTERED,
-             SDL_WINDOWPOS_CENTERED,
-             SCREEN_RECT.w,
-             SCREEN_RECT.h,
-             SDL_WINDOW_RESIZABLE),
-      renderer(std::make_unique<SDL2pp::Renderer>(
-          window,
-          -1,
-          SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)),
-      resource_manager(std::make_unique<ResourceManager>()),
-      stat_service(std::make_shared<StatService>()),
-      input(std::make_shared<Input>()),
-      console(console) {
-  console->info("Game started.");
-
-  renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
-  LoadResources(renderer, resource_manager);
-}
-
 void Game::MainLoop() {
   auto stage = std::make_unique<LevelStage>(renderer, resource_manager,
                                             stat_service, console);
@@ -113,7 +90,7 @@ void Game::MainLoop() {
     }
 
     stage->HandleInput(input->keys);
-    stage->Update();
+    stage->update(SDL_GetTicks());
 
     renderer->Present();
     SDL_Delay(16);
@@ -192,6 +169,28 @@ void Game::HandleEvent(const SDL_Event* e, bool* quit) {
       }
       break;
   }
+}
+
+Game::Game(const std::shared_ptr<spdlog::logger>& console)
+    : sdl(SDL_INIT_VIDEO),
+      image(IMG_INIT_PNG),
+      window("sdl2-playproject",
+             SDL_WINDOWPOS_CENTERED,
+             SDL_WINDOWPOS_CENTERED,
+             SCREEN_RECT.w,
+             SCREEN_RECT.h,
+             SDL_WINDOW_RESIZABLE),
+      renderer(std::make_unique<SDL2pp::Renderer>(
+          window,
+          -1,
+          SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)),
+      resource_manager(std::make_unique<ResourceManager>()),
+      stat_service(std::make_shared<StatService>()),
+      input(std::make_shared<Input>()),
+      console(console) {
+  console->info("Game started.");
+  renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
+  LoadResources(renderer, resource_manager);
 }
 
 int main() {
