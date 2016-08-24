@@ -28,8 +28,7 @@ void SpawnSystem::update(entityx::EntityManager& entities,
     entityx::Entity entity = entities.create();
     entity.assign<Collideable>(2);
     entity.assign<Geometry>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, 0},
-                            // SDL2pp::Point{-1, RandInt(-1, 1)},
-                            sprite->GetSize());
+                            sprite->GetSize(), 0, SDL_FLIP_HORIZONTAL);
     entity.assign<Renderable>(sprite);
     last_enemy = dt;
   }
