@@ -28,43 +28,41 @@ void PlayerSystem::update(entityx::EntityManager& entities,
     entity.assign<Player>();
     spawned = true;
   }
-  entities.each<Geometry, Player>([this, dt](entityx::Entity entity,
-                                             Geometry& geo, Player& player) {
+  entityx::ComponentHandle<Geometry> geo;
+  entityx::ComponentHandle<Player> player;
+  for (entityx::Entity entity :
+       entities.entities_with_components(geo, player)) {
     if (keys[SDL_SCANCODE_UP] | keys[SDL_SCANCODE_W] | keys[SDL_SCANCODE_K]) {
-      geo.position.y =
-          clamp(geo.position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01),
+      geo->position.y =
+          clamp(geo->position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01),
                 0, MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
     }
 
     if (keys[SDL_SCANCODE_DOWN] | keys[SDL_SCANCODE_S] | keys[SDL_SCANCODE_J]) {
-      geo.position.y =
-          clamp(geo.position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01),
+      geo->position.y =
+          clamp(geo->position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01),
                 0, MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
     }
 
     if (keys[SDL_SCANCODE_LEFT] | keys[SDL_SCANCODE_A] | keys[SDL_SCANCODE_H]) {
-      geo.position.x =
-          clamp(geo.position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+      geo->position.x =
+          clamp(geo->position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                 SCREEN_RECT.w - GetSprite()->GetWidth());
     }
 
     if (keys[SDL_SCANCODE_RIGHT] | keys[SDL_SCANCODE_D] |
         keys[SDL_SCANCODE_L]) {
-      geo.position.x =
-          clamp(geo.position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
+      geo->position.x =
+          clamp(geo->position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                 SCREEN_RECT.w - GetSprite()->GetWidth());
     }
     if (*(keys + SDL_SCANCODE_SPACE) != 0) {
       if (dt - last_shot >= shooting_delay) {
-        bullet_queue.push_back({entity, geo, player});
+        events.emit<PlayerFireEvent>(PlayerFireEvent(entity));
         last_shot = dt;
       }
     }
-  });
-  for (auto bullet_event : bullet_queue) {
-    events.emit<PlayerFireEvent>(bullet_event);
   }
-  bullet_queue.clear();
 }
 
 BulletSystem::BulletSystem(
@@ -81,12 +79,13 @@ void BulletSystem::update(entityx::EntityManager& entities,
                           entityx::EventManager& events,
                           entityx::TimeDelta dt) {
   for (auto parent : bullet_queue) {
+    entityx::ComponentHandle<Geometry> geo =
+        parent.entity.component<Geometry>();
     auto& sprite = resource_manager->GetTexture("bullet1");
     entityx::Entity entity = entities.create();
     entity.assign<Geometry>(
-        SDL2pp::Point{parent.geometry.position.x + 35,
-                      parent.geometry.position.y +
-                          static_cast<int>(parent.geometry.size.y / 2.5)},
+        SDL2pp::Point{geo->position.x + 35,
+                      geo->position.y + static_cast<int>(geo->size.y / 2.5)},
         SDL2pp::Point{6, 0}, sprite->GetSize(), 0, 3);
     entity.assign<Renderable>(sprite);
     entity.assign<HasParent>(parent.entity);

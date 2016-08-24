@@ -10,12 +10,9 @@
 #include <vector>
 
 struct PlayerFireEvent {
-  PlayerFireEvent(entityx::Entity entity, Geometry& geometry, Player& player)
-      : entity(entity), geometry(geometry), player(player) {}
+  PlayerFireEvent(entityx::Entity entity) : entity(entity) {}
 
   entityx::Entity entity;
-  Geometry& geometry;
-  Player& player;
 };
 
 // Render all Renderable entities and draw some informational text.
@@ -38,7 +35,6 @@ class PlayerSystem : public entityx::System<PlayerSystem> {
     return resource_manager->GetTexture(sprite_key);
   }
   const std::string sprite_key;
-  std::vector<PlayerFireEvent> bullet_queue;
 };
 
 // Render all Renderable entities and draw some informational text.
