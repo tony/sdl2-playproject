@@ -58,7 +58,7 @@ void PlayerSystem::update(entityx::EntityManager& entities,
     }
     if (*(keys + SDL_SCANCODE_SPACE) != 0) {
       if (dt - last_shot >= shooting_delay) {
-        events.emit<PlayerFireEvent>(PlayerFireEvent(entity));
+        events.emit<entityx::Entity>(entity);
         last_shot = dt;
       }
     }
@@ -69,18 +69,17 @@ BulletSystem::BulletSystem(
     const std::unique_ptr<ResourceManager>& resource_manager)
     : resource_manager(resource_manager) {}
 
-void BulletSystem::receive(const PlayerFireEvent& fire_event) {
+void BulletSystem::receive(const entityx::Entity& entity) {
   // Events are immutable, so we can't destroy the entities here. We defer
   // the work until the update loop.
-  bullet_queue.push_back(fire_event);
+  bullet_queue.push_back(entity);
 }
 
 void BulletSystem::update(entityx::EntityManager& entities,
                           entityx::EventManager& events,
                           entityx::TimeDelta dt) {
-  for (auto parent : bullet_queue) {
-    entityx::ComponentHandle<Geometry> geo =
-        parent.entity.component<Geometry>();
+  for (auto e : bullet_queue) {
+    entityx::ComponentHandle<Geometry> geo = e.component<Geometry>();
     auto& sprite = resource_manager->GetTexture("bullet1");
     entityx::Entity entity = entities.create();
     entity.assign<Geometry>(
@@ -88,7 +87,7 @@ void BulletSystem::update(entityx::EntityManager& entities,
                       geo->position.y + static_cast<int>(geo->size.y / 2.5)},
         SDL2pp::Point{6, 0}, sprite->GetSize(), 0, 3);
     entity.assign<Renderable>(sprite);
-    entity.assign<HasParent>(parent.entity);
+    entity.assign<HasParent>(e);
   }
   bullet_queue.clear();
 }

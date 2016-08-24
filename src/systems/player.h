@@ -9,12 +9,6 @@
 #include <memory>
 #include <vector>
 
-struct PlayerFireEvent {
-  PlayerFireEvent(entityx::Entity entity) : entity(entity) {}
-
-  entityx::Entity entity;
-};
-
 // Render all Renderable entities and draw some informational text.
 class PlayerSystem : public entityx::System<PlayerSystem> {
  public:
@@ -45,13 +39,13 @@ class BulletSystem : public entityx::System<BulletSystem>,
       const std::unique_ptr<ResourceManager>& resource_manager);
 
   void configure(entityx::EventManager& events) override {
-    events.subscribe<PlayerFireEvent>(*this);
+    events.subscribe<entityx::Entity>(*this);
   };
   virtual void update(entityx::EntityManager& entities,
                       entityx::EventManager& events,
                       entityx::TimeDelta dt) override;
-  void receive(const PlayerFireEvent& fire_event);
+  void receive(const entityx::Entity& fire_event);
   const std::unique_ptr<ResourceManager>& resource_manager;
-  std::vector<PlayerFireEvent> bullet_queue;
+  std::vector<entityx::Entity> bullet_queue;
 };
 #endif  // SRC_SYSTEMS_PLAYER_H_
