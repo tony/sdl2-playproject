@@ -54,7 +54,7 @@ void LevelStage::update(entityx::TimeDelta dt) {
   systems.update<GeometrySystem>(dt);
 
   if (now - last_enemy >= 600) {
-    SpawnEnemy();
+    // SpawnEnemy();
     last_enemy = now;
   }
   for (auto enemy = enemies.begin(); enemy != enemies.end();) {

@@ -22,7 +22,7 @@ void SpawnSystem::update(entityx::EntityManager& entities,
   entities.each<Collideable>(
       [&](entityx::Entity entity, Collideable&) { ++current_enemies; });
   auto& sprite = resource_manager->GetTexture("ship1_tinted");
-  for (int i = 0; i < max_enemies - current_enemies; i++) {
+  if (current_enemies < max_enemies && dt - last_enemy >= RandInt(600, 800)) {
     int x = MAIN_VIEWPORT_RECT.w;
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     entityx::Entity entity = entities.create();
@@ -31,5 +31,6 @@ void SpawnSystem::update(entityx::EntityManager& entities,
                             // SDL2pp::Point{-1, RandInt(-1, 1)},
                             sprite->GetSize());
     entity.assign<Renderable>(sprite);
+    last_enemy = dt;
   }
 }
