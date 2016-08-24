@@ -55,11 +55,10 @@ void PlayerSystem::update(entityx::EntityManager& entities,
   });
   if (*(keys + SDL_SCANCODE_SPACE) != 0) {
     if (dt - last_shot >= shooting_delay) {
-      std::cout << "new bullet" << std::endl;
       auto& sprite = resource_manager->GetTexture("bullet1");
       entityx::Entity entity = entities.create();
       entity.assign<Geometry>(SDL2pp::Point{30, 30}, SDL2pp::Point{1, 0},
-                              sprite->GetSize());
+                              sprite->GetSize(), 0, 3);
       entity.assign<Renderable>(sprite);
 
       last_shot = dt;

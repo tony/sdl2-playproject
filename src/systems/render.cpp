@@ -16,9 +16,9 @@ void RenderSystem::update(entityx::EntityManager& entities,
 
   entities.each<Geometry, Renderable>([this](
       entityx::Entity entity, Geometry& geometry, Renderable& renderable) {
-    renderer->Copy(*renderable.texture,
-                   SDL2pp::Rect{0, 0, renderable.texture->GetWidth(),
-                                renderable.texture->GetHeight()},
-                   geometry.position, 0, SDL2pp::NullOpt, geometry.flip);
+    renderer->Copy(*renderable.texture, SDL2pp::NullOpt,
+                   SDL2pp::Rect(geometry.position,
+                                renderable.texture->GetSize() * geometry.scale),
+                   0, SDL2pp::NullOpt, geometry.flip);
   });
 }

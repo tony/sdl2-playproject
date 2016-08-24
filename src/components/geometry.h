@@ -7,11 +7,13 @@ struct Geometry {
            SDL2pp::Point direction,
            SDL2pp::Point size,
            double angle = 0.0,
+           unsigned int scale = 1,
            int flip = 0)
       : position(position),
         direction(direction),
-        size(size),
+        size(size * scale),
         angle(angle),
+        scale(scale),
         flip(flip) {}
 
   SDL2pp::Point position;
@@ -21,7 +23,7 @@ struct Geometry {
     return SDL2pp::Rect{position.x, position.y, size.x, size.y};
   };
   float angle = 0.0;
+  unsigned int scale;
   int flip = 0;
-  int scale = 0;
 };
 #endif  // SRC_COMPONENTS_GEOMETRY_H_
