@@ -57,6 +57,7 @@ void PlayerSystem::update(entityx::EntityManager& entities,
     if (*(keys + SDL_SCANCODE_SPACE) != 0) {
       if (dt - last_shot >= shooting_delay) {
         bullet_queue.push_back({entity, geo, player});
+        last_shot = dt;
       }
     }
   });
@@ -64,11 +65,6 @@ void PlayerSystem::update(entityx::EntityManager& entities,
     events.emit<PlayerFireEvent>(bullet_event);
   }
   bullet_queue.clear();
-  if (*(keys + SDL_SCANCODE_SPACE) != 0) {
-    if (dt - last_shot >= shooting_delay) {
-      last_shot = dt;
-    }
-  }
 }
 
 BulletSystem::BulletSystem(
@@ -87,12 +83,13 @@ void BulletSystem::update(entityx::EntityManager& entities,
   for (auto parent : bullet_queue) {
     auto& sprite = resource_manager->GetTexture("bullet1");
     entityx::Entity entity = entities.create();
-    entity.assign<Geometry>(SDL2pp::Point{parent.geometry.position.x + 30,
-                                          parent.geometry.position.y + 30},
-                            SDL2pp::Point{1, 0}, sprite->GetSize(), 0, 3);
+    entity.assign<Geometry>(
+        SDL2pp::Point{parent.geometry.position.x + 35,
+                      parent.geometry.position.y +
+                          static_cast<int>(parent.geometry.size.y / 2.5)},
+        SDL2pp::Point{6, 0}, sprite->GetSize(), 0, 3);
     entity.assign<Renderable>(sprite);
     entity.assign<HasParent>(parent.entity);
   }
-  std::cout << bullet_queue.size() << std::endl;
   bullet_queue.clear();
 }
