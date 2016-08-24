@@ -4,10 +4,12 @@
 #include "components/geometry.h"
 #include "components/renderable.h"
 #include "components/player.h"
+#include "components/parent.h"
 #include "systems/player.h"
 #include "resource.h"
 #include "config.h"
 #include "util.h"
+#include <vector>
 #include <SDL2pp/SDL2pp.hh>
 
 PlayerSystem::PlayerSystem(
@@ -52,16 +54,45 @@ void PlayerSystem::update(entityx::EntityManager& entities,
           clamp(geo.position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                 SCREEN_RECT.w - GetSprite()->GetWidth());
     }
+    if (*(keys + SDL_SCANCODE_SPACE) != 0) {
+      if (dt - last_shot >= shooting_delay) {
+        bullet_queue.push_back({entity, geo, player});
+      }
+    }
   });
+  for (auto bullet_event : bullet_queue) {
+    events.emit<PlayerFireEvent>(bullet_event);
+  }
+  bullet_queue.clear();
   if (*(keys + SDL_SCANCODE_SPACE) != 0) {
     if (dt - last_shot >= shooting_delay) {
-      auto& sprite = resource_manager->GetTexture("bullet1");
-      entityx::Entity entity = entities.create();
-      entity.assign<Geometry>(SDL2pp::Point{30, 30}, SDL2pp::Point{1, 0},
-                              sprite->GetSize(), 0, 3);
-      entity.assign<Renderable>(sprite);
-
       last_shot = dt;
     }
   }
+}
+
+BulletSystem::BulletSystem(
+    const std::unique_ptr<ResourceManager>& resource_manager)
+    : resource_manager(resource_manager) {}
+
+void BulletSystem::receive(const PlayerFireEvent& fire_event) {
+  // Events are immutable, so we can't destroy the entities here. We defer
+  // the work until the update loop.
+  bullet_queue.push_back(fire_event);
+}
+
+void BulletSystem::update(entityx::EntityManager& entities,
+                          entityx::EventManager& events,
+                          entityx::TimeDelta dt) {
+  for (auto parent : bullet_queue) {
+    auto& sprite = resource_manager->GetTexture("bullet1");
+    entityx::Entity entity = entities.create();
+    entity.assign<Geometry>(SDL2pp::Point{parent.geometry.position.x + 30,
+                                          parent.geometry.position.y + 30},
+                            SDL2pp::Point{1, 0}, sprite->GetSize(), 0, 3);
+    entity.assign<Renderable>(sprite);
+    entity.assign<HasParent>(parent.entity);
+  }
+  std::cout << bullet_queue.size() << std::endl;
+  bullet_queue.clear();
 }
