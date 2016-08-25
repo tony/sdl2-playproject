@@ -2,7 +2,9 @@
 #include "config.h"
 #include "util.h"
 #include "entityx/entityx.h"
+#include "components/enemy.h"
 #include "components/geometry.h"
+#include "components/identity.h"
 #include "components/collideable.h"
 #include "components/renderable.h"
 #include "systems/spawn.h"
@@ -27,9 +29,11 @@ void SpawnSystem::update(entityx::EntityManager& entities,
     int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
     entityx::Entity entity = entities.create();
     entity.assign<Collideable>(2);
+    entity.assign<Enemy>();
     entity.assign<Geometry>(SDL2pp::Point{x, y}, SDL2pp::Point{-1, 0},
                             sprite->GetSize(), 0, 1, SDL_FLIP_HORIZONTAL);
     entity.assign<Renderable>(sprite);
+    entity.assign<Identity>(EntityIdentity::SHIP);
     last_enemy = dt;
   }
 }

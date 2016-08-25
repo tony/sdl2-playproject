@@ -1,7 +1,10 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "entityx/entityx.h"
+#include "components/bullet.h"
 #include "components/collideable.h"
+#include "components/enemy.h"
 #include "components/geometry.h"
+#include "components/identity.h"
 #include "components/renderable.h"
 #include "components/player.h"
 #include "components/parent.h"
@@ -17,6 +20,11 @@ PlayerSystem::PlayerSystem(
     const std::string& sprite_key)
     : resource_manager(resource_manager), sprite_key(sprite_key) {}
 
+void PlayerSystem::receive(const CollisionEvent& collision) {
+  std::cout << collision.left << collision.right << std::endl;
+  hit_bullets.push_back(collision.left);
+}
+
 void PlayerSystem::update(entityx::EntityManager& entities,
                           entityx::EventManager& events,
                           entityx::TimeDelta dt) {
@@ -25,6 +33,7 @@ void PlayerSystem::update(entityx::EntityManager& entities,
     entity.assign<Geometry>(SDL2pp::Point{30, 30}, SDL2pp::Point{0, 0},
                             GetSprite()->GetSize());
     entity.assign<Renderable>(GetSprite());
+    entity.assign<Identity>(EntityIdentity::PLAYER);
     entity.assign<Player>();
     spawned = true;
   }
@@ -81,13 +90,24 @@ void BulletSystem::update(entityx::EntityManager& entities,
   for (auto e : bullet_queue) {
     entityx::ComponentHandle<Geometry> geo = e.component<Geometry>();
     auto& sprite = resource_manager->GetTexture("bullet1");
+    int speed = 6;
     entityx::Entity entity = entities.create();
     entity.assign<Geometry>(
         SDL2pp::Point{geo->position.x + 35,
                       geo->position.y + static_cast<int>(geo->size.y / 2.5)},
-        SDL2pp::Point{6, 0}, sprite->GetSize(), 0, 3);
+        SDL2pp::Point{speed, 0}, sprite->GetSize(), 0, 3);
     entity.assign<Renderable>(sprite);
     entity.assign<HasParent>(e);
+    entity.assign<Bullet>(speed);
+    entity.assign<Collideable>(sprite->GetSize().x * geo->scale);
+    entity.assign<Identity>(EntityIdentity::BULLET);
   }
   bullet_queue.clear();
+
+  entities.each<Bullet, Geometry>(
+      [](entityx::Entity entity, Bullet& bullet, Geometry& geo) {
+        if (!MAIN_VIEWPORT_RECT.Contains(geo.GetArea())) {
+          entity.destroy();
+        }
+      });
 }

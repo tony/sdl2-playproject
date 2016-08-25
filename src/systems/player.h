@@ -2,6 +2,7 @@
 #ifndef SRC_SYSTEMS_PLAYER_H_
 #define SRC_SYSTEMS_PLAYER_H_
 #include "entityx/entityx.h"
+#include "systems/collision.h"
 #include "components/geometry.h"
 #include "SDL2/SDL.h"
 #include "input.h"
@@ -10,7 +11,8 @@
 #include <vector>
 
 // Render all Renderable entities and draw some informational text.
-class PlayerSystem : public entityx::System<PlayerSystem> {
+class PlayerSystem : public entityx::System<PlayerSystem>,
+                     public entityx::Receiver<PlayerSystem> {
  public:
   explicit PlayerSystem(
       const std::unique_ptr<ResourceManager>& resource_manager,
@@ -29,6 +31,12 @@ class PlayerSystem : public entityx::System<PlayerSystem> {
     return resource_manager->GetTexture(sprite_key);
   }
   const std::string sprite_key;
+
+  void configure(entityx::EventManager& events) override {
+    events.subscribe<CollisionEvent>(*this);
+  };
+  void receive(const CollisionEvent& collision);
+  std::vector<entityx::Entity> hit_bullets;
 };
 
 // Render all Renderable entities and draw some informational text.
