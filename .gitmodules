@@ -10,3 +10,9 @@
 [submodule "vendor/entityx"]
 	path = vendor/entityx
 	url = https://github.com/alecthomas/entityx.git
+[submodule "vendor/magnum"]
+	path = vendor/magnum
+	url = git://github.com/mosra/magnum.git
+[submodule "vendor/corrade"]
+	path = vendor/corrade
+	url = git://github.com/mosra/corrade.git
