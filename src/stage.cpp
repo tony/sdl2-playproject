@@ -1,6 +1,7 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "bullet.h"
 #include "stage.h"
+#include "systems/collision.h"
 #include "systems/spawn.h"
 #include "systems/geometry.h"
 #include "systems/physics.h"
@@ -23,8 +24,10 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   systems.add<RenderSystem>(renderer, resource_manager);
   systems.add<SpawnSystem>(renderer, resource_manager);
   systems.add<PlayerSystem>(resource_manager, "ship1");
+  systems.add<BulletSystem>(resource_manager);
   systems.add<PhysicsSystem>();
   systems.add<GeometrySystem>();
+  systems.add<CollisionSystem>();
   systems.configure();
 }
 
@@ -55,6 +58,8 @@ void LevelStage::update(entityx::TimeDelta dt) {
   systems.update<PhysicsSystem>(dt);
   systems.update<GeometrySystem>(dt);
   systems.update<PlayerSystem>(dt);
+  systems.update<BulletSystem>(dt);
+  systems.update<CollisionSystem>(dt);
 
   if (now - last_enemy >= 600) {
     // SpawnEnemy();

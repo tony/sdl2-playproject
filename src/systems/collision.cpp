@@ -1,6 +1,10 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
+#include "components/bullet.h"
 #include "components/collideable.h"
+#include "components/enemy.h"
 #include "components/geometry.h"
+#include "components/identity.h"
+#include "components/player.h"
 #include "systems/collision.h"
 
 // Determines if two Collideable bodies have collided. If they have it emits a
@@ -9,47 +13,29 @@
 // sound, etc..
 //
 // Uses a fairly rudimentary 2D partition system, but performs reasonably well.
-CollisionSystem::CollisionSystem(
-    const std::shared_ptr<SDL2pp::Renderer>& renderer)
-    : size(renderer->GetLogicalSize()) {}
+CollisionSystem::CollisionSystem() {}
 
-void CollisionSystem::update(entityx::EntityManager& es,
+void CollisionSystem::update(entityx::EntityManager& entities,
                              entityx::EventManager& events,
                              entityx::TimeDelta dt) {
-  reset();
-  collect(es);
-  collide(events);
-};
-
-void CollisionSystem::reset() {
-  candidates.empty();
-}
-
-void CollisionSystem::collect(entityx::EntityManager& entities) {
-  entities.each<Geometry, Collideable>([this](
-      entityx::Entity entity, Geometry& geo, Collideable& collideable) {
-
-    Candidate candidate{
-        geo.position, geo.size,
-        SDL2pp::Rect{geo.position.x, geo.position.y, geo.size.x, geo.size.y},
-        collideable.radius, entity};
-    candidates.push_back(candidate);
-  });
-}
-
-void CollisionSystem::collide(entityx::EventManager& events) {
-  for (const CollisionSystem::Candidate& left : candidates) {
-    for (const CollisionSystem::Candidate& right : candidates) {
-      if (left.entity == right.entity)
-        continue;
-      if (collided(left, right))
-        std::cout << "HIT" << std::endl;
-      events.emit<CollisionEvent>(left.entity, right.entity);
+  entityx::ComponentHandle<Geometry> geo;
+  entityx::ComponentHandle<Collideable> collideable;
+  entityx::ComponentHandle<Identity> identity;
+  entityx::ComponentHandle<Bullet> bullet;
+  entityx::ComponentHandle<Enemy> enemy;
+  for (entityx::Entity bul :
+       entities.entities_with_components(bullet, geo, collideable)) {
+    for (entityx::Entity ship :
+         entities.entities_with_components(enemy, geo, collideable)) {
+      if (!bul) {
+        break;
+      }
+      auto bullet_geo = bul.component<Geometry>();
+      auto ship_geo = ship.component<Geometry>();
+      if (ship_geo->GetArea().Contains(bullet_geo->GetArea())) {
+        // events.emit<CollisionEvent>(bul, ship);
+        bul.destroy();
+      }
     }
   }
-}
-
-bool CollisionSystem::collided(const CollisionSystem::Candidate& left,
-                               const CollisionSystem::Candidate& right) {
-  return left.area.Contains(right.area);
-}
+};

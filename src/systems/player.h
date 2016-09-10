@@ -2,13 +2,17 @@
 #ifndef SRC_SYSTEMS_PLAYER_H_
 #define SRC_SYSTEMS_PLAYER_H_
 #include "entityx/entityx.h"
+#include "systems/collision.h"
+#include "components/geometry.h"
 #include "SDL2/SDL.h"
 #include "input.h"
 #include "resource.h"
 #include <memory>
+#include <vector>
 
 // Render all Renderable entities and draw some informational text.
-class PlayerSystem : public entityx::System<PlayerSystem> {
+class PlayerSystem : public entityx::System<PlayerSystem>,
+                     public entityx::Receiver<PlayerSystem> {
  public:
   explicit PlayerSystem(
       const std::unique_ptr<ResourceManager>& resource_manager,
@@ -17,7 +21,6 @@ class PlayerSystem : public entityx::System<PlayerSystem> {
   virtual void update(entityx::EntityManager& entities,
                       entityx::EventManager& events,
                       entityx::TimeDelta dt) override;
-
   const Uint8* keys = SDL_GetKeyboardState(nullptr);
   bool spawned = false;
   double last_shot = 0;
@@ -28,5 +31,29 @@ class PlayerSystem : public entityx::System<PlayerSystem> {
     return resource_manager->GetTexture(sprite_key);
   }
   const std::string sprite_key;
+
+  void configure(entityx::EventManager& events) override {
+    events.subscribe<CollisionEvent>(*this);
+  };
+  void receive(const CollisionEvent& collision);
+  std::vector<entityx::Entity> hit_bullets;
+};
+
+// Render all Renderable entities and draw some informational text.
+class BulletSystem : public entityx::System<BulletSystem>,
+                     public entityx::Receiver<BulletSystem> {
+ public:
+  explicit BulletSystem(
+      const std::unique_ptr<ResourceManager>& resource_manager);
+
+  void configure(entityx::EventManager& events) override {
+    events.subscribe<entityx::Entity>(*this);
+  };
+  virtual void update(entityx::EntityManager& entities,
+                      entityx::EventManager& events,
+                      entityx::TimeDelta dt) override;
+  void receive(const entityx::Entity& fire_event);
+  const std::unique_ptr<ResourceManager>& resource_manager;
+  std::vector<entityx::Entity> bullet_queue;
 };
 #endif  // SRC_SYSTEMS_PLAYER_H_
