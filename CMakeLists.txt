@@ -24,7 +24,8 @@ endif()
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND NOT CMAKE_SYSTEM_NAME MATCHES "FreeBSD")
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -Werror -Wno-missing-field-initializers")
 
-	if(CMAKE_BUILD_TYPE MATCHES "Debug")
+	# 2016-09-23 remove this, AppleClang 8.0 on Sierra and Clang 4.0 HEAD freak out with these flags
+	if(CMAKE_BUILD_TYPE MATCHES "Debug" AND NOT APPLE)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
 		if (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR APPLE)
 			# OR APPLE: in case using custom llvm/clang and on apple
