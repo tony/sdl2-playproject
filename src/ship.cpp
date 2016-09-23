@@ -52,6 +52,7 @@ void ShipGraphicsComponent::Update(
     bullet->Update();
   }
 }
+
 void Ship::HandleInput(const Uint8* currentKeyStates) {
   if (currentKeyStates[SDL_SCANCODE_UP] | currentKeyStates[SDL_SCANCODE_W] |
       currentKeyStates[SDL_SCANCODE_K]) {
