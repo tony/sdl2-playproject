@@ -36,6 +36,9 @@ void LevelStage::Update() {
     bg_x_scroll++;
     last_bg_scroll = now;
   }
+  if (bg_x_scroll >= bg_texture->GetWidth()) {
+    bg_x_scroll = 0;
+  }
   renderer->Copy(*bg_texture, SCREEN_RECT + SDL2pp::Point(bg_x_scroll, 0),
                  SDL2pp::NullOpt);
 
