@@ -97,7 +97,6 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
       console(console) {
   console->info("Game started.");
 
-  renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
   LoadResources(renderer, resource_manager);
 }
 
