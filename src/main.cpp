@@ -16,7 +16,9 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   json j(ifs);
 
   for (auto& f : j) {
-    if (f.count("name") && f.count("location") && f.count("size")) {
+    if (static_cast<bool>(f.count("name")) &&
+        static_cast<bool>(f.count("location")) &&
+        static_cast<bool>(f.count("size"))) {
       resource_manager->AddFont(f.find("name").value(),
                                 f.find("location").value(),
                                 f.find("size").value());
@@ -27,12 +29,14 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   json j2(ifs2);
 
   for (auto& f : j2) {
-    if (f.count("name") && f.count("location")) {
-      if (f.count("alpha") && f.count("tint")) {
+    if (static_cast<bool>(f.count("name")) &&
+        static_cast<bool>(f.count("location"))) {
+      if (static_cast<bool>(f.count("alpha")) &&
+          static_cast<bool>(f.count("tint"))) {
         resource_manager->AddSurfaceWithTransparencyAndTint(
             f.find("name").value(), f.find("location").value(),
             TintToSDL_Color(f.find("alpha")), TintToSDL_Color(f.find("tint")));
-      } else if (f.count("alpha")) {
+      } else if (static_cast<bool>(f.count("alpha"))) {
         resource_manager->AddSurfaceWithTransparency(
             f.find("name").value(), f.find("location").value(),
             TintToSDL_Color(f.find("alpha")));
@@ -64,7 +68,7 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       renderer->Clear();
       renderer->SetDrawBlendMode(SDL_BLENDMODE_BLEND);
 
-      if (f.count("shadow_sheet")) {
+      if (static_cast<bool>(f.count("shadow_sheet"))) {
         renderer->Copy(
             *resource_manager->GetTextureSheet(f.find("shadow_sheet").value()),
             coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
