@@ -37,7 +37,7 @@ class Game {
   std::shared_ptr<StatService> stat_service;
   bool quit = false;
   void HandleEvent(const SDL_Event* e, bool* quit);
-  std::shared_ptr<Input> input;
+  std::shared_ptr<InputManager> input;
   const std::shared_ptr<spdlog::logger>& console;
 };
 #endif  // SRC_GAME_H_

@@ -2,6 +2,6 @@
 #include "SDL2/SDL.h"
 #include "input.h"
 
-Input::Input() {
+InputManager::InputManager() {
   keys = SDL_GetKeyboardState(nullptr);
 }

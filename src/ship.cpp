@@ -14,8 +14,8 @@ Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                                   SDL2pp::Point{30, 30},
                                   SDL2pp::Point{0, 0})) {}
 
-void Player::HandleInput(const Uint8* currentKeyStates) {
-  ship->HandleInput(currentKeyStates);
+void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
+  ship->HandleInput(input);
 }
 GraphicsComponent::GraphicsComponent(
     const std::unique_ptr<ResourceManager>& resource_manager)
@@ -53,38 +53,38 @@ void ShipGraphicsComponent::Update(
   }
 }
 
-void Ship::HandleInput(const Uint8* currentKeyStates) {
-  if (currentKeyStates[SDL_SCANCODE_UP] | currentKeyStates[SDL_SCANCODE_W] |
-      currentKeyStates[SDL_SCANCODE_K]) {
+void Ship::HandleInput(const std::shared_ptr<InputManager>& input) {
+  if (input->down(SDL_SCANCODE_UP) | input->down(SDL_SCANCODE_W) |
+      input->down(SDL_SCANCODE_K)) {
     state = ActorState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
-  if (currentKeyStates[SDL_SCANCODE_DOWN] | currentKeyStates[SDL_SCANCODE_S] |
-      currentKeyStates[SDL_SCANCODE_J]) {
+  if (input->down(SDL_SCANCODE_DOWN) | input->down(SDL_SCANCODE_S) |
+      input->down(SDL_SCANCODE_J)) {
     state = ActorState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
               MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
-  if (currentKeyStates[SDL_SCANCODE_LEFT] | currentKeyStates[SDL_SCANCODE_A] |
-      currentKeyStates[SDL_SCANCODE_H]) {
+  if (input->down(SDL_SCANCODE_LEFT) | input->down(SDL_SCANCODE_A) |
+      input->down(SDL_SCANCODE_H)) {
     state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - GetSprite()->GetWidth());
   }
 
-  if (currentKeyStates[SDL_SCANCODE_RIGHT] | currentKeyStates[SDL_SCANCODE_D] |
-      currentKeyStates[SDL_SCANCODE_L]) {
+  if (input->down(SDL_SCANCODE_RIGHT) | input->down(SDL_SCANCODE_D) |
+      input->down(SDL_SCANCODE_L)) {
     state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - GetSprite()->GetWidth());
   }
 
-  if (*(currentKeyStates + SDL_SCANCODE_SPACE) != 0) {
+  if (input->down(SDL_SCANCODE_SPACE)) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= shooting_delay) {
       SpawnBullet();

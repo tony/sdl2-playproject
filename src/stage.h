@@ -7,12 +7,13 @@
 #include "ship.h"
 #include "enemy.h"
 #include "game_panel.h"
+#include "input.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <vector>
 
 class Stage {
  public:
-  virtual void HandleInput(const Uint8* currentKeyStates) = 0;
+  virtual void HandleInput(const std::shared_ptr<InputManager>& input) = 0;
   virtual void Update() = 0;
 };
 
@@ -22,7 +23,7 @@ class LevelStage : Stage {
              const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<StatService>& stat_service,
              const std::shared_ptr<spdlog::logger>& console);
-  void HandleInput(const Uint8* currentKeyStates) final;
+  void HandleInput(const std::shared_ptr<InputManager>& input) final;
   void Update() final;
   void SpawnEnemy();
 

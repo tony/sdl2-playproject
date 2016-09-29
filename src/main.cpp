@@ -97,7 +97,7 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
           SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)),
       resource_manager(std::make_unique<ResourceManager>()),
       stat_service(std::make_shared<StatService>()),
-      input(std::make_shared<Input>()),
+      input(std::make_shared<InputManager>()),
       console(console) {
   console->info("Game started.");
 
@@ -116,7 +116,7 @@ void Game::MainLoop() {
       HandleEvent(&e, &quit);
     }
 
-    stage->HandleInput(input->keys);
+    stage->HandleInput(input);
     stage->Update();
 
     renderer->Present();

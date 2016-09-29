@@ -2,9 +2,10 @@
 #ifndef SRC_INPUT_H_
 #define SRC_INPUT_H_
 
-class Input {
+class InputManager {
  public:
-  Input();
+  InputManager();
   const Uint8* keys;
+  constexpr bool down(const int key) { return static_cast<bool>(keys[key]); }
 };
 #endif  // SRC_INPUT_H_

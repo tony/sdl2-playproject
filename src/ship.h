@@ -7,6 +7,7 @@
 #include <vector>
 #include "actor.h"
 #include "bullet.h"
+#include "input.h"
 #include "resource.h"
 
 typedef struct ShipStats {
@@ -27,7 +28,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        int flip = 0);
 
   void Update() final;
-  void HandleInput(const Uint8* currentKeyStates);
+  void HandleInput(const std::shared_ptr<InputManager>& input);
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
   void SetHit(int h) { hit = h; }
@@ -47,7 +48,7 @@ class Player {
          const std::unique_ptr<ResourceManager>& resource_manager,
          const std::shared_ptr<spdlog::logger>& console);
 
-  void HandleInput(const Uint8* currentKeyStates);
+  void HandleInput(const std::shared_ptr<InputManager>& input);
   std::shared_ptr<Ship> ship;
 };
 #endif  // SRC_SHIP_H_

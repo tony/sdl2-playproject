@@ -19,8 +19,8 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   stat_service->set_ship_stats(player->ship->stats);
 }
 
-void LevelStage::HandleInput(const Uint8* currentKeyStates) {
-  player->HandleInput(currentKeyStates);
+void LevelStage::HandleInput(const std::shared_ptr<InputManager>& input) {
+  player->HandleInput(input);
 }
 
 void LevelStage::SpawnEnemy() {
