@@ -35,7 +35,6 @@ class Game {
   std::unique_ptr<SDL2pp::Renderer> renderer;
   std::unique_ptr<ResourceManager> resource_manager;
   std::shared_ptr<StatService> stat_service;
-  SDL_Event e;
   bool quit = false;
   void HandleEvent(const SDL_Event* e, bool* quit);
   std::shared_ptr<Input> input;

@@ -107,6 +107,7 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
 void Game::MainLoop() {
   auto stage = std::make_unique<LevelStage>(renderer, resource_manager,
                                             stat_service, console);
+  SDL_Event e = {};
   while (!quit) {
     renderer->Clear();
     renderer->SetViewport(SCREEN_RECT);
