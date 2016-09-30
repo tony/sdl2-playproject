@@ -28,18 +28,30 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        int flip = 0);
 
   void Update() final;
-  void HandleInput(const std::shared_ptr<InputManager>& input);
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
   void SetHit(bool h) { hit = h; }
+  void SpawnBullet(void);
   std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
 
  private:
   const std::shared_ptr<spdlog::logger>& console;
+};
 
-  void SpawnBullet(void);
+class PlayerShip : public Ship {
+ public:
+  PlayerShip(
+      const std::unique_ptr<SDL2pp::Renderer>& renderer,
+      const std::unique_ptr<ResourceManager>& resource_manager,
+      const std::shared_ptr<spdlog::logger>& console,
+      const std::string& texture_key = "ship1",
+      SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
+      SDL2pp::Point velocity = {0, 0},
+      const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
+      int flip = 0);
+  void HandleInput(const std::shared_ptr<InputManager>& input);
 };
 
 class Player {
@@ -49,6 +61,6 @@ class Player {
          const std::shared_ptr<spdlog::logger>& console);
 
   void HandleInput(const std::shared_ptr<InputManager>& input);
-  std::shared_ptr<Ship> ship;
+  std::shared_ptr<PlayerShip> ship;
 };
 #endif  // SRC_SHIP_H_

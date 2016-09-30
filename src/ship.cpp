@@ -4,15 +4,32 @@
 #include "ship.h"
 #include "util.h"
 
+PlayerShip::PlayerShip(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                       const std::unique_ptr<ResourceManager>& resource_manager,
+                       const std::shared_ptr<spdlog::logger>& console,
+                       const std::string& texture_key,
+                       SDL2pp::Optional<SDL2pp::Point> position,
+                       SDL2pp::Point velocity,
+                       const std::shared_ptr<ShipStats>& stats,
+                       int flip)
+    : Ship(renderer,
+           resource_manager,
+           console,
+           texture_key,
+           position,
+           velocity,
+           stats,
+           flip) {}
+
 Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
                const std::shared_ptr<spdlog::logger>& console)
-    : ship(std::make_shared<Ship>(renderer,
-                                  resource_manager,
-                                  console,
-                                  "ship1",
-                                  SDL2pp::Point{30, 30},
-                                  SDL2pp::Point{0, 0})) {}
+    : ship(std::make_shared<PlayerShip>(renderer,
+                                        resource_manager,
+                                        console,
+                                        "ship1",
+                                        SDL2pp::Point{30, 30},
+                                        SDL2pp::Point{0, 0})) {}
 
 void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
   ship->HandleInput(input);
@@ -53,7 +70,7 @@ void ShipGraphicsComponent::Update(
   }
 }
 
-void Ship::HandleInput(const std::shared_ptr<InputManager>& input) {
+void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
   if (input->down(SDL_SCANCODE_UP) || input->down(SDL_SCANCODE_W) ||
       input->down(SDL_SCANCODE_K)) {
     state = ActorState::UP;
