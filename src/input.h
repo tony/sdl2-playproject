@@ -6,6 +6,8 @@ class InputManager {
  public:
   InputManager();
   const Uint8* keys;
-  constexpr bool down(const int key) { return static_cast<bool>(keys[key]); }
+  inline constexpr bool down(const int key) {
+    return static_cast<bool>(keys[key]);
+  }
 };
 #endif  // SRC_INPUT_H_

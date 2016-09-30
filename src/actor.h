@@ -59,7 +59,7 @@ class Actor {
   SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
 
   SDL2pp::Point GetPosition() const { return position; }
-  int GetHit() const { return hit; }
+  bool GetHit() const { return hit; }
   int GetLastHit() const { return last_hit; }
   const std::string& GetTextureKey() const { return texture_key; }
 

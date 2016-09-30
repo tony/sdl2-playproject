@@ -31,7 +31,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
   void HandleInput(const std::shared_ptr<InputManager>& input);
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
-  void SetHit(int h) { hit = h; }
+  void SetHit(bool h) { hit = h; }
   std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;

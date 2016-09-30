@@ -54,7 +54,7 @@ void ShipGraphicsComponent::Update(
 }
 
 void Ship::HandleInput(const std::shared_ptr<InputManager>& input) {
-  if (input->down(SDL_SCANCODE_UP) | input->down(SDL_SCANCODE_W) |
+  if (input->down(SDL_SCANCODE_UP) || input->down(SDL_SCANCODE_W) ||
       input->down(SDL_SCANCODE_K)) {
     state = ActorState::UP;
     position.y =
@@ -62,7 +62,7 @@ void Ship::HandleInput(const std::shared_ptr<InputManager>& input) {
               MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
-  if (input->down(SDL_SCANCODE_DOWN) | input->down(SDL_SCANCODE_S) |
+  if (input->down(SDL_SCANCODE_DOWN) || input->down(SDL_SCANCODE_S) ||
       input->down(SDL_SCANCODE_J)) {
     state = ActorState::DOWN;
     position.y =
@@ -70,14 +70,14 @@ void Ship::HandleInput(const std::shared_ptr<InputManager>& input) {
               MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
   }
 
-  if (input->down(SDL_SCANCODE_LEFT) | input->down(SDL_SCANCODE_A) |
+  if (input->down(SDL_SCANCODE_LEFT) || input->down(SDL_SCANCODE_A) ||
       input->down(SDL_SCANCODE_H)) {
     state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
                        SCREEN_RECT.w - GetSprite()->GetWidth());
   }
 
-  if (input->down(SDL_SCANCODE_RIGHT) | input->down(SDL_SCANCODE_D) |
+  if (input->down(SDL_SCANCODE_RIGHT) || input->down(SDL_SCANCODE_D) ||
       input->down(SDL_SCANCODE_L)) {
     state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
