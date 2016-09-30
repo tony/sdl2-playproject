@@ -25,7 +25,7 @@ void Bullet::Update() {
   position += velocity;
 
   Uint32 now = SDL_GetTicks();
-  if (now - last_scale >= 50 and scale < 5) {
+  if (now - last_scale >= 50 && scale < 5) {
     scale++;
     last_scale = now;
   }

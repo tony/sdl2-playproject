@@ -19,7 +19,7 @@ void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
 }
 GraphicsComponent::GraphicsComponent(
     const std::unique_ptr<ResourceManager>& resource_manager)
-    : resource_manager(resource_manager){};
+    : resource_manager(resource_manager) {}
 ShipGraphicsComponent::ShipGraphicsComponent(
     const std::unique_ptr<ResourceManager>& resource_manager)
     : GraphicsComponent(resource_manager) {}

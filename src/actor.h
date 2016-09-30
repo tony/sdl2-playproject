@@ -27,9 +27,8 @@ class ShipGraphicsComponent : public GraphicsComponent {
   explicit ShipGraphicsComponent(
       const std::unique_ptr<ResourceManager>& resource_manager);
 
-  virtual void Update(
-      const std::shared_ptr<Ship>& actor,
-      const std::unique_ptr<SDL2pp::Renderer>& renderer) override;
+  void Update(const std::shared_ptr<Ship>& actor,
+              const std::unique_ptr<SDL2pp::Renderer>& renderer) override;
 };
 
 class Actor {
