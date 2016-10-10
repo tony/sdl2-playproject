@@ -10,8 +10,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
     : Actor(renderer,
             resource_manager,
             texture_key,
-            std::move(v),
-            std::move(p)),
+            std::move(p),
+            std::move(v)),
       stats(std::make_shared<BulletStats>()) {
   position.y -= GetSize().y;
   scale = 3;

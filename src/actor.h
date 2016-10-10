@@ -38,14 +38,14 @@ class Actor {
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::string& texture_key,
-        SDL2pp::Point velocity,
         SDL2pp::Point position,
+        SDL2pp::Point velocity,
         int flip = 0)
       : renderer(renderer),
         resource_manager(resource_manager),
         texture_key(texture_key),
-        velocity(velocity),
         position(position),
+        velocity(velocity),
         flip(flip) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
@@ -72,8 +72,8 @@ class Actor {
   Uint32 last_hit = 0;
   Uint32 last_shot = 0;
   const unsigned int shooting_delay = 80;
-  SDL2pp::Point velocity;
   SDL2pp::Point position;
+  SDL2pp::Point velocity;
   unsigned int scale = 1;
 
   int flip = 0;

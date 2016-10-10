@@ -118,7 +118,7 @@ Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(renderer, resource_manager, texture_key, velocity, position, flip),
+    : Actor(renderer, resource_manager, texture_key, position, velocity, flip),
       graphics_(std::make_shared<ShipGraphicsComponent>(resource_manager)),
       stats(std::move(stats)),
       console(console) {}
