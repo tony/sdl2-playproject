@@ -28,13 +28,13 @@ void Bullet::Update() {
     scale++;
     last_scale = now;
   }
-  angle += 15;
+  tilt += 15;
   if (InBounds()) {
     renderer->Copy(
         *resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
         SDL2pp::Rect(
             position,
             (resource_manager->GetTexture("bullet1")->GetSize() * scale)),
-        angle);
+        tilt);
   }
 }

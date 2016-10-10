@@ -27,7 +27,9 @@ class Bullet : public Actor {
   bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
   void Update() final;
   std::shared_ptr<BulletStats> stats;
-  double angle = 0;
+
+ private:
+  double tilt = 0;
   Uint32 last_scale = 0;
 };
 #endif  // SRC_BULLET_H_
