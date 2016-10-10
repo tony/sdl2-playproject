@@ -28,5 +28,11 @@ class Enemy {
         int flip = 0);
   std::shared_ptr<Ship> ship;
   void Update();
+
+ private:
+  static SDL2pp::Point GenerateSpawnPosition() {
+    int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
+    return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
+  }
 };
 #endif  // SRC_ENEMY_H_

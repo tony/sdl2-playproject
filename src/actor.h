@@ -39,13 +39,13 @@ class Actor {
         const std::unique_ptr<ResourceManager>& resource_manager,
         const std::string& texture_key,
         SDL2pp::Point velocity,
-        SDL2pp::Optional<SDL2pp::Point> position,
+        SDL2pp::Point position,
         int flip = 0)
       : renderer(renderer),
         resource_manager(resource_manager),
         texture_key(texture_key),
         velocity(velocity),
-        position(position ? position.value() : GenerateSpawnPosition()),
+        position(position),
         flip(flip) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
@@ -63,11 +63,6 @@ class Actor {
   const std::string& GetTextureKey() const { return texture_key; }
 
  protected:
-  static SDL2pp::Point GenerateSpawnPosition() {
-    int y = RandInt() % (MAIN_VIEWPORT_RECT.h - BOTTOM_VIEWPORT_RECT.h);
-    return SDL2pp::Point(MAIN_VIEWPORT_RECT.w, y);
-  }
-
   virtual void Update() {}
 
   const std::unique_ptr<SDL2pp::Renderer>& renderer;

@@ -15,7 +15,7 @@ Enemy::Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
           resource_manager,
           console,
           "ship1_tinted",
-          position,
+          position ? position.value() : GenerateSpawnPosition(),
           velocity,
           std::make_shared<ShipStats>(ShipStats{2, 2, 1}),
           flip)) {
