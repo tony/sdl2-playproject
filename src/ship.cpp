@@ -130,8 +130,8 @@ void Ship::Update() {
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     bullets.push_back(std::make_shared<Bullet>(
-        renderer, resource_manager, "bullet1",
-        SDL2pp::Point{position.x + 30, position.y + (GetSize().y / 2)}));
+        renderer, resource_manager,
+        std::static_pointer_cast<Actor>(shared_from_this()), "bullet1"));
   }
 }
 

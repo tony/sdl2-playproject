@@ -20,6 +20,7 @@ class Bullet : public Actor {
  public:
   Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
          const std::unique_ptr<ResourceManager>& resource_manager,
+         const std::shared_ptr<Actor>& parent,
          std::string texture_key = "bullet1",
          SDL2pp::Point position = {0, 0},
          SDL2pp::Point velocity = {9, 0});

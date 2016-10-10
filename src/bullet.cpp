@@ -4,6 +4,7 @@
 
 Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                const std::unique_ptr<ResourceManager>& resource_manager,
+               const std::shared_ptr<Actor>& parent,
                std::string texture_key,
                SDL2pp::Point p,
                SDL2pp::Point v)
@@ -13,6 +14,8 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             std::move(p),
             std::move(v)),
       stats(std::make_shared<BulletStats>()) {
+  position = SDL2pp::Point{parent->GetPosition().x + 30,
+                           parent->GetPosition().y + (parent->GetSize().y / 2)};
   position.y -= GetSize().y;
   scale = 3;
 }
