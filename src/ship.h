@@ -23,7 +23,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        const std::shared_ptr<spdlog::logger>& console,
        const std::string& texture_key,
        SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
-       SDL2pp::Point velocity,
+       SDL2pp::Point velocity = {0, 0},
        const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
        int flip = 0);
 
@@ -48,7 +48,7 @@ class PlayerShip : public Ship {
       const std::shared_ptr<spdlog::logger>& console,
       const std::string& texture_key,
       SDL2pp::Optional<SDL2pp::Point> position = SDL2pp::NullOpt,
-      SDL2pp::Point velocity,
+      SDL2pp::Point velocity = {0, 0},
       const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
       int flip = 0);
   void HandleInput(const std::shared_ptr<InputManager>& input);
