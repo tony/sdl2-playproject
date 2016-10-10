@@ -45,10 +45,13 @@ void LevelStage::Update() {
   game_panel->Update();
   player->ship->Update();
 
+  // spawn enemies at interval since last spawn
   if (now - last_enemy >= 600) {
     SpawnEnemy();
     last_enemy = now;
   }
+
+  // enemy update loop
   for (auto enemy = enemies.begin(); enemy != enemies.end();) {
     bool enemy_destroyed = false;
     (*enemy)->Update();
