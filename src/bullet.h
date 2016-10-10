@@ -24,7 +24,7 @@ class Bullet : public Actor {
          std::string texture_key = "bullet1",
          SDL2pp::Point position = {0, 0},
          SDL2pp::Point velocity = {9, 0});
-  bool InBounds();
+  bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
   void Update() final;
   std::shared_ptr<BulletStats> stats;
   double angle = 0;

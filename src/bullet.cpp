@@ -20,10 +20,6 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   scale = 3;
 }
 
-bool Bullet::InBounds() {
-  return MAIN_VIEWPORT_RECT.Contains(position);
-}
-
 void Bullet::Update() {
   position += velocity;
 
