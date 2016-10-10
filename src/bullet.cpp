@@ -14,9 +14,9 @@ Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
             std::move(p),
             std::move(v)),
       stats(std::make_shared<BulletStats>()) {
-  position = SDL2pp::Point{parent->GetPosition().x + 30,
-                           parent->GetPosition().y + (parent->GetSize().y / 2)};
-  position.y -= GetSize().y;
+  position = SDL2pp::Point{
+      parent->GetPosition().x + parent->GetSize().x,
+      (parent->GetPosition().y + (parent->GetSize().y / 2)) - GetSize().y};
   scale = 3;
 }
 
