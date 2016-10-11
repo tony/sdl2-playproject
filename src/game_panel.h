@@ -9,16 +9,16 @@
 #include "stats.h"
 #include "resource.h"
 
-class Stage;
+class LevelStage;
 
 class GamePanel {
  public:
   GamePanel(const std::shared_ptr<StatService>& stat_service,
-            const std::shared_ptr<Stage>& stage);
+            const std::shared_ptr<LevelStage>& stage);
   void Update();
   const std::shared_ptr<StatService>& stat_service;
   const std::shared_ptr<SDL2pp::Texture>& GetStatsTexture();
-  const std::shared_ptr<Stage>& stage;
+  const std::shared_ptr<LevelStage>& stage;
 
  private:
   void DrawStats();

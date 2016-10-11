@@ -4,8 +4,8 @@
 #include "ship.h"
 #include "util.h"
 
-PlayerShip::PlayerShip(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                       const std::unique_ptr<ResourceManager>& resource_manager,
+PlayerShip::PlayerShip(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+                       const std::shared_ptr<ResourceManager>& resource_manager,
                        const std::shared_ptr<spdlog::logger>& console,
                        const std::string& texture_key,
                        SDL2pp::Point position,
@@ -21,8 +21,8 @@ PlayerShip::PlayerShip(const std::unique_ptr<SDL2pp::Renderer>& renderer,
            stats,
            flip) {}
 
-Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-               const std::unique_ptr<ResourceManager>& resource_manager,
+Player::Player(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+               const std::shared_ptr<ResourceManager>& resource_manager,
                const std::shared_ptr<spdlog::logger>& console)
     : ship(std::make_shared<PlayerShip>(renderer,
                                         resource_manager,
@@ -35,15 +35,15 @@ void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
   ship->HandleInput(input);
 }
 GraphicsComponent::GraphicsComponent(
-    const std::unique_ptr<ResourceManager>& resource_manager)
+    const std::shared_ptr<ResourceManager>& resource_manager)
     : resource_manager(resource_manager) {}
 ShipGraphicsComponent::ShipGraphicsComponent(
-    const std::unique_ptr<ResourceManager>& resource_manager)
+    const std::shared_ptr<ResourceManager>& resource_manager)
     : GraphicsComponent(resource_manager) {}
 
 void ShipGraphicsComponent::Update(
     const std::shared_ptr<Ship>& actor,
-    const std::unique_ptr<SDL2pp::Renderer>& renderer) {
+    const std::shared_ptr<SDL2pp::Renderer>& renderer) {
   if (actor->GetHit()) {
     renderer->Copy(*resource_manager->GetTexture("ship1_hit"),
                    SDL2pp::Rect{0, 0, actor->GetSubspriteRect().w,
@@ -110,8 +110,8 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
   }
 }
 
-Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-           const std::unique_ptr<ResourceManager>& resource_manager,
+Ship::Ship(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+           const std::shared_ptr<ResourceManager>& resource_manager,
            const std::shared_ptr<spdlog::logger>& console,
            const std::string& texture_key,
            SDL2pp::Point position,

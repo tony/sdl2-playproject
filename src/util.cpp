@@ -10,7 +10,7 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
     const std::string& text,
     const SDL2pp::Point& position,
     const std::shared_ptr<SDL2pp::Font>& font,
-    const std::unique_ptr<SDL2pp::Renderer>& renderer,
+    const std::shared_ptr<SDL2pp::Renderer>& renderer,
     bool underline = true) {
   SDL_Color text_fg_color{255, 255, 255, 255};
   SDL_Color text_shadow_color{0, 0, 0, 255};

@@ -2,8 +2,8 @@
 #include "bullet.h"
 #include "config.h"
 
-Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-               const std::unique_ptr<ResourceManager>& resource_manager,
+Bullet::Bullet(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+               const std::shared_ptr<ResourceManager>& resource_manager,
                const std::shared_ptr<Actor>& parent,
                std::string texture_key,
                SDL2pp::Point p,

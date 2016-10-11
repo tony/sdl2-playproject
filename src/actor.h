@@ -16,27 +16,27 @@ class GraphicsComponent {
 
  public:
   explicit GraphicsComponent(
-      const std::unique_ptr<ResourceManager>& resource_manager);
+      const std::shared_ptr<ResourceManager>& resource_manager);
   virtual void Update(const std::shared_ptr<Ship>& actor,
-                      const std::unique_ptr<SDL2pp::Renderer>& renderer) = 0;
-  const std::unique_ptr<ResourceManager>& resource_manager;
+                      const std::shared_ptr<SDL2pp::Renderer>& renderer) = 0;
+  const std::shared_ptr<ResourceManager>& resource_manager;
 };
 
 class ShipGraphicsComponent : public GraphicsComponent {
  public:
   explicit ShipGraphicsComponent(
-      const std::unique_ptr<ResourceManager>& resource_manager);
+      const std::shared_ptr<ResourceManager>& resource_manager);
 
   void Update(const std::shared_ptr<Ship>& actor,
-              const std::unique_ptr<SDL2pp::Renderer>& renderer) override;
+              const std::shared_ptr<SDL2pp::Renderer>& renderer) override;
 };
 
 class Actor {
   friend class Enemy;
 
  public:
-  Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-        const std::unique_ptr<ResourceManager>& resource_manager,
+  Actor(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+        const std::shared_ptr<ResourceManager>& resource_manager,
         const std::string& texture_key,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
@@ -65,8 +65,8 @@ class Actor {
  protected:
   virtual void Update() {}
 
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::unique_ptr<ResourceManager>& resource_manager;
+  const std::shared_ptr<SDL2pp::Renderer>& renderer;
+  const std::shared_ptr<ResourceManager>& resource_manager;
   const std::string texture_key;
   bool hit = false;
   Uint32 last_hit = 0;

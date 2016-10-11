@@ -7,7 +7,7 @@
 #include "util.h"
 
 GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
-                     const std::shared_ptr<Stage>& stage)
+                     const std::shared_ptr<LevelStage>& stage)
     : stat_service(stat_service), stage(stage), last_message_string("") {}
 
 void GamePanel::Update() {

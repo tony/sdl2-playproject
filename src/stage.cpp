@@ -3,26 +3,15 @@
 #include "stage.h"
 #include "config.h"
 
-Stage::Stage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-             const std::unique_ptr<ResourceManager>& resource_manager,
-             const std::shared_ptr<spdlog::logger>& console)
+LevelStage::LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
+                       const std::shared_ptr<ResourceManager>& resource_manager,
+                       const std::shared_ptr<spdlog::logger>& console)
     : renderer(renderer),
       resource_manager(resource_manager),
-      console(console) {}
+      console(console),
 
-LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                       const std::unique_ptr<ResourceManager>& resource_manager,
-                       const std::shared_ptr<spdlog::logger>& console)
-    : Stage(renderer, resource_manager, console),
-      bg_texture(resource_manager->GetTextureSheet("bg1")),
-      player(std::make_shared<Player>(renderer, resource_manager, console)) {}
-
-void LevelStage::SetupGamePanel(
-    const std::shared_ptr<StatService>& stat_service) {
-  stat_service->set_ship_stats(player->ship->stats);
-  game_panel = std::make_shared<GamePanel>(
-      stat_service, std::static_pointer_cast<Stage>(shared_from_this()));
-}
+      player(std::make_shared<Player>(renderer, resource_manager, console)),
+      bg_texture(resource_manager->GetTextureSheet("bg1")) {}
 
 void LevelStage::HandleInput(const std::shared_ptr<InputManager>& input) {
   player->HandleInput(input);
