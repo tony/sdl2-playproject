@@ -12,6 +12,8 @@
 #include "resource.h"
 #include "ship.h"
 
+class LevelStage;
+
 typedef struct EnemyStats {
   unsigned int health = 2;
   unsigned int health_max = 2;
@@ -20,8 +22,7 @@ typedef struct EnemyStats {
 
 class Enemy {
  public:
-  Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-        const std::unique_ptr<ResourceManager>& resource_manager,
+  Enemy(const std::shared_ptr<LevelStage>& stage,
         const std::shared_ptr<spdlog::logger>& console,
         SDL2pp::Optional<SDL2pp::Point> position,
         SDL2pp::Point velocity = {-1, 0},

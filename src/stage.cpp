@@ -18,9 +18,9 @@ void LevelStage::HandleInput(const std::shared_ptr<InputManager>& input) {
 }
 
 void LevelStage::SpawnEnemy() {
-  auto enemy = std::make_shared<Enemy>(renderer, resource_manager, console,
-                                       SDL2pp::NullOpt, SDL2pp::Point{-1, 0},
-                                       SDL_FLIP_HORIZONTAL);
+  auto enemy =
+      std::make_shared<Enemy>(shared_from_this(), console, SDL2pp::NullOpt,
+                              SDL2pp::Point{-1, 0}, SDL_FLIP_HORIZONTAL);
   enemies.push_back(enemy);
 }
 

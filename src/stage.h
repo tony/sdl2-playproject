@@ -17,7 +17,8 @@ class Stage {
   virtual void Update() = 0;
 };
 
-class LevelStage : public Stage {
+class LevelStage : public Stage,
+                   public std::enable_shared_from_this<LevelStage> {
  public:
   LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              const std::unique_ptr<ResourceManager>& resource_manager,
