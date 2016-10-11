@@ -3,17 +3,12 @@
 #include <sstream>
 #include "config.h"
 #include "game_panel.h"
+#include "stage.h"
 #include "util.h"
 
 GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
-                     const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                     const std::unique_ptr<ResourceManager>& resource_manager,
-                     const std::shared_ptr<spdlog::logger>& console)
-    : stat_service(stat_service),
-      renderer(renderer),
-      resource_manager(resource_manager),
-      last_message_string(""),
-      console(console) {}
+                     const std::shared_ptr<LevelStage>& stage)
+    : stat_service(stat_service), stage(stage), last_message_string("") {}
 
 void GamePanel::Update() {
   DrawStats();
@@ -34,25 +29,26 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
 
   if (last_message_string.empty() ||
       last_message_string.compare(ship_text) != 0) {
-    console->info("game_panel rendering new texture for message: {}",
-                  ship_text);
+    stage->console->info("game_panel rendering new texture for message: {}",
+                         ship_text);
     last_message_string = ship_text;
-    resource_manager->AddTexture(
+    stage->resource_manager->AddTexture(
         "game_panel_text",
         DrawText(ship_text, text_position,
-                 resource_manager->GetFont("terminus-18"), renderer, true));
+                 stage->resource_manager->GetFont("terminus-18"),
+                 stage->renderer, true));
   }
-  return resource_manager->GetTexture("game_panel_text");
+  return stage->resource_manager->GetTexture("game_panel_text");
 }
 
 void GamePanel::DrawStats() {
-  renderer->SetViewport(BOTTOM_VIEWPORT_RECT);
+  stage->renderer->SetViewport(BOTTOM_VIEWPORT_RECT);
   auto message = GetStatsTexture();
   if (last_message_string.length() > 0) {
     SDL2pp::Rect message_rect = {5, 25, message->GetWidth(),
                                  message->GetHeight()};
 
-    renderer->Copy(*message, message_rect, message_rect);
+    stage->renderer->Copy(*message, message_rect, message_rect);
   }
-  renderer->SetViewport(MAIN_VIEWPORT_RECT);
+  stage->renderer->SetViewport(MAIN_VIEWPORT_RECT);
 }

@@ -17,6 +17,7 @@
 
 class Actor;
 class GamePanel;
+class LevelStage;
 class ResourceManager;
 class Ship;
 class StatService;
@@ -35,9 +36,10 @@ class Game {
   std::unique_ptr<SDL2pp::Renderer> renderer;
   std::unique_ptr<ResourceManager> resource_manager;
   std::shared_ptr<StatService> stat_service;
-  bool quit = false;
-  void HandleEvent(const SDL_Event* e, bool* quit);
   std::shared_ptr<InputManager> input;
   const std::shared_ptr<spdlog::logger>& console;
+  std::shared_ptr<LevelStage> stage;
+  bool quit = false;
+  void HandleEvent(const SDL_Event* e, bool* quit);
 };
 #endif  // SRC_GAME_H_

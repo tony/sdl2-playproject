@@ -17,25 +17,22 @@ class Stage {
   virtual void Update() = 0;
 };
 
-class LevelStage : Stage {
+class LevelStage : public Stage {
  public:
   LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              const std::unique_ptr<ResourceManager>& resource_manager,
-             const std::shared_ptr<StatService>& stat_service,
              const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const std::shared_ptr<InputManager>& input) final;
   void Update() final;
   void SpawnEnemy();
-
- private:
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::shared_ptr<SDL2pp::Texture>& bg_texture;
-
   const std::unique_ptr<ResourceManager>& resource_manager;
   const std::shared_ptr<spdlog::logger>& console;
-
   std::shared_ptr<GamePanel> game_panel;
   std::shared_ptr<Player> player;
+
+ private:
+  const std::shared_ptr<SDL2pp::Texture>& bg_texture;
   std::vector<std::shared_ptr<Enemy>> enemies;
   Uint32 last_enemy = 0;
   int bg_x_scroll = 0;

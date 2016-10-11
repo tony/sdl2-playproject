@@ -9,21 +9,20 @@
 #include "stats.h"
 #include "resource.h"
 
+class LevelStage;
+
 class GamePanel {
  public:
   GamePanel(const std::shared_ptr<StatService>& stat_service,
-            const std::unique_ptr<SDL2pp::Renderer>& renderer,
-            const std::unique_ptr<ResourceManager>& resource_manager,
-            const std::shared_ptr<spdlog::logger>& console);
+            const std::shared_ptr<LevelStage>& stage);
   void Update();
   const std::shared_ptr<StatService>& stat_service;
   const std::shared_ptr<SDL2pp::Texture>& GetStatsTexture();
+  const std::shared_ptr<LevelStage>& stage;
 
  private:
   void DrawStats();
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::unique_ptr<ResourceManager>& resource_manager;
+
   std::string last_message_string;
-  const std::shared_ptr<spdlog::logger>& console;
 };
 #endif  // SRC_GAME_PANEL_H_

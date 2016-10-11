@@ -105,8 +105,9 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
 }
 
 void Game::MainLoop() {
-  auto stage = std::make_unique<LevelStage>(renderer, resource_manager,
-                                            stat_service, console);
+  stage = std::make_shared<LevelStage>(renderer, resource_manager, console);
+  stat_service->set_ship_stats(stage->player->ship->stats);
+  stage->game_panel = std::make_shared<GamePanel>(stat_service, stage);
   SDL_Event e = {};
   while (!quit) {
     renderer->Clear();
