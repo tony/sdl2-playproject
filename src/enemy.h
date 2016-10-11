@@ -23,7 +23,6 @@ typedef struct EnemyStats {
 class Enemy {
  public:
   Enemy(const std::shared_ptr<LevelStage>& stage,
-        const std::shared_ptr<spdlog::logger>& console,
         SDL2pp::Optional<SDL2pp::Point> position,
         SDL2pp::Point velocity = {-1, 0},
         int flip = 0);

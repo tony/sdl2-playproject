@@ -21,7 +21,6 @@ typedef struct ShipStats {
 class Ship : public Actor, public std::enable_shared_from_this<Ship> {
  public:
   Ship(const std::shared_ptr<LevelStage>& stage,
-       const std::shared_ptr<spdlog::logger>& console,
        const std::string& texture_key,
        SDL2pp::Point position,
        SDL2pp::Point velocity = {0, 0},
@@ -36,8 +35,6 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
   std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
-
- private:
   const std::shared_ptr<spdlog::logger>& console;
 };
 
@@ -45,7 +42,6 @@ class PlayerShip : public Ship {
  public:
   PlayerShip(
       const std::shared_ptr<LevelStage>& stage,
-      const std::shared_ptr<spdlog::logger>& console,
       const std::string& texture_key,
       SDL2pp::Point position,
       SDL2pp::Point velocity = {0, 0},
@@ -56,8 +52,7 @@ class PlayerShip : public Ship {
 
 class Player {
  public:
-  Player(const std::shared_ptr<LevelStage>& stage,
-         const std::shared_ptr<spdlog::logger>& console);
+  Player(const std::shared_ptr<LevelStage>& stage);
 
   void HandleInput(const std::shared_ptr<InputManager>& input);
   std::shared_ptr<PlayerShip> ship;
