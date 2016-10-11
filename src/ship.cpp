@@ -2,30 +2,21 @@
 #include "config.h"
 #include "resource.h"
 #include "ship.h"
+#include "stage.h"
 #include "util.h"
 
-PlayerShip::PlayerShip(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-                       const std::unique_ptr<ResourceManager>& resource_manager,
+PlayerShip::PlayerShip(const std::shared_ptr<LevelStage>& stage,
                        const std::shared_ptr<spdlog::logger>& console,
                        const std::string& texture_key,
                        SDL2pp::Point position,
                        SDL2pp::Point velocity,
                        const std::shared_ptr<ShipStats>& stats,
                        int flip)
-    : Ship(renderer,
-           resource_manager,
-           console,
-           texture_key,
-           position,
-           velocity,
-           stats,
-           flip) {}
+    : Ship(stage, console, texture_key, position, velocity, stats, flip) {}
 
-Player::Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-               const std::unique_ptr<ResourceManager>& resource_manager,
+Player::Player(const std::shared_ptr<LevelStage>& stage,
                const std::shared_ptr<spdlog::logger>& console)
-    : ship(std::make_shared<PlayerShip>(renderer,
-                                        resource_manager,
+    : ship(std::make_shared<PlayerShip>(stage,
                                         console,
                                         "ship1",
                                         SDL2pp::Point{30, 30},
@@ -110,16 +101,21 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
   }
 }
 
-Ship::Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-           const std::unique_ptr<ResourceManager>& resource_manager,
+Ship::Ship(const std::shared_ptr<LevelStage>& stage,
            const std::shared_ptr<spdlog::logger>& console,
            const std::string& texture_key,
            SDL2pp::Point position,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(renderer, resource_manager, texture_key, position, velocity, flip),
-      graphics_(std::make_shared<ShipGraphicsComponent>(resource_manager)),
+    : Actor(stage->renderer,
+            stage->resource_manager,
+            texture_key,
+            position,
+            velocity,
+            flip),
+      graphics_(
+          std::make_shared<ShipGraphicsComponent>(stage->resource_manager)),
       stats(std::move(stats)),
       console(console) {}
 

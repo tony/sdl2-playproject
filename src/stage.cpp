@@ -10,7 +10,6 @@ LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
       resource_manager(resource_manager),
       console(console),
 
-      player(std::make_shared<Player>(renderer, resource_manager, console)),
       bg_texture(resource_manager->GetTextureSheet("bg1")) {}
 
 void LevelStage::HandleInput(const std::shared_ptr<InputManager>& input) {

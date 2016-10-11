@@ -11,8 +11,7 @@ Enemy::Enemy(const std::shared_ptr<LevelStage>& stage,
              SDL2pp::Point velocity,
              int flip)
     : ship(std::make_shared<Ship>(
-          stage->renderer,
-          stage->resource_manager,
+          stage,
           console,
           "ship1_tinted",
           position ? position.value() : GenerateSpawnPosition(),

@@ -10,6 +10,8 @@
 #include "input.h"
 #include "resource.h"
 
+class LevelStage;
+
 typedef struct ShipStats {
   int health = 100;
   int health_max = 100;
@@ -18,8 +20,7 @@ typedef struct ShipStats {
 
 class Ship : public Actor, public std::enable_shared_from_this<Ship> {
  public:
-  Ship(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-       const std::unique_ptr<ResourceManager>& resource_manager,
+  Ship(const std::shared_ptr<LevelStage>& stage,
        const std::shared_ptr<spdlog::logger>& console,
        const std::string& texture_key,
        SDL2pp::Point position,
@@ -43,8 +44,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
 class PlayerShip : public Ship {
  public:
   PlayerShip(
-      const std::unique_ptr<SDL2pp::Renderer>& renderer,
-      const std::unique_ptr<ResourceManager>& resource_manager,
+      const std::shared_ptr<LevelStage>& stage,
       const std::shared_ptr<spdlog::logger>& console,
       const std::string& texture_key,
       SDL2pp::Point position,
@@ -56,8 +56,7 @@ class PlayerShip : public Ship {
 
 class Player {
  public:
-  Player(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-         const std::unique_ptr<ResourceManager>& resource_manager,
+  Player(const std::shared_ptr<LevelStage>& stage,
          const std::shared_ptr<spdlog::logger>& console);
 
   void HandleInput(const std::shared_ptr<InputManager>& input);
