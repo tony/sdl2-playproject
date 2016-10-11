@@ -10,8 +10,8 @@
 
 using json = nlohmann::json;
 
-void LoadResources(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-                   const std::shared_ptr<ResourceManager>& resource_manager) {
+void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                   const std::unique_ptr<ResourceManager>& resource_manager) {
   std::ifstream ifs("resources/manifests/fonts.json");
   json j(ifs);
 
@@ -91,11 +91,11 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
              SCREEN_RECT.w,
              SCREEN_RECT.h,
              SDL_WINDOW_RESIZABLE),
-      renderer(std::make_shared<SDL2pp::Renderer>(
+      renderer(std::make_unique<SDL2pp::Renderer>(
           window,
           -1,
           SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE)),
-      resource_manager(std::make_shared<ResourceManager>()),
+      resource_manager(std::make_unique<ResourceManager>()),
       stat_service(std::make_shared<StatService>()),
       input(std::make_shared<InputManager>()),
       console(console) {

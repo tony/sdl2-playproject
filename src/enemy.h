@@ -20,8 +20,8 @@ typedef struct EnemyStats {
 
 class Enemy {
  public:
-  Enemy(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-        const std::shared_ptr<ResourceManager>& resource_manager,
+  Enemy(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+        const std::unique_ptr<ResourceManager>& resource_manager,
         const std::shared_ptr<spdlog::logger>& console,
         SDL2pp::Optional<SDL2pp::Point> position,
         SDL2pp::Point velocity = {-1, 0},

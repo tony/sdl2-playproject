@@ -18,8 +18,8 @@ typedef struct BulletStats {
 
 class Bullet : public Actor {
  public:
-  Bullet(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-         const std::shared_ptr<ResourceManager>& resource_manager,
+  Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+         const std::unique_ptr<ResourceManager>& resource_manager,
          const std::shared_ptr<Actor>& parent,
          std::string texture_key = "bullet1",
          SDL2pp::Point position = {0, 0},

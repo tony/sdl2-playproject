@@ -33,8 +33,8 @@ class Game {
   SDL2pp::SDLTTF sdl_ttf;
   SDL2pp::SDLImage image;
   SDL2pp::Window window;
-  std::shared_ptr<SDL2pp::Renderer> renderer;
-  std::shared_ptr<ResourceManager> resource_manager;
+  std::unique_ptr<SDL2pp::Renderer> renderer;
+  std::unique_ptr<ResourceManager> resource_manager;
   std::shared_ptr<StatService> stat_service;
   std::shared_ptr<InputManager> input;
   const std::shared_ptr<spdlog::logger>& console;

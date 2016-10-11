@@ -3,8 +3,8 @@
 #include "stage.h"
 #include "config.h"
 
-LevelStage::LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-                       const std::shared_ptr<ResourceManager>& resource_manager,
+LevelStage::LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+                       const std::unique_ptr<ResourceManager>& resource_manager,
                        const std::shared_ptr<spdlog::logger>& console)
     : renderer(renderer),
       resource_manager(resource_manager),

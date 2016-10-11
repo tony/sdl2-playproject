@@ -19,14 +19,14 @@ class Stage {
 
 class LevelStage : public Stage {
  public:
-  LevelStage(const std::shared_ptr<SDL2pp::Renderer>& renderer,
-             const std::shared_ptr<ResourceManager>& resource_manager,
+  LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+             const std::unique_ptr<ResourceManager>& resource_manager,
              const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const std::shared_ptr<InputManager>& input) final;
   void Update() final;
   void SpawnEnemy();
-  const std::shared_ptr<SDL2pp::Renderer>& renderer;
-  const std::shared_ptr<ResourceManager>& resource_manager;
+  const std::unique_ptr<SDL2pp::Renderer>& renderer;
+  const std::unique_ptr<ResourceManager>& resource_manager;
   const std::shared_ptr<spdlog::logger>& console;
   std::shared_ptr<GamePanel> game_panel;
   std::shared_ptr<Player> player;
