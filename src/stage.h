@@ -13,26 +13,32 @@
 
 class Stage {
  public:
-  virtual void HandleInput(const std::shared_ptr<InputManager>& input) = 0;
-  virtual void Update() = 0;
+  Stage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
+        const std::unique_ptr<ResourceManager>& resource_manager,
+        const std::shared_ptr<spdlog::logger>& console);
+  virtual void HandleInput(const std::shared_ptr<InputManager>& input) {
+    std::ignore = input;
+  };
+  virtual void Update(){};
+
+  const std::unique_ptr<SDL2pp::Renderer>& renderer;
+  const std::unique_ptr<ResourceManager>& resource_manager;
+  const std::shared_ptr<spdlog::logger>& console;
 };
 
-class LevelStage : Stage {
+class LevelStage : public Stage,
+                   public std::enable_shared_from_this<LevelStage> {
  public:
   LevelStage(const std::unique_ptr<SDL2pp::Renderer>& renderer,
              const std::unique_ptr<ResourceManager>& resource_manager,
-             const std::shared_ptr<StatService>& stat_service,
              const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const std::shared_ptr<InputManager>& input) final;
   void Update() final;
   void SpawnEnemy();
+  void SetupGamePanel(const std::shared_ptr<StatService>& stat_service);
 
  private:
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::shared_ptr<SDL2pp::Texture>& bg_texture;
-
-  const std::unique_ptr<ResourceManager>& resource_manager;
-  const std::shared_ptr<spdlog::logger>& console;
 
   std::shared_ptr<GamePanel> game_panel;
   std::shared_ptr<Player> player;
