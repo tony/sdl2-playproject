@@ -102,12 +102,12 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
   console->info("Game started.");
 
   LoadResources(renderer, resource_manager);
-}
-
-void Game::MainLoop() {
   stage = std::make_shared<LevelStage>(renderer, resource_manager, console);
   stat_service->set_ship_stats(stage->player->ship->stats);
   stage->game_panel = std::make_shared<GamePanel>(stat_service, stage);
+}
+
+void Game::MainLoop() {
   SDL_Event e = {};
   while (!quit) {
     renderer->Clear();
