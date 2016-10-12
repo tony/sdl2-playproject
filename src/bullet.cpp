@@ -1,19 +1,20 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "bullet.h"
 #include "config.h"
+#include "stage.h"
 
-Bullet::Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-               const std::unique_ptr<ResourceManager>& resource_manager,
+Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                const std::shared_ptr<Actor>& parent,
                std::string texture_key,
                SDL2pp::Point p,
                SDL2pp::Point v)
-    : Actor(renderer,
-            resource_manager,
+    : Actor(stage->renderer,
+            stage->resource_manager,
             texture_key,
             std::move(p),
             std::move(v)),
-      stats(std::make_shared<BulletStats>()) {
+      stats(std::make_shared<BulletStats>()),
+      stage(stage) {
   position = SDL2pp::Point{
       parent->GetPosition().x + parent->GetSize().x,
       (parent->GetPosition().y + (parent->GetSize().y / 2)) - GetSize().y};
@@ -30,11 +31,12 @@ void Bullet::Update() {
   }
   tilt += 15;
   if (InBounds()) {
-    renderer->Copy(
-        *resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
+    stage->renderer->Copy(
+        *stage->resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
         SDL2pp::Rect(
             position,
-            (resource_manager->GetTexture("bullet1")->GetSize() * scale)),
+            (stage->resource_manager->GetTexture("bullet1")->GetSize() *
+             scale)),
         tilt);
   }
 }

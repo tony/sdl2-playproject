@@ -8,6 +8,8 @@
 #include "actor.h"
 #include "resource.h"
 
+class LevelStage;
+
 typedef struct BulletStats {
   int speed = 1;
   int size = 1;
@@ -18,8 +20,7 @@ typedef struct BulletStats {
 
 class Bullet : public Actor {
  public:
-  Bullet(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-         const std::unique_ptr<ResourceManager>& resource_manager,
+  Bullet(const std::shared_ptr<LevelStage>& stage,
          const std::shared_ptr<Actor>& parent,
          std::string texture_key = "bullet1",
          SDL2pp::Point position = {0, 0},
@@ -27,6 +28,7 @@ class Bullet : public Actor {
   bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
   void Update() final;
   std::shared_ptr<BulletStats> stats;
+  const std::shared_ptr<LevelStage>& stage;
 
  private:
   double tilt = 0;

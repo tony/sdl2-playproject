@@ -113,6 +113,7 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
       graphics_(
           std::make_shared<ShipGraphicsComponent>(stage->resource_manager)),
       stats(std::move(stats)),
+      stage(stage),
       console(stage->console) {}
 
 void Ship::Update() {
@@ -122,8 +123,7 @@ void Ship::Update() {
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     bullets.push_back(std::make_shared<Bullet>(
-        renderer, resource_manager,
-        std::static_pointer_cast<Actor>(shared_from_this()), "bullet1"));
+        stage, std::static_pointer_cast<Actor>(shared_from_this()), "bullet1"));
   }
 }
 

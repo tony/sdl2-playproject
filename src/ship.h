@@ -35,6 +35,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
   std::shared_ptr<ShipGraphicsComponent> graphics_;
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
+  const std::shared_ptr<LevelStage>& stage;
   const std::shared_ptr<spdlog::logger>& console;
 };
 
