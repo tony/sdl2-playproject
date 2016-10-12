@@ -22,41 +22,6 @@ Player::Player(const std::shared_ptr<LevelStage>& stage)
 void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
   ship->HandleInput(input);
 }
-GraphicsComponent::GraphicsComponent(
-    const std::unique_ptr<ResourceManager>& resource_manager)
-    : resource_manager(resource_manager) {}
-ShipGraphicsComponent::ShipGraphicsComponent(
-    const std::unique_ptr<ResourceManager>& resource_manager)
-    : GraphicsComponent(resource_manager) {}
-
-void ShipGraphicsComponent::Update(
-    const std::shared_ptr<Ship>& actor,
-    const std::unique_ptr<SDL2pp::Renderer>& renderer) {
-  if (actor->GetHit()) {
-    renderer->Copy(*resource_manager->GetTexture("ship1_hit"),
-                   SDL2pp::Rect{0, 0, actor->GetSubspriteRect().w,
-                                actor->GetSubspriteRect().h},
-                   actor->GetPosition(), 0, SDL2pp::NullOpt, actor->GetFlip());
-    Uint32 now = SDL_GetTicks();
-    if (now - actor->GetLastHit() >= 100) {
-      actor->SetHit(false);
-    }
-  } else {
-    renderer->Copy(*resource_manager->GetTexture(actor->GetTextureKey()),
-                   SDL2pp::Rect{0, 0, actor->GetSubspriteRect().w,
-                                actor->GetSubspriteRect().h},
-                   actor->GetPosition(), 0, SDL2pp::NullOpt, actor->GetFlip());
-  }
-
-  // bullet drawing and clean up
-  actor->bullets.erase(
-      std::remove_if(actor->bullets.begin(), actor->bullets.end(),
-                     [](auto& b) { return !b->InBounds(); }),
-      actor->bullets.end());
-  for (auto& bullet : actor->bullets) {
-    bullet->Update();
-  }
-}
 
 void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
   if (input->down(SDL_SCANCODE_UP) || input->down(SDL_SCANCODE_W) ||
@@ -110,14 +75,36 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
             position,
             velocity,
             flip),
-      graphics_(
-          std::make_shared<ShipGraphicsComponent>(stage->resource_manager)),
       stats(std::move(stats)),
       stage(stage),
       console(stage->console) {}
 
 void Ship::Update() {
-  graphics_->Update(shared_from_this(), renderer);
+  if (GetHit()) {
+    renderer->Copy(*resource_manager->GetTexture("ship1_hit"),
+                   SDL2pp::Rect{0, 0, GetSubspriteRect().w,
+                                GetSubspriteRect().h},
+                   GetPosition(), 0, SDL2pp::NullOpt, GetFlip());
+    Uint32 now = SDL_GetTicks();
+    if (now - GetLastHit() >= 100) {
+      SetHit(false);
+    }
+  } else {
+    renderer->Copy(*resource_manager->GetTexture(GetTextureKey()),
+                   SDL2pp::Rect{0, 0, GetSubspriteRect().w,
+                                GetSubspriteRect().h},
+                   GetPosition(), 0, SDL2pp::NullOpt, GetFlip());
+  }
+
+  // bullet drawing and clean up
+  bullets.erase(
+      std::remove_if(bullets.begin(), bullets.end(),
+                     [](auto& b) { return !b->InBounds(); }),
+      bullets.end());
+  for (auto& bullet : bullets) {
+    bullet->Update();
+  }
+
 }
 
 void Ship::SpawnBullet() {
