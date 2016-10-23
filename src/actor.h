@@ -11,26 +11,6 @@
 
 class Ship;
 
-class GraphicsComponent {
-  friend Ship;
-
- public:
-  explicit GraphicsComponent(
-      const std::unique_ptr<ResourceManager>& resource_manager);
-  virtual void Update(const std::shared_ptr<Ship>& actor,
-                      const std::unique_ptr<SDL2pp::Renderer>& renderer) = 0;
-  const std::unique_ptr<ResourceManager>& resource_manager;
-};
-
-class ShipGraphicsComponent : public GraphicsComponent {
- public:
-  explicit ShipGraphicsComponent(
-      const std::unique_ptr<ResourceManager>& resource_manager);
-
-  void Update(const std::shared_ptr<Ship>& actor,
-              const std::unique_ptr<SDL2pp::Renderer>& renderer) override;
-};
-
 class Actor {
   friend class Enemy;
 
