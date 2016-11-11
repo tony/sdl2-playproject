@@ -54,6 +54,6 @@ watch_run:
 	if command -v entr > /dev/null; then ${WATCH_FILES} | entr -c $(MAKE) debug run; else $(MAKE) debug run entr_warn; fi
 
 install_osx_deps:
-	brew install ninja sdl2 sdl2_image sdl2_ttf entr
+	brew install cmake ninja sdl2 sdl2_image sdl2_ttf entr
 
 .PHONY: mkdir_build
