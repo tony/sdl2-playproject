@@ -18,7 +18,7 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
   std::stringstream stats_stream;
   auto text_position = SDL2pp::Point{5, 25};
 
-  std::string stat_text = "ship not loaded";
+  std::string stat_text = "stats not loaded";
 
   if (last_message_string.empty() ||
       last_message_string.compare(stat_text) != 0) {
