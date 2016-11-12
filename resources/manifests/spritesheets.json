@@ -1,6 +1,6 @@
 [{
   "name": "bg1",
-  "location": "resources/gfx/side-bg/green-mountain.png"
+  "location": "resources/gfx/worldmap.png"
 },
 {
   "name": "modular_ships",
