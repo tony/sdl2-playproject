@@ -4,9 +4,9 @@
 
 #include <spdlog/spdlog.h>
 #include "actor.h"
-#include "ship.h"
 #include "game_panel.h"
 #include "input.h"
+#include "player.h"
 #include <SDL2pp/SDL2pp.hh>
 #include <vector>
 

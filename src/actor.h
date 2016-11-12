@@ -9,8 +9,6 @@
 #include "resource.h"
 #include "util.h"
 
-class Ship;
-
 class Actor {
   friend class Enemy;
 

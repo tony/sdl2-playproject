@@ -19,9 +19,7 @@ class Actor;
 class GamePanel;
 class LevelStage;
 class ResourceManager;
-class Ship;
 class StatService;
-struct ShipStats;
 
 class Game {
  public:

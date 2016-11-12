@@ -4,6 +4,7 @@
 #include "input.h"
 #include "game.h"
 #include "game_panel.h"
+#include "player.h"
 #include "stage.h"
 #include "util.h"
 #include "json.hpp"
