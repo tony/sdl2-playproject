@@ -6,7 +6,6 @@
 #include <memory>
 #include <vector>
 #include "actor.h"
-#include "bullet.h"
 #include "input.h"
 #include "resource.h"
 
@@ -28,12 +27,9 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        int flip = 0);
 
   void Update() final;
-  void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
   void SetHit(bool h) { hit = h; }
-  void SpawnBullet(void);
   std::shared_ptr<ShipStats> stats;
-  std::vector<std::shared_ptr<Bullet>> bullets;
   const std::shared_ptr<LevelStage>& stage;
   const std::shared_ptr<spdlog::logger>& console;
 };

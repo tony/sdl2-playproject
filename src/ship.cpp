@@ -57,7 +57,6 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
   if (input->down(SDL_SCANCODE_SPACE)) {
     Uint32 now = SDL_GetTicks();
     if (now - last_shot >= shooting_delay) {
-      SpawnBullet();
       last_shot = now;
     }
   }
@@ -95,27 +94,4 @@ void Ship::Update() {
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         GetPosition(), 0, SDL2pp::NullOpt, GetFlip());
   }
-
-  // bullet drawing and clean up
-  bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
-                               [](auto& b) { return !b->InBounds(); }),
-                bullets.end());
-  for (auto& bullet : bullets) {
-    bullet->Update();
-  }
-}
-
-void Ship::SpawnBullet() {
-  if (bullets.size() < SHIP_MAX_BULLETS) {
-    bullets.push_back(std::make_shared<Bullet>(
-        stage, std::static_pointer_cast<Actor>(shared_from_this()), "bullet1"));
-  }
-}
-
-void Ship::OnHitByBullet(std::shared_ptr<Bullet> bullet) {
-  hit = true;
-  last_hit = SDL_GetTicks();
-  stats->health -= bullet->stats->damage;
-  console->info("hit for {}, {}/{}", bullet->stats->damage, stats->health,
-                stats->health_max);
 }

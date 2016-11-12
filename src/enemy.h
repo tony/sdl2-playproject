@@ -7,7 +7,6 @@
 #include <memory>
 #include <vector>
 #include "actor.h"
-#include "bullet.h"
 #include "config.h"
 #include "resource.h"
 #include "ship.h"
