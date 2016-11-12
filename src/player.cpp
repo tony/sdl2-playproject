@@ -4,5 +4,5 @@
 Player::Player(const std::shared_ptr<LevelStage>& stage) : stage(stage) {}
 
 void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
-    std::ignore = input;
+  std::ignore = input;
 }
