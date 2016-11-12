@@ -5,7 +5,6 @@
 #include <spdlog/spdlog.h>
 #include "actor.h"
 #include "ship.h"
-#include "enemy.h"
 #include "game_panel.h"
 #include "input.h"
 #include <SDL2pp/SDL2pp.hh>
@@ -25,7 +24,6 @@ class LevelStage : public Stage,
              const std::shared_ptr<spdlog::logger>& console);
   void HandleInput(const std::shared_ptr<InputManager>& input) final;
   void Update() final;
-  void SpawnEnemy();
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
   const std::shared_ptr<spdlog::logger>& console;
@@ -34,8 +32,6 @@ class LevelStage : public Stage,
 
  private:
   const std::shared_ptr<SDL2pp::Texture>& bg_texture;
-  std::vector<std::shared_ptr<Enemy>> enemies;
-  Uint32 last_enemy = 0;
   int bg_x_scroll = 0;
   Uint32 last_bg_scroll = 0;
 };
