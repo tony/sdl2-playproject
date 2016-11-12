@@ -34,8 +34,6 @@ class Actor {
   SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
 
   SDL2pp::Point GetPosition() const { return position; }
-  bool GetHit() const { return hit; }
-  int GetLastHit() const { return last_hit; }
   const std::string& GetTextureKey() const { return texture_key; }
 
  protected:
@@ -44,10 +42,6 @@ class Actor {
   const std::unique_ptr<SDL2pp::Renderer>& renderer;
   const std::unique_ptr<ResourceManager>& resource_manager;
   const std::string texture_key;
-  bool hit = false;
-  Uint32 last_hit = 0;
-  Uint32 last_shot = 0;
-  const unsigned int shooting_delay = 80;
   SDL2pp::Point position;
   SDL2pp::Point velocity;
   unsigned int scale = 1;
