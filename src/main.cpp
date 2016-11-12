@@ -104,7 +104,6 @@ Game::Game(const std::shared_ptr<spdlog::logger>& console)
   LoadResources(renderer, resource_manager);
   stage = std::make_shared<LevelStage>(renderer, resource_manager, console);
   stage->player = std::make_shared<Player>(stage);
-  stat_service->set_ship_stats(stage->player->ship->stats);
   stage->game_panel = std::make_shared<GamePanel>(stat_service, stage);
 }
 

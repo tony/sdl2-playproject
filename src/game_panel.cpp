@@ -18,23 +18,16 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
   std::stringstream stats_stream;
   auto text_position = SDL2pp::Point{5, 25};
 
-  std::string ship_text;
-  if (stat_service->ship) {
-    stats_stream << "health " << stat_service->ship->health << " / "
-                 << stat_service->ship->health_max;
-    ship_text = stats_stream.str();
-  } else {
-    ship_text = "ship not loaded";
-  }
+  std::string stat_text = "ship not loaded";
 
   if (last_message_string.empty() ||
-      last_message_string.compare(ship_text) != 0) {
+      last_message_string.compare(stat_text) != 0) {
     stage->console->info("game_panel rendering new texture for message: {}",
-                         ship_text);
-    last_message_string = ship_text;
+                         stat_text);
+    last_message_string = stat_text;
     stage->resource_manager->AddTexture(
         "game_panel_text",
-        DrawText(ship_text, text_position,
+        DrawText(stat_text, text_position,
                  stage->resource_manager->GetFont("terminus-18"),
                  stage->renderer, true));
   }
