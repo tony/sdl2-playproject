@@ -10,8 +10,6 @@
 #include "util.h"
 
 class Actor {
-  friend class Enemy;
-
  public:
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
