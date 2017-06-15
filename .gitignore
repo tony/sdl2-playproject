@@ -3,3 +3,4 @@
 build
 *.core
 *.swp
+.vscode/
