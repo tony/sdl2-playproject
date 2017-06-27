@@ -205,7 +205,7 @@ int main() {
   try {
     // console logger (multithreaded and with color)
     const std::shared_ptr<spdlog::logger>& console(
-        spdlog::stdout_logger_mt("console", true));
+        spdlog::stdout_logger_mt("console"));
     console->info("logger ready.");
 
     auto game = std::make_unique<Game>(console);
