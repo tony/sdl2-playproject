@@ -13,7 +13,7 @@ using json = nlohmann::json;
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
   std::ifstream ifs("resources/manifests/fonts.json");
-  json j(ifs);
+  json j = json::parse(ifs);
 
   for (auto& f : j) {
     if (static_cast<bool>(f.count("name")) &&
@@ -26,7 +26,7 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   }
 
   std::ifstream ifs2("resources/manifests/spritesheets.json");
-  json j2(ifs2);
+  json j2 = json::parse(ifs2);
 
   for (auto& f : j2) {
     if (static_cast<bool>(f.count("name")) &&
@@ -52,7 +52,8 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   }
 
   std::ifstream ifs3("resources/manifests/sprites.json");
-  json j3(ifs3);
+  json j3 = json::parse(ifs3);
+
   for (auto& f : j3) {
     auto name = f.find("name").value();
     auto sheet = f.find("sheet").value();
