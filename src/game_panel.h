@@ -20,9 +20,6 @@ class GamePanel {
   const std::shared_ptr<SDL2pp::Texture>& GetStatsTexture();
   const std::shared_ptr<LevelStage>& stage;
 
- private:
-  void DrawStats();
-
   std::string last_message_string;
 };
 #endif  // SRC_GAME_PANEL_H_

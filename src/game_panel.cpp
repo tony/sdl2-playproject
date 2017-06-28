@@ -11,7 +11,16 @@ GamePanel::GamePanel(const std::shared_ptr<StatService>& stat_service,
     : stat_service(stat_service), stage(stage), last_message_string("") {}
 
 void GamePanel::Update() {
-  DrawStats();
+  // draw player stats to game panel
+  stage->renderer->SetViewport(BOTTOM_VIEWPORT_RECT);
+  auto message = GetStatsTexture();
+  if (last_message_string.length() > 0) {
+    SDL2pp::Rect message_rect = {5, 25, message->GetWidth(),
+                                 message->GetHeight()};
+
+    stage->renderer->Copy(*message, message_rect, message_rect);
+  }
+  stage->renderer->SetViewport(MAIN_VIEWPORT_RECT);
 }
 
 const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
@@ -39,16 +48,4 @@ const std::shared_ptr<SDL2pp::Texture>& GamePanel::GetStatsTexture() {
                  stage->renderer, true));
   }
   return stage->resource_manager->GetTexture("game_panel_text");
-}
-
-void GamePanel::DrawStats() {
-  stage->renderer->SetViewport(BOTTOM_VIEWPORT_RECT);
-  auto message = GetStatsTexture();
-  if (last_message_string.length() > 0) {
-    SDL2pp::Rect message_rect = {5, 25, message->GetWidth(),
-                                 message->GetHeight()};
-
-    stage->renderer->Copy(*message, message_rect, message_rect);
-  }
-  stage->renderer->SetViewport(MAIN_VIEWPORT_RECT);
 }
