@@ -29,7 +29,7 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
     state = ActorState::UP;
     position.y =
         clamp(position.y - static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
+              MAIN_VIEWPORT_RECT.h - sprite->GetHeight());
   }
 
   if (input->down(SDL_SCANCODE_DOWN) || input->down(SDL_SCANCODE_S) ||
@@ -37,21 +37,21 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
     state = ActorState::DOWN;
     position.y =
         clamp(position.y + static_cast<int>(MAIN_VIEWPORT_RECT.h * 0.01), 0,
-              MAIN_VIEWPORT_RECT.h - GetSprite()->GetHeight());
+              MAIN_VIEWPORT_RECT.h - sprite->GetHeight());
   }
 
   if (input->down(SDL_SCANCODE_LEFT) || input->down(SDL_SCANCODE_A) ||
       input->down(SDL_SCANCODE_H)) {
     state = ActorState::LEFT;
     position.x = clamp(position.x - static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - GetSprite()->GetWidth());
+                       SCREEN_RECT.w - sprite->GetWidth());
   }
 
   if (input->down(SDL_SCANCODE_RIGHT) || input->down(SDL_SCANCODE_D) ||
       input->down(SDL_SCANCODE_L)) {
     state = ActorState::RIGHT;
     position.x = clamp(position.x + static_cast<int>(SCREEN_RECT.w * 0.01), 0,
-                       SCREEN_RECT.w - GetSprite()->GetWidth());
+                       SCREEN_RECT.w - sprite->GetWidth());
   }
 
   if (input->down(SDL_SCANCODE_SPACE)) {
@@ -71,6 +71,7 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
            int flip)
     : Actor(stage->renderer,
             stage->resource_manager,
+            stage->resource_manager->GetTexture(texture_key),
             texture_key,
             position,
             velocity,

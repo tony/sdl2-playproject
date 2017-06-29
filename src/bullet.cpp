@@ -10,6 +10,7 @@ Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                SDL2pp::Point v)
     : Actor(stage->renderer,
             stage->resource_manager,
+            stage->resource_manager->GetTexture(texture_key),
             texture_key,
             std::move(p),
             std::move(v)),

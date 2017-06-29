@@ -15,11 +15,13 @@ class Actor {
  public:
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
+        const std::shared_ptr<SDL2pp::Texture>& sprite,
         const std::string& texture_key,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
         int flip = 0)
       : position(position),
+        sprite(sprite),
         renderer(renderer),
         resource_manager(resource_manager),
         texture_key(texture_key),
@@ -27,16 +29,13 @@ class Actor {
         flip(flip) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
-  const std::shared_ptr<SDL2pp::Texture>& GetSprite() const {
-    return resource_manager->GetTexture(texture_key);
-  }
+
   SDL2pp::Rect GetSubspriteRect() const {
     return SDL2pp::Rect(position, GetSize());
   }
   SDL2pp::Point GetSize() const {
-    return SDL2pp::Point{
-        static_cast<int>(rint(GetSprite()->GetSize().x) * scale),
-        static_cast<int>(rint(GetSprite()->GetSize().y) * scale)};
+    return SDL2pp::Point{static_cast<int>(rint(sprite->GetSize().x) * scale),
+                         static_cast<int>(rint(sprite->GetSize().y) * scale)};
   }
 
   bool GetHit() const { return hit; }
@@ -44,6 +43,7 @@ class Actor {
   const std::string& GetTextureKey() const { return texture_key; }
   SDL2pp::Point position;
   float scale = 1;
+  const std::shared_ptr<SDL2pp::Texture>& sprite;
 
  protected:
   virtual void Update() {}
