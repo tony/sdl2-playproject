@@ -12,8 +12,6 @@
 class Ship;
 
 class Actor {
-  friend class Enemy;
-
  public:
   Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
         const std::unique_ptr<ResourceManager>& resource_manager,
@@ -21,10 +19,10 @@ class Actor {
         SDL2pp::Point position,
         SDL2pp::Point velocity,
         int flip = 0)
-      : renderer(renderer),
+      : position(position),
+        renderer(renderer),
         resource_manager(resource_manager),
         texture_key(texture_key),
-        position(position),
         velocity(velocity),
         flip(flip) {}
   Actor(const Actor&) = delete;
@@ -33,14 +31,14 @@ class Actor {
     return resource_manager->GetTexture(texture_key);
   }
   SDL2pp::Rect GetSubspriteRect() const {
-    return SDL2pp::Rect(GetPosition(), GetSize());
+    return SDL2pp::Rect(position, GetSize());
   }
   SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
 
-  SDL2pp::Point GetPosition() const { return position; }
   bool GetHit() const { return hit; }
   int GetLastHit() const { return last_hit; }
   const std::string& GetTextureKey() const { return texture_key; }
+  SDL2pp::Point position;
 
  protected:
   virtual void Update() {}
@@ -52,7 +50,6 @@ class Actor {
   Uint32 last_hit = 0;
   Uint32 last_shot = 0;
   const unsigned int shooting_delay = 80;
-  SDL2pp::Point position;
   SDL2pp::Point velocity;
   unsigned int scale = 1;
 

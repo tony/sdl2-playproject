@@ -16,8 +16,8 @@ Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
       stats(std::make_shared<BulletStats>()),
       stage(stage) {
   position = SDL2pp::Point{
-      parent->GetPosition().x + parent->GetSize().x,
-      (parent->GetPosition().y + (parent->GetSize().y / 2)) - GetSize().y};
+      parent->position.x + parent->GetSize().x,
+      (parent->position.y + (parent->GetSize().y / 2)) - GetSize().y};
   scale = 3;
 }
 

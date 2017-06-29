@@ -84,7 +84,7 @@ void Ship::Update() {
     renderer->Copy(
         *resource_manager->GetTexture("ship1_hit"),
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
-        GetPosition(), 0, SDL2pp::NullOpt, GetFlip());
+        position, 0, SDL2pp::NullOpt, GetFlip());
     Uint32 now = SDL_GetTicks();
     if (now - GetLastHit() >= 100) {
       SetHit(false);
@@ -93,7 +93,7 @@ void Ship::Update() {
     renderer->Copy(
         *resource_manager->GetTexture(GetTextureKey()),
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
-        GetPosition(), 0, SDL2pp::NullOpt, GetFlip());
+        position, 0, SDL2pp::NullOpt, GetFlip());
   }
 
   // bullet drawing and clean up
