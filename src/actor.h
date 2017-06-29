@@ -35,10 +35,8 @@ class Actor {
   }
   SDL2pp::Point GetSize() const {
     return SDL2pp::Point{
-        static_cast<int>(
-            rint(static_cast<float>(GetSprite()->GetSize().x) * scale)),
-        static_cast<int>(
-            rint(static_cast<float>(GetSprite()->GetSize().y) * scale))};
+        static_cast<int>(rint(GetSprite()->GetSize().x) * scale),
+        static_cast<int>(rint(GetSprite()->GetSize().y) * scale)};
   }
 
   bool GetHit() const { return hit; }
