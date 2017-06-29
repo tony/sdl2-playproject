@@ -33,12 +33,19 @@ class Actor {
   SDL2pp::Rect GetSubspriteRect() const {
     return SDL2pp::Rect(position, GetSize());
   }
-  SDL2pp::Point GetSize() const { return GetSprite()->GetSize() * scale; }
+  SDL2pp::Point GetSize() const {
+    return SDL2pp::Point{
+        static_cast<int>(
+            rint(static_cast<float>(GetSprite()->GetSize().x) * scale)),
+        static_cast<int>(
+            rint(static_cast<float>(GetSprite()->GetSize().y) * scale))};
+  }
 
   bool GetHit() const { return hit; }
   int GetLastHit() const { return last_hit; }
   const std::string& GetTextureKey() const { return texture_key; }
   SDL2pp::Point position;
+  float scale = 1;
 
  protected:
   virtual void Update() {}
@@ -51,7 +58,6 @@ class Actor {
   Uint32 last_shot = 0;
   const unsigned int shooting_delay = 80;
   SDL2pp::Point velocity;
-  unsigned int scale = 1;
 
   int flip = 0;
 

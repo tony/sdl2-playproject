@@ -18,6 +18,11 @@ Enemy::Enemy(const std::shared_ptr<LevelStage>& stage,
           flip)) {
   stage->console->info("spawned new enemy at {}, {}", ship->position.x,
                        ship->position.y);
+  ship->scale = RandFloat(1, 2);
+
+  stage->console->info("spawned new enemy scale: {}", ship->scale);
+  stage->console->info("spawned new size: {}, {}", ship->GetSize().x,
+                       ship->GetSize().y);
 }
 
 void Enemy::Update() {

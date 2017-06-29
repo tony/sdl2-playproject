@@ -25,6 +25,7 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
     bool underline);
 
 int RandInt(int lo = 0, int hi = RAND_MAX);
+float RandFloat(float lo = 0, float hi = RAND_MAX);
 
 SDL_Color TintToSDL_Color(json::iterator o);
 SDL2pp::Rect TintToSDL_Rect(json::iterator o);
