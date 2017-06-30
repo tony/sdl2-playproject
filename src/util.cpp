@@ -56,7 +56,7 @@ float RandFloat(float lo, float hi) {
 }
 
 SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
-  std::array<uint8_t, 4> a {};
+  std::array<uint8_t, 4> a{};
   int idx = 0;
   for (json::iterator i = o->begin(); i != o->end(); ++i) {
     a.at(idx) = i->get<uint8_t>();
@@ -66,7 +66,7 @@ SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
 }
 
 SDL_Color TintToSDL_Color(json::iterator o) {
-  std::array<uint8_t, 4> a {};
+  std::array<uint8_t, 4> a{};
   int idx = 0;
   for (json::iterator i = o->begin(); i != o->end(); ++i) {
     a.at(idx) = i->get<uint8_t>();
