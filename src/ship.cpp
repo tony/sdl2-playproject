@@ -81,11 +81,10 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
       console(stage->console) {}
 
 void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
-  if (GetHit()) {
-    renderer->Copy(
-        *sprites.at("hit"),
-        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
-        position, 0, SDL2pp::NullOpt, GetFlip());
+  if (hit) {
+    renderer->Copy(*sprites.at("hit"), SDL2pp::Rect{0, 0, GetSubspriteRect().w,
+                                                    GetSubspriteRect().h},
+                   position, 0, SDL2pp::NullOpt, GetFlip());
     Uint32 now = SDL_GetTicks();
     if (now - last_hit >= 100) {
       SetHit(false);

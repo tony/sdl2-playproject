@@ -30,7 +30,6 @@ class Actor {
         static_cast<int>(rint(sprites.at("default")->GetSize().y) * scale)};
   }
 
-  bool GetHit() const { return hit; }
   SDL2pp::Point position;
   float scale = 1;
   std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites;
