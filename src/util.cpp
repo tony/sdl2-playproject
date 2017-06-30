@@ -51,25 +51,25 @@ int RandInt(int lo, int hi) {
 }
 
 float RandFloat(float lo, float hi) {
-  return lo + static_cast<float>(rand()) /
+  return lo + static_cast<float>(arc4random()) /
                   (static_cast<float>(RAND_MAX / (hi - lo)));
 }
 
 SDL2pp::Rect TintToSDL_Rect(json::iterator o) {
-  std::array<uint8_t, 4> a;
+  std::array<uint8_t, 4> a {};
   int idx = 0;
   for (json::iterator i = o->begin(); i != o->end(); ++i) {
-    a[idx] = i->get<uint8_t>();
+    a.at(idx) = i->get<uint8_t>();
     idx++;
   }
   return SDL2pp::Rect{a[0], a[1], a[2], a[3]};
 }
 
 SDL_Color TintToSDL_Color(json::iterator o) {
-  std::array<uint8_t, 4> a;
+  std::array<uint8_t, 4> a {};
   int idx = 0;
   for (json::iterator i = o->begin(); i != o->end(); ++i) {
-    a[idx] = i->get<uint8_t>();
+    a.at(idx) = i->get<uint8_t>();
     idx++;
   }
   return SDL_Color{a[0], a[1], a[2], a[3]};
