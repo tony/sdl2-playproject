@@ -11,7 +11,8 @@ Enemy::Enemy(const std::shared_ptr<LevelStage>& stage,
              int flip)
     : ship(std::make_shared<Ship>(
           stage,
-          "ship1_tinted",
+          std::map<std::string, std::string>{{"default", "ship1_tinted"},
+                                             {"hit", "ship1_hit"}},
           position ? position.value() : GenerateSpawnPosition(),
           velocity,
           std::make_shared<ShipStats>(ShipStats{2, 2, 1}),

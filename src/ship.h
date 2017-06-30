@@ -21,7 +21,7 @@ typedef struct ShipStats {
 class Ship : public Actor, public std::enable_shared_from_this<Ship> {
  public:
   Ship(const std::shared_ptr<LevelStage>& stage,
-       const std::string& texture_key,
+       const std::map<std::string, std::string> string_map,
        SDL2pp::Point position,
        SDL2pp::Point velocity = {0, 0},
        const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
@@ -42,7 +42,7 @@ class PlayerShip : public Ship {
  public:
   PlayerShip(
       const std::shared_ptr<LevelStage>& stage,
-      const std::string& texture_key,
+      const std::map<std::string, std::string> string_map,
       SDL2pp::Point position,
       SDL2pp::Point velocity = {0, 0},
       const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),

@@ -5,11 +5,10 @@
 
 Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                const std::shared_ptr<Actor>& parent,
-               std::string texture_key,
+               const std::map<std::string, std::string> string_map,
                SDL2pp::Point p,
                SDL2pp::Point v)
-    : Actor(string2texture_map({{"default", "bullet1"}}, stage->resource_manager),
-            texture_key,
+    : Actor(string2texture_map(string_map, stage->resource_manager),
             std::move(p),
             std::move(v)),
       stats(std::make_shared<BulletStats>()),

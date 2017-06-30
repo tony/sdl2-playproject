@@ -6,18 +6,20 @@
 #include "util.h"
 
 PlayerShip::PlayerShip(const std::shared_ptr<LevelStage>& stage,
-                       const std::string& texture_key,
+                       const std::map<std::string, std::string> string_map,
                        SDL2pp::Point position,
                        SDL2pp::Point velocity,
                        const std::shared_ptr<ShipStats>& stats,
                        int flip)
-    : Ship(stage, texture_key, position, velocity, stats, flip) {}
+    : Ship(stage, string_map, position, velocity, stats, flip) {}
 
 Player::Player(const std::shared_ptr<LevelStage>& stage)
-    : ship(std::make_shared<PlayerShip>(stage,
-                                        "ship1",
-                                        SDL2pp::Point{30, 30},
-                                        SDL2pp::Point{0, 0})) {}
+    : ship(std::make_shared<PlayerShip>(
+          stage,
+          std::map<std::string, std::string>{{"default", "ship1"},
+                                             {"hit", "ship1_hit"}},
+          SDL2pp::Point{30, 30},
+          SDL2pp::Point{0, 0})) {}
 
 void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
   ship->HandleInput(input);
@@ -65,14 +67,12 @@ void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
 }
 
 Ship::Ship(const std::shared_ptr<LevelStage>& stage,
-           const std::string& texture_key,
+           const std::map<std::string, std::string> string_map,
            SDL2pp::Point position,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(string2texture_map({{"default", texture_key}, {"hit", "ship1_hit"}},
-                               stage->resource_manager),
-            texture_key,
+    : Actor(string2texture_map(string_map, stage->resource_manager),
             position,
             velocity,
             flip),
@@ -82,10 +82,9 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
 
 void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   if (GetHit()) {
-    renderer->Copy(
-        *sprites.at("hit"),
-        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
-        position, 0, SDL2pp::NullOpt, GetFlip());
+    renderer->Copy(*sprites.at("hit"), SDL2pp::Rect{0, 0, GetSubspriteRect().w,
+                                                    GetSubspriteRect().h},
+                   position, 0, SDL2pp::NullOpt, GetFlip());
     Uint32 now = SDL_GetTicks();
     if (now - GetLastHit() >= 100) {
       SetHit(false);
@@ -109,7 +108,8 @@ void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
 void Ship::SpawnBullet() {
   if (bullets.size() < SHIP_MAX_BULLETS) {
     bullets.push_back(std::make_shared<Bullet>(
-        stage, std::static_pointer_cast<Actor>(shared_from_this()), "bullet1"));
+        stage, std::static_pointer_cast<Actor>(shared_from_this()),
+        std::map<std::string, std::string>{{"default", "bullet1"}}));
   }
 }
 

@@ -51,8 +51,9 @@ int RandInt(int lo, int hi) {
 }
 
 float RandFloat(float lo, float hi) {
-  return lo + static_cast<float>(rand()) /
-                  (static_cast<float>(RAND_MAX / (hi - lo)));
+  return lo +
+         static_cast<float>(rand()) /
+             (static_cast<float>(RAND_MAX / (hi - lo)));
 }
 
 SDL2pp::Rect TintToSDL_Rect(json::iterator o) {

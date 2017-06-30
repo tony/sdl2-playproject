@@ -14,15 +14,10 @@ class Ship;
 class Actor {
  public:
   Actor(std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites,
-        const std::string& texture_key,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
         int flip = 0)
-      : position(position),
-        sprites(sprites),
-        texture_key(texture_key),
-        velocity(velocity),
-        flip(flip) {}
+      : position(position), sprites(sprites), velocity(velocity), flip(flip) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
 
@@ -37,7 +32,6 @@ class Actor {
 
   bool GetHit() const { return hit; }
   int GetLastHit() const { return last_hit; }
-  const std::string& GetTextureKey() const { return texture_key; }
   SDL2pp::Point position;
   float scale = 1;
   std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites;
@@ -47,7 +41,6 @@ class Actor {
     std::ignore = renderer;
   }
 
-  const std::string texture_key;
   bool hit = false;
   Uint32 last_hit = 0;
   Uint32 last_shot = 0;

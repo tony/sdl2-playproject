@@ -22,7 +22,7 @@ class Bullet : public Actor {
  public:
   Bullet(const std::shared_ptr<LevelStage>& stage,
          const std::shared_ptr<Actor>& parent,
-         std::string texture_key = "bullet1",
+         const std::map<std::string, std::string> string_map,
          SDL2pp::Point position = {0, 0},
          SDL2pp::Point velocity = {9, 0});
   bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
