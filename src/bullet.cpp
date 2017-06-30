@@ -13,10 +13,10 @@ Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
             std::move(v)),
       stats(std::make_shared<BulletStats>()),
       stage(stage) {
+  scale = 3;
   position = SDL2pp::Point{
       parent->position.x + parent->GetSize().x,
       (parent->position.y + (parent->GetSize().y / 2)) - GetSize().y};
-  scale = 3;
 }
 
 void Bullet::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
@@ -29,9 +29,7 @@ void Bullet::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   }
   tilt += 15;
   if (InBounds()) {
-    renderer->Copy(
-        *sprites.at("default"), SDL2pp::NullOpt,
-        SDL2pp::Rect(position, (sprites.at("default")->GetSize() * scale)),
-        tilt);
+    renderer->Copy(*sprites.at("default"), SDL2pp::NullOpt,
+                   SDL2pp::Rect(position, GetSize()), tilt);
   }
 }
