@@ -36,7 +36,7 @@ cpplint:
 	cpplint.py --filter=-build/include src/*
 
 cppcheck:
-	cppcheck --quiet --enable=all --inconclusive --std=c11 src/*
+	cppcheck --quiet --enable=all --inconclusive --std=c11 --language=c++ src/*
 
 run:
 	./build/game
