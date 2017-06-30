@@ -13,13 +13,13 @@ class Ship;
 
 class Actor {
  public:
-  Actor(const std::shared_ptr<SDL2pp::Texture>& sprite,
+  Actor(std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites,
         const std::string& texture_key,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
         int flip = 0)
       : position(position),
-        sprite(sprite),
+        sprites(sprites),
         texture_key(texture_key),
         velocity(velocity),
         flip(flip) {}
@@ -30,8 +30,9 @@ class Actor {
     return SDL2pp::Rect(position, GetSize());
   }
   SDL2pp::Point GetSize() const {
-    return SDL2pp::Point{static_cast<int>(rint(sprite->GetSize().x) * scale),
-                         static_cast<int>(rint(sprite->GetSize().y) * scale)};
+    return SDL2pp::Point{
+        static_cast<int>(rint(sprites.at("default")->GetSize().x) * scale),
+        static_cast<int>(rint(sprites.at("default")->GetSize().y) * scale)};
   }
 
   bool GetHit() const { return hit; }
@@ -39,7 +40,7 @@ class Actor {
   const std::string& GetTextureKey() const { return texture_key; }
   SDL2pp::Point position;
   float scale = 1;
-  const std::shared_ptr<SDL2pp::Texture>& sprite;
+  std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites;
 
  protected:
   virtual void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {

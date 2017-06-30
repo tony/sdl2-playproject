@@ -8,7 +8,7 @@ Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                std::string texture_key,
                SDL2pp::Point p,
                SDL2pp::Point v)
-    : Actor(std::move(stage->resource_manager->GetTexture(texture_key)),
+    : Actor({{"default", stage->resource_manager->GetTexture("bullet1")}},
             texture_key,
             std::move(p),
             std::move(v)),
@@ -31,11 +31,8 @@ void Bullet::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   tilt += 15;
   if (InBounds()) {
     renderer->Copy(
-        *stage->resource_manager->GetTexture("bullet1"), SDL2pp::NullOpt,
-        SDL2pp::Rect(
-            position,
-            (stage->resource_manager->GetTexture("bullet1")->GetSize() *
-             scale)),
+        *sprites.at("default"), SDL2pp::NullOpt,
+        SDL2pp::Rect(position, (sprites.at("default")->GetSize() * scale)),
         tilt);
   }
 }

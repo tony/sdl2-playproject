@@ -24,6 +24,7 @@ void Player::HandleInput(const std::shared_ptr<InputManager>& input) {
 }
 
 void PlayerShip::HandleInput(const std::shared_ptr<InputManager>& input) {
+  auto sprite = sprites.at("default");
   if (input->down(SDL_SCANCODE_UP) || input->down(SDL_SCANCODE_W) ||
       input->down(SDL_SCANCODE_K)) {
     state = ActorState::UP;
@@ -69,7 +70,8 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(std::move(stage->resource_manager->GetTexture(texture_key)),
+    : Actor({{"default", stage->resource_manager->GetTexture(texture_key)},
+             {"hit", stage->resource_manager->GetTexture("ship1_hit")}},
             texture_key,
             position,
             velocity,
@@ -81,7 +83,7 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
 void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   if (GetHit()) {
     renderer->Copy(
-        *stage->resource_manager->GetTexture("ship1_hit"),
+        *sprites.at("hit"),
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, GetFlip());
     Uint32 now = SDL_GetTicks();
@@ -90,7 +92,8 @@ void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
     }
   } else {
     renderer->Copy(
-        *sprite, SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
+        *sprites.at("default"),
+        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, GetFlip());
   }
 
