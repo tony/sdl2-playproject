@@ -8,7 +8,7 @@ Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                std::string texture_key,
                SDL2pp::Point p,
                SDL2pp::Point v)
-    : Actor({{"default", stage->resource_manager->GetTexture("bullet1")}},
+    : Actor(string2texture_map({{"default", "bullet1"}}, stage->resource_manager),
             texture_key,
             std::move(p),
             std::move(v)),
