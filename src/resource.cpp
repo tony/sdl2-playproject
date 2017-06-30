@@ -61,7 +61,7 @@ void ResourceManager::AddFont(std::string key,
 }
 
 std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&>
-string2texture_map(const std::map<std::string, std::string> string_map,
+string2texture_map(const std::map<std::string, std::string>& string_map,
                    const std::unique_ptr<ResourceManager>& resource_manager) {
   std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> texture_map;
   for (const std::pair<std::string, std::string>& i : string_map) {

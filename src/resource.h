@@ -50,6 +50,6 @@ class ResourceManager {
 };
 
 std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&>
-string2texture_map(const std::map<std::string, std::string> string_map,
+string2texture_map(const std::map<std::string, std::string>& string_map,
                    const std::unique_ptr<ResourceManager>& resource_manager);
 #endif  // SRC_RESOURCE_H_

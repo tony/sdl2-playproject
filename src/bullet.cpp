@@ -5,7 +5,7 @@
 
 Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                const std::shared_ptr<Actor>& parent,
-               const std::map<std::string, std::string> string_map,
+               const std::map<std::string, std::string>& string_map,
                SDL2pp::Point p,
                SDL2pp::Point v)
     : Actor(string2texture_map(string_map, stage->resource_manager),
