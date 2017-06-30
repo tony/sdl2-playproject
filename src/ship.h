@@ -27,7 +27,7 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
        int flip = 0);
 
-  void Update() final;
+  void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
   void SetHit(bool h) { hit = h; }

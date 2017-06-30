@@ -26,7 +26,7 @@ class Bullet : public Actor {
          SDL2pp::Point position = {0, 0},
          SDL2pp::Point velocity = {9, 0});
   bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
-  void Update() final;
+  void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) final;
   std::shared_ptr<BulletStats> stats;
   const std::shared_ptr<LevelStage>& stage;
 

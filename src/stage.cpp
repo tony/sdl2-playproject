@@ -35,7 +35,7 @@ void LevelStage::Update() {
                  SDL2pp::NullOpt);
 
   game_panel->Update();
-  player->ship->Update();
+  player->ship->Update(renderer);
 
   // spawn enemies at interval since last spawn
   if (now - last_enemy >= 600) {
@@ -46,7 +46,7 @@ void LevelStage::Update() {
   // enemy update loop
   for (auto enemy = enemies.begin(); enemy != enemies.end();) {
     bool enemy_destroyed = false;
-    (*enemy)->Update();
+    (*enemy)->Update(renderer);
     for (auto bullet = player->ship->bullets.begin();
          bullet != player->ship->bullets.end();) {
       if ((*enemy)->ship->GetSubspriteRect().Intersects(

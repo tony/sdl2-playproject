@@ -69,9 +69,7 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
            SDL2pp::Point velocity,
            const std::shared_ptr<ShipStats>& stats,
            int flip)
-    : Actor(stage->renderer,
-            stage->resource_manager,
-            stage->resource_manager->GetTexture(texture_key),
+    : Actor(std::move(stage->resource_manager->GetTexture(texture_key)),
             texture_key,
             position,
             velocity,
@@ -80,10 +78,10 @@ Ship::Ship(const std::shared_ptr<LevelStage>& stage,
       stage(stage),
       console(stage->console) {}
 
-void Ship::Update() {
+void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   if (GetHit()) {
     renderer->Copy(
-        *resource_manager->GetTexture("ship1_hit"),
+        *stage->resource_manager->GetTexture("ship1_hit"),
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, GetFlip());
     Uint32 now = SDL_GetTicks();
@@ -92,7 +90,7 @@ void Ship::Update() {
     }
   } else {
     renderer->Copy(
-        *resource_manager->GetTexture(GetTextureKey()),
+        *sprite,
         SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, GetFlip());
   }
@@ -102,7 +100,7 @@ void Ship::Update() {
                                [](auto& b) { return !b->InBounds(); }),
                 bullets.end());
   for (auto& bullet : bullets) {
-    bullet->Update();
+    bullet->Update(renderer);
   }
 }
 

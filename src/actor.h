@@ -13,17 +13,13 @@ class Ship;
 
 class Actor {
  public:
-  Actor(const std::unique_ptr<SDL2pp::Renderer>& renderer,
-        const std::unique_ptr<ResourceManager>& resource_manager,
-        const std::shared_ptr<SDL2pp::Texture>& sprite,
+  Actor(const std::shared_ptr<SDL2pp::Texture>& sprite,
         const std::string& texture_key,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
         int flip = 0)
       : position(position),
         sprite(sprite),
-        renderer(renderer),
-        resource_manager(resource_manager),
         texture_key(texture_key),
         velocity(velocity),
         flip(flip) {}
@@ -46,10 +42,8 @@ class Actor {
   const std::shared_ptr<SDL2pp::Texture>& sprite;
 
  protected:
-  virtual void Update() {}
+  virtual void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) { std::ignore = renderer; }
 
-  const std::unique_ptr<SDL2pp::Renderer>& renderer;
-  const std::unique_ptr<ResourceManager>& resource_manager;
   const std::string texture_key;
   bool hit = false;
   Uint32 last_hit = 0;

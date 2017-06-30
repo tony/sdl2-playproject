@@ -22,7 +22,7 @@ Enemy::Enemy(const std::shared_ptr<LevelStage>& stage,
                        ship->GetSize().y);
 }
 
-void Enemy::Update() {
+void Enemy::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
   ship->position.x--;
-  ship->Update();
+  ship->Update(renderer);
 }

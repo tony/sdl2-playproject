@@ -27,7 +27,7 @@ class Enemy {
         SDL2pp::Point velocity = {-1, 0},
         int flip = 0);
   std::shared_ptr<Ship> ship;
-  void Update();
+  void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer);
 
  private:
   static SDL2pp::Point GenerateSpawnPosition() {
