@@ -42,7 +42,9 @@ class Actor {
   const std::shared_ptr<SDL2pp::Texture>& sprite;
 
  protected:
-  virtual void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) { std::ignore = renderer; }
+  virtual void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
+    std::ignore = renderer;
+  }
 
   const std::string texture_key;
   bool hit = false;

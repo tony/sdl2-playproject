@@ -90,8 +90,7 @@ void Ship::Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) {
     }
   } else {
     renderer->Copy(
-        *sprite,
-        SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
+        *sprite, SDL2pp::Rect{0, 0, GetSubspriteRect().w, GetSubspriteRect().h},
         position, 0, SDL2pp::NullOpt, GetFlip());
   }
 
