@@ -25,7 +25,8 @@ class Ship : public Actor, public std::enable_shared_from_this<Ship> {
        SDL2pp::Point position,
        SDL2pp::Point velocity = {0, 0},
        const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
-       int flip = 0);
+       int flip = 0,
+       float scale = 1);
 
   void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);

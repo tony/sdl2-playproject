@@ -16,8 +16,8 @@ Enemy::Enemy(const std::shared_ptr<LevelStage>& stage,
           position ? position.value() : GenerateSpawnPosition(),
           velocity,
           std::make_shared<ShipStats>(ShipStats{2, 2, 1}),
-          flip)) {
-  ship->scale = RandFloat(1, 2);
+          flip,
+          RandFloat(1, 2))) {
   stage->console->info("spawned new enemy @({},{}) size ({}x{})",
                        ship->position.x, ship->position.y, ship->GetSize().x,
                        ship->GetSize().y);

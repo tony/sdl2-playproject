@@ -16,8 +16,13 @@ class Actor {
   Actor(std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites,
         SDL2pp::Point position,
         SDL2pp::Point velocity,
-        int flip = 0)
-      : position(position), sprites(sprites), velocity(velocity), flip(flip) {}
+        int flip = 0,
+        float scale = 1)
+      : position(position),
+        sprites(sprites),
+        velocity(velocity),
+        flip(flip),
+        scale(scale) {}
   Actor(const Actor&) = delete;
   Actor& operator=(const Actor&) = delete;
 
@@ -31,7 +36,7 @@ class Actor {
   }
 
   SDL2pp::Point position;
-  float scale = 1;
+
   std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites;
 
  protected:
@@ -39,13 +44,14 @@ class Actor {
     std::ignore = renderer;
   }
 
+  SDL2pp::Point velocity;
+  int flip;
+  float scale;
+
   bool hit = false;
   Uint32 last_hit = 0;
   Uint32 last_shot = 0;
   const unsigned int shooting_delay = 80;
-  SDL2pp::Point velocity;
-
-  int flip = 0;
 
   enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
   ActorState state = ActorState::DEFAULT;

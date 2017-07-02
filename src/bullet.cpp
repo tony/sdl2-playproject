@@ -5,15 +5,14 @@
 
 Bullet::Bullet(const std::shared_ptr<LevelStage>& stage,
                const std::shared_ptr<Actor>& parent,
-               const std::map<std::string, std::string>& string_map,
-               SDL2pp::Point p,
-               SDL2pp::Point v)
+               const std::map<std::string, std::string>& string_map)
     : Actor(string2texture_map(string_map, stage->resource_manager),
-            std::move(p),
-            std::move(v)),
+            {0, 0},
+            {9, 0},
+            0,
+            3),
       stats(std::make_shared<BulletStats>()),
       stage(stage) {
-  scale = 3;
   position = SDL2pp::Point{
       parent->position.x + parent->GetSize().x,
       (parent->position.y + (parent->GetSize().y / 2)) - GetSize().y};
