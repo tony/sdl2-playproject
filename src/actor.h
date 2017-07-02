@@ -9,8 +9,6 @@
 #include "resource.h"
 #include "util.h"
 
-class Ship;
-
 class Actor {
  public:
   Actor(std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> sprites,
