@@ -56,4 +56,7 @@ watch_run:
 install_osx_deps:
 	brew install cmake ninja sdl2 sdl2_image sdl2_ttf entr
 
+install_ubuntu_deps:
+	sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+
 .PHONY: mkdir_build
