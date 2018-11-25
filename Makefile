@@ -11,7 +11,7 @@ entr_warn:
 all: build
 
 mkdir_build:
-	test ! -d ./build && mkdir -p build
+	-test ! -d ./build && mkdir -p build
 
 build: mkdir_build
 	cd build; cmake ..
