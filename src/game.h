@@ -5,6 +5,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+
 #include <SDL2pp/Optional.hh>
 #include <SDL2pp/Rect.hh>
 #include <SDL2pp/SDL2pp.hh>
@@ -13,6 +14,7 @@
 #include <SDL2pp/Window.hh>
 #include <memory>
 #include <vector>
+
 #include "spdlog/spdlog.h"
 
 class Actor;

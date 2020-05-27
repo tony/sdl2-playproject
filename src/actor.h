@@ -5,6 +5,7 @@
 #include <SDL2pp/Optional.hh>
 #include <SDL2pp/SDL2pp.hh>
 #include <array>
+
 #include "config.h"
 #include "resource.h"
 #include "util.h"

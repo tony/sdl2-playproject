@@ -5,6 +5,7 @@
 #include <SDL2pp/Font.hh>
 #include <SDL2pp/SDL.hh>
 #include <memory>
+
 #include "resource.h"
 #include "spdlog/spdlog.h"
 #include "stats.h"

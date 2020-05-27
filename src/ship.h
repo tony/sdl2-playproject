@@ -3,8 +3,10 @@
 #define SRC_SHIP_H_
 
 #include <spdlog/spdlog.h>
+
 #include <memory>
 #include <vector>
+
 #include "actor.h"
 #include "bullet.h"
 #include "input.h"

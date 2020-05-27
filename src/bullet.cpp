@@ -1,5 +1,6 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include "bullet.h"
+
 #include "config.h"
 #include "stage.h"
 

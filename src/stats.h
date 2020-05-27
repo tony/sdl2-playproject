@@ -3,6 +3,7 @@
 #define SRC_STATS_H_
 
 #include <memory>
+
 #include "ship.h"
 
 class StatService {

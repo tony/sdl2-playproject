@@ -3,9 +3,11 @@
 #define SRC_ENEMY_H_
 
 #include <spdlog/spdlog.h>
+
 #include <array>
 #include <memory>
 #include <vector>
+
 #include "actor.h"
 #include "bullet.h"
 #include "config.h"

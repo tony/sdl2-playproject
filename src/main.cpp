@@ -1,5 +1,6 @@
 /* Copyright 2016 Tony Narlock. All rights reserved. */
 #include <fstream>
+
 #include "config.h"
 #include "game.h"
 #include "game_panel.h"
