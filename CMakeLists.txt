@@ -76,7 +76,7 @@ include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INC
 
 add_executable(game ${game_SOURCES})
 if (CMAKE_SYSTEM_NAME MATCHES "Windows")
-	target_link_libraries(game PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_image SDL2::SDL2_ttf {SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+	target_link_libraries(game PRIVATE SDL2::SDL2 SDL2::SDL2main SDL2::SDL2_image SDL2::SDL2_ttf ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 else()
 	target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 endif()
