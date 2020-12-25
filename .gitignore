@@ -5,3 +5,4 @@ cmake-build-debug/
 *.core
 *.swp
 .vscode/
+.vs/
