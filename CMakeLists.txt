@@ -54,7 +54,7 @@ file (COPY ${MY_PROJECT_MANIFESTS_RESOURCES} DESTINATION resources/manifests)
 
 include_directories("./src")
 include_directories("./vendor/spdlog/include")
-include_directories("./vendor/json/src")
+include_directories("./vendor/json/single_include/nlohmann")
 
 file (GLOB game_SOURCES src/*.cpp)
 
