@@ -33,7 +33,7 @@ format:
 	clang-format -style=Chromium src/* -i || clang-format38 -style=Chromium src/* -i
 
 cpplint:
-	cpplint.py --filter=-build/include src/*
+	cpplint --filter=-build/include src/*
 
 cppcheck:
 	cppcheck --quiet --enable=all --inconclusive --std=c11 --language=c++ src/*
