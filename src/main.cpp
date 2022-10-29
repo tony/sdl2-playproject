@@ -9,6 +9,8 @@
 #include "stage.h"
 #include "util.h"
 
+#include "spdlog/sinks/stdout_color_sinks.h"
+
 using json = nlohmann::json;
 
 void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
@@ -206,7 +208,7 @@ int main() {
   try {
     // console logger (multithreaded and with color)
     const std::shared_ptr<spdlog::logger>& console(
-        spdlog::stdout_logger_mt("console"));
+        spdlog::stdout_color_mt("console"));
     console->info("logger ready.");
 
     auto game = std::make_unique<Game>(console);
