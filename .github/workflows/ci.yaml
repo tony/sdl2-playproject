@@ -14,8 +14,9 @@ jobs:
     name: ${{ matrix.cxx }} ${{ matrix.features }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
+
+      - name: Checkout submodules
+        run: git submodule update --init --recursive
 
       - name: Install dependencies
         env:
