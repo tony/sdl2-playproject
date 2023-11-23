@@ -32,6 +32,9 @@ debug_ninja: mkdir_build
 format:
 	clang-format -style=Chromium src/* -i || clang-format38 -style=Chromium src/* -i
 
+tidy:
+	clang-tidy -format-style=google -header-filter=. -p build src/*.cpp -fix
+
 cpplint:
 	cpplint --filter=-build/include src/*
 
