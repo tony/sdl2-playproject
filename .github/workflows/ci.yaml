@@ -7,7 +7,6 @@ jobs:
       matrix:
         include:
           - { cxx: g++, features: "coverage" }
-          - { cxx: clang++, features: "nooptlibs" }
           - { cxx: clang++, features: "static" }
     name: ${{ matrix.cxx }} ${{ matrix.features }}
     steps:
@@ -20,10 +19,9 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates
-          if [ ${{ !contains(matrix.features, 'nooptlibs') }} = true ]; then
-            sudo apt-get install -qq --no-install-recommends libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
-          fi
+          sudo apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates \
+            libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+
           if [ ${{ contains(matrix.features, 'coverage') }} = true ]; then
             sudo apt-get install -qq --no-install-recommends python3-pip git
             pip install --user pyyaml cpp-coveralls
@@ -37,7 +35,6 @@ jobs:
           ./e 'CMAKE_ARGS=-DSDL2PP_ENABLE_LIVE_TESTS=NO'  # no ability to run live tests in CI (SDL_InitSubsystem failed: x11 not available with xvfb)
           ./e --if ${{ matrix.cxx == 'clang++' }} 'CXXFLAGS+=-Wno-self-assign-overloaded'  # explicit self-assignment tests
           ./e --if ${{ contains(matrix.features, 'coverage') }} 'CXXFLAGS+=--coverage' 'LDFLAGS+=--coverage'
-          ./e --if ${{ contains(matrix.features, 'nooptlibs') }} 'CMAKE_ARGS+=-DSDL2PP_WITH_IMAGE=NO -DSDL2PP_WITH_MIXER=NO -DSDL2PP_WITH_TTF=NO'
           ./e --if ${{ contains(matrix.features, 'static') }} 'CMAKE_ARGS+=-DSDL2PP_STATIC=YES'
 
       - name: Configure
