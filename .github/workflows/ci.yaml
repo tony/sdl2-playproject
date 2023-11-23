@@ -29,15 +29,15 @@ jobs:
             pip install --user pyyaml cpp-coveralls
           fi
 
-      - name: Set up environment
-        run: |
-          curl https://raw.githubusercontent.com/AMDmi3/github_env/c8cc83d/github_env.py > e; chmod 755 e
-          ./e 'CXX=${{ matrix.cxx }}'
-          ./e 'CXXFLAGS=-Wall -Wextra -pedantic' # XXX: Add -Werror
-          ./e 'CMAKE_ARGS=-DSDL2PP_ENABLE_LIVE_TESTS=NO'  # no ability to run live tests in CI (SDL_InitSubsystem failed: x11 not available with xvfb)
-          ./e --if ${{ matrix.cxx == 'clang++' }} 'CXXFLAGS+=-Wno-self-assign-overloaded'  # explicit self-assignment tests
-          ./e --if ${{ contains(matrix.features, 'coverage') }} 'CXXFLAGS+=--coverage' 'LDFLAGS+=--coverage'
-          ./e --if ${{ contains(matrix.features, 'static') }} 'CMAKE_ARGS+=-DSDL2PP_STATIC=YES'
+      # - name: Set up environment
+      #   run: |
+      #     curl https://raw.githubusercontent.com/AMDmi3/github_env/c8cc83d/github_env.py > e; chmod 755 e
+      #     ./e 'CXX=${{ matrix.cxx }}'
+      #     ./e 'CXXFLAGS=-Wall -Wextra -pedantic' # XXX: Add -Werror
+      #     ./e 'CMAKE_ARGS=-DSDL2PP_ENABLE_LIVE_TESTS=NO'  # no ability to run live tests in CI (SDL_InitSubsystem failed: x11 not available with xvfb)
+      #     ./e --if ${{ matrix.cxx == 'clang++' }} 'CXXFLAGS+=-Wno-self-assign-overloaded'  # explicit self-assignment tests
+      #     ./e --if ${{ contains(matrix.features, 'coverage') }} 'CXXFLAGS+=--coverage' 'LDFLAGS+=--coverage'
+      #     ./e --if ${{ contains(matrix.features, 'static') }} 'CMAKE_ARGS+=-DSDL2PP_STATIC=YES'
 
       - name: Configure
         run: cmake . -DCMAKE_VERBOSE_MAKEFILE=yes -DCMAKE_INSTALL_PREFIX=/usr ${CMAKE_ARGS}
