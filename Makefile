@@ -22,11 +22,11 @@ build_ninja: mkdir_build
 	ninja -C build
 
 debug: mkdir_build
-	cd build; cmake -DCMAKE_BUILD_TYPE=Debug ..
+	cd build; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 	make -C build
 
 debug_ninja: mkdir_build
-	cd build; cmake -GNinja -DCMAKE_BUILD_TYPE=Debug ..
+	cd build; cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 	ninja -C build
 
 format:
