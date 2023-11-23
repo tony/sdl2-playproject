@@ -19,13 +19,13 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          apt-get update -qq
-          apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates
+          sudo apt-get update -qq
+          sudo apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates
           if [ ${{ !contains(matrix.features, 'nooptlibs') }} = true ]; then
-            apt-get install -qq --no-install-recommends libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+            sudo apt-get install -qq --no-install-recommends libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
           fi
           if [ ${{ contains(matrix.features, 'coverage') }} = true ]; then
-            apt-get install -qq --no-install-recommends python3-pip git
+            sudo apt-get install -qq --no-install-recommends python3-pip git
             pip install --user pyyaml cpp-coveralls
           fi
 
