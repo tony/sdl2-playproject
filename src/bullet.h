@@ -2,8 +2,8 @@
 #ifndef SRC_BULLET_H_
 #define SRC_BULLET_H_
 
+#include <SDL2pp/SDL.hh>
 #include <SDL2pp/Rect.hh>
-#include <SDL2pp/SDL2pp.hh>
 #include <memory>
 
 #include "actor.h"
