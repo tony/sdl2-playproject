@@ -19,8 +19,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates \
-            libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
+          sudo apt-get install -yqq --no-install-recommends build-essential clang cmake libsdl2-dev cppcheck doxygen graphviz curl ca-certificates libsdl2-image-dev libsdl2-ttf-dev libsdl2-mixer-dev
 
           if [ ${{ contains(matrix.features, 'coverage') }} = true ]; then
             sudo apt-get install -qq --no-install-recommends python3-pip git
