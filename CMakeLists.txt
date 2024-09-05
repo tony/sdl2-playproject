@@ -45,7 +45,7 @@ SET(SDL2PP_WITH_TTF ON)
 ADD_SUBDIRECTORY(vendor/libSDL2pp)
 
 find_package(SDL2 REQUIRED)
-find_package(SDL2_Image REQUIRED)
+find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(Threads)
 
