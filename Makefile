@@ -17,6 +17,14 @@ build: mkdir_build
 	cd build; cmake ..
 	make -C build
 
+# Alternative build target that uses direct library paths for SDL2
+build_direct: mkdir_build
+	cd build; cmake \
+		-DSDL2_LIBRARY_DIRECT=ON \
+		-DSDL2_MAIN_PATH="/usr/lib/x86_64-linux-gnu/libSDL2main.a" \
+		-DSDL2_LIB_PATH="/usr/lib/x86_64-linux-gnu/libSDL2.so" ..
+	make -C build
+
 build_ninja: mkdir_build
 	cd build; cmake -GNinja ..
 	ninja -C build

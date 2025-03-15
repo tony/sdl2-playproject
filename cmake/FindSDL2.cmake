@@ -1,4 +1,3 @@
-
 # This module defines
 # SDL2_LIBRARY, the name of the library to link against
 # SDL2_FOUND, if false, do not try to link to SDL2
@@ -159,6 +158,64 @@ IF(SDL2_LIBRARY_TEMP)
 	SET(SDL2_LIBRARY ${SDL2_LIBRARY_TEMP} CACHE STRING "Where the SDL2 Library can be found")
 	# Set the temp variable to INTERNAL so it is not seen in the CMake GUI
 	SET(SDL2_LIBRARY_TEMP "${SDL2_LIBRARY_TEMP}" CACHE INTERNAL "")
+
+	# Note that the header path has been resolved to the real path, but the
+	# libraries are specified just by name.  Unfortunately, the path is
+	# architecture dependent.  This has to be run during the build, and it
+	# puts the result in the build directory as SOILLibraries.txt
+	if(SDL2_LIBRARY)
+		# Split SDL2_LIBRARY if it contains multiple libraries
+		# Create SDL2::SDL2 target for sharing - use only the SDL2 part, not SDL2main
+		if(NOT TARGET SDL2::SDL2)
+			# Find the SDL2 library part from SDL2_LIBRARY
+			string(FIND "${SDL2_LIBRARY}" "libSDL2.so" SDL2_LIB_POS)
+			if(SDL2_LIB_POS GREATER -1)
+				# Extract the SDL2 library path
+				string(SUBSTRING "${SDL2_LIBRARY}" ${SDL2_LIB_POS} -1 SDL2_LIB_PART)
+				string(FIND "${SDL2_LIB_PART}" " " SDL2_LIB_END)
+				if(SDL2_LIB_END GREATER -1)
+					string(SUBSTRING "${SDL2_LIB_PART}" 0 ${SDL2_LIB_END} SDL2_LIB_PATH)
+				else()
+					set(SDL2_LIB_PATH "${SDL2_LIB_PART}")
+				endif()
+				
+				# Find the absolute path to the library
+				string(FIND "${SDL2_LIBRARY}" "/usr" PREFIX_POS)
+				if(PREFIX_POS GREATER -1)
+					string(SUBSTRING "${SDL2_LIBRARY}" ${PREFIX_POS} -1 SDL2_LIB_PATH)
+					string(FIND "${SDL2_LIB_PATH}" " " SDL2_LIB_END)
+					if(SDL2_LIB_END GREATER -1)
+						string(SUBSTRING "${SDL2_LIB_PATH}" 0 ${SDL2_LIB_END} SDL2_LIB_PATH)
+					endif()
+				else()
+					# Fallback to using the full path but with spaces instead of semicolons
+					string(REPLACE ";" " " SDL2_LIB_PATH "${SDL2_LIBRARY}")
+				endif()
+			else()
+				# Fallback to using the full path but with spaces instead of semicolons
+				string(REPLACE ";" " " SDL2_LIB_PATH "${SDL2_LIBRARY}")
+			endif()
+			
+			add_library(SDL2::SDL2 UNKNOWN IMPORTED)
+			set_target_properties(SDL2::SDL2 PROPERTIES
+				INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIR}"
+				IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libSDL2.so"
+			)
+		endif()
+		
+		# Create SDL2::SDL2main target if SDL2MAIN_LIBRARY exists
+		if(NOT TARGET SDL2::SDL2main AND SDL2MAIN_LIBRARY)
+			add_library(SDL2::SDL2main UNKNOWN IMPORTED)
+			set_target_properties(SDL2::SDL2main PROPERTIES
+				IMPORTED_LOCATION "/usr/lib/x86_64-linux-gnu/libSDL2main.a"
+			)
+		else()
+			# Create empty SDL2::SDL2main target to satisfy dependencies
+			if(NOT TARGET SDL2::SDL2main)
+				add_library(SDL2::SDL2main INTERFACE IMPORTED)
+			endif()
+		endif()
+	endif()
 ENDIF(SDL2_LIBRARY_TEMP)
 
 message("</FindSDL2.cmake>")
@@ -166,4 +223,31 @@ message("</FindSDL2.cmake>")
 INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2 REQUIRED_VARS SDL2_LIBRARY SDL2_INCLUDE_DIR)
+
+if(SDL2_FOUND)
+	# For backward compatibility
+	set(SDLMAIN_LIBRARY ${SDL2MAIN_LIBRARY})
+	set(SDL_LIBRARY ${SDL2_LIBRARY})
+	
+	# Create SDL2::SDL2 and SDL2::SDL2main IMPORTED targets
+	if(NOT TARGET SDL2::SDL2)
+		add_library(SDL2::SDL2 UNKNOWN IMPORTED)
+		set_target_properties(SDL2::SDL2 PROPERTIES
+			INTERFACE_INCLUDE_DIRECTORIES "${SDL2_INCLUDE_DIR}"
+			IMPORTED_LOCATION "${SDL2_LIBRARY_TEMP}"
+		)
+	endif()
+	
+	if(NOT TARGET SDL2::SDL2main AND SDL2MAIN_LIBRARY)
+		if(SDL2MAIN_LIBRARY AND NOT SDL2_BUILDING_LIBRARY)
+			add_library(SDL2::SDL2main UNKNOWN IMPORTED)
+			set_target_properties(SDL2::SDL2main PROPERTIES
+				IMPORTED_LOCATION "${SDL2MAIN_LIBRARY}"
+			)
+		else()
+			# Create empty SDL2::SDL2main target to satisfy dependencies
+			add_library(SDL2::SDL2main INTERFACE IMPORTED)
+		endif()
+	endif()
+endif()
 

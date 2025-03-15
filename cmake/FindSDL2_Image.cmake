@@ -87,8 +87,17 @@ set(SDL2_IMAGE_INCLUDE_DIRS ${SDL2_IMAGE_INCLUDE_DIR})
 include(FindPackageHandleStandardArgs)
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(SDL2_image
-                                  REQUIRED_VARS SDL2_IMAGE_LIBRARIES SDL2_IMAGE_INCLUDE_DIRS
+                                  REQUIRED_VARS SDL2_IMAGE_LIBRARIES SDL2_IMAGE_INCLUDE_DIR
                                   VERSION_VAR SDL2_IMAGE_VERSION_STRING)
+
+# Create SDL2_image::SDL2_image target
+if(SDL2_IMAGE_FOUND AND NOT TARGET SDL2_image::SDL2_image)
+  add_library(SDL2_image::SDL2_image UNKNOWN IMPORTED)
+  set_target_properties(SDL2_image::SDL2_image PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${SDL2_IMAGE_INCLUDE_DIR}"
+    IMPORTED_LOCATION "${SDL2_IMAGE_LIBRARIES}"
+  )
+endif()
 
 # for backward compatiblity
 #set(SDLIMAGE_LIBRARY ${SDL_IMAGE_LIBRARIES})
