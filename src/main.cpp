@@ -25,8 +25,8 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer> &renderer,
         static_cast<bool>(f.count("location")) &&
         static_cast<bool>(f.count("size")))
     {
-      resource_manager->AddFont(f.find("name").value(),
-                                f.find("location").value(),
+      resource_manager->AddFont(std::string(f.find("name").value()),
+                                std::string(f.find("location").value()),
                                 f.find("size").value());
     }
   }
@@ -43,25 +43,28 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer> &renderer,
           static_cast<bool>(f.count("tint")))
       {
         resource_manager->AddSurfaceWithTransparencyAndTint(
-            f.find("name").value(), f.find("location").value(),
-            TintToSDL_Color(f.find("alpha")), TintToSDL_Color(f.find("tint")));
+            std::string(f.find("name").value()),
+            std::string(f.find("location").value()),
+            TintToSDL_Color(f.find("alpha")),
+            TintToSDL_Color(f.find("tint")));
       }
       else if (static_cast<bool>(f.count("alpha")))
       {
         resource_manager->AddSurfaceWithTransparency(
-            f.find("name").value(), f.find("location").value(),
+            std::string(f.find("name").value()),
+            std::string(f.find("location").value()),
             TintToSDL_Color(f.find("alpha")));
       }
       else
       {
-        resource_manager->AddSurface(f.find("name").value(),
-                                     f.find("location").value());
+        resource_manager->AddSurface(std::string(f.find("name").value()),
+                                     std::string(f.find("location").value()));
       }
     }
     resource_manager->AddTextureSheet(
-        f.find("name").value(),
+        std::string(f.find("name").value()),
         SDL2pp::Texture(*renderer,
-                        *resource_manager->GetSurface(f.find("name").value())));
+                        *resource_manager->GetSurface(std::string(f.find("name").value()))));
   }
 
   std::ifstream ifs3("resources/manifests/sprites.json");
@@ -73,7 +76,7 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer> &renderer,
     auto sheet = f.find("sheet").value();
     auto coords = TintToSDL_Rect(f.find("coords"));
 
-    if (!resource_manager->HasTexture(name))
+    if (!resource_manager->HasTexture(std::string(name)))
     {
       auto target1 = std::make_shared<SDL2pp::Texture>(
           *renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
@@ -87,13 +90,13 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer> &renderer,
       if (static_cast<bool>(f.count("shadow_sheet")))
       {
         renderer->Copy(
-            *resource_manager->GetTextureSheet(f.find("shadow_sheet").value()),
+            *resource_manager->GetTextureSheet(std::string(f.find("shadow_sheet").value())),
             coords + SDL2pp::Point{1, 1}, SDL2pp::NullOpt);
       }
-      renderer->Copy(*resource_manager->GetTextureSheet(sheet), coords,
+      renderer->Copy(*resource_manager->GetTextureSheet(std::string(sheet)), coords,
                      SDL2pp::NullOpt);
 
-      resource_manager->AddTexture(name, target1);
+      resource_manager->AddTexture(std::string(name), target1);
       renderer->SetTarget();
     }
   }

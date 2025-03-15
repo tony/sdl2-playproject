@@ -10,47 +10,48 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 
 class ResourceManager
 {
 public:
   ResourceManager();
-  void AddSurface(std::string key, std::string file_path);
-  void AddSurfaceWithTransparency(std::string key,
-                                  std::string file_path,
+  void AddSurface(std::string_view key, std::string_view file_path);
+  void AddSurfaceWithTransparency(std::string_view key,
+                                  std::string_view file_path,
                                   SDL_Color alpha);
-  void AddSurfaceWithTransparencyAndTint(std::string key,
-                                         std::string file_path,
+  void AddSurfaceWithTransparencyAndTint(std::string_view key,
+                                         std::string_view file_path,
                                          SDL_Color alpha,
                                          SDL_Color tint);
-  const std::shared_ptr<SDL2pp::Surface> &GetSurface(std::string key) const
+  [[nodiscard]] const std::shared_ptr<SDL2pp::Surface> &GetSurface(std::string_view key) const
   {
-    return surfaces_.at(key);
+    return surfaces_.at(std::string(key));
   }
-  void AddTexture(std::string key, SDL2pp::Texture texture);
-  void AddTexture(std::string key, std::shared_ptr<SDL2pp::Texture> texture);
-  const std::shared_ptr<SDL2pp::Texture> &GetTexture(std::string key) const
+  void AddTexture(std::string_view key, SDL2pp::Texture texture);
+  void AddTexture(std::string_view key, std::shared_ptr<SDL2pp::Texture> texture);
+  [[nodiscard]] const std::shared_ptr<SDL2pp::Texture> &GetTexture(std::string_view key) const
   {
-    return textures_.at(key);
+    return textures_.at(std::string(key));
   }
-  bool HasTexture(std::string key) const { return textures_.count(key) > 0; }
-  void AddTextureSheet(std::string key, SDL2pp::Texture texture);
-  void AddTextureSheet(std::string key,
+  [[nodiscard]] bool HasTexture(std::string_view key) const { return textures_.count(std::string(key)) > 0; }
+  void AddTextureSheet(std::string_view key, SDL2pp::Texture texture);
+  void AddTextureSheet(std::string_view key,
                        std::shared_ptr<SDL2pp::Texture> texture);
-  const std::shared_ptr<SDL2pp::Texture> &GetTextureSheet(
-      std::string key) const
+  [[nodiscard]] const std::shared_ptr<SDL2pp::Texture> &GetTextureSheet(
+      std::string_view key) const
   {
-    return texture_sheets_.at(key);
+    return texture_sheets_.at(std::string(key));
   }
 
-  void AddFont(std::string key, std::string file_path, int font_size);
-  const std::shared_ptr<SDL2pp::Font> &GetFont(std::string key) const
+  void AddFont(std::string_view key, std::string_view file_path, int font_size);
+  [[nodiscard]] const std::shared_ptr<SDL2pp::Font> &GetFont(std::string_view key) const
   {
-    return fonts_.at(key);
+    return fonts_.at(std::string(key));
   }
 
   // Get texture map from string map
-  std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &>
+  [[nodiscard]] std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &>
   GetTexMap(const std::map<std::string, std::string> &string_map) const
   {
     std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &> result;
@@ -63,14 +64,14 @@ public:
   }
 
   // New method using std::expected for error handling
-  std::expected<std::shared_ptr<SDL2pp::Texture>, std::string>
-  TryLoadTexture(const std::string &name, const std::string &path, SDL2pp::Renderer &renderer)
+  [[nodiscard]] std::expected<std::shared_ptr<SDL2pp::Texture>, std::string>
+  TryLoadTexture(std::string_view name, std::string_view path, SDL2pp::Renderer &renderer)
   {
     try
     {
       auto texture = std::make_shared<SDL2pp::Texture>(
-          renderer, path);
-      textures_[name] = texture;
+          renderer, std::string(path));
+      textures_[std::string(name)] = texture;
       return texture;
     }
     catch (const std::exception &e)
@@ -86,7 +87,7 @@ private:
   std::map<std::string, std::shared_ptr<SDL2pp::Surface>> surfaces_;
 };
 
-std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &>
+[[nodiscard]] std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &>
 string2texture_map(const std::map<std::string, std::string> &string_map,
                    const std::unique_ptr<ResourceManager> &resource_manager);
 #endif // SRC_RESOURCE_H_

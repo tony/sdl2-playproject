@@ -29,7 +29,10 @@ Player::Player(const std::shared_ptr<LevelStage> &stage)
           std::map<std::string, std::string>{{"default", "ship1"},
                                              {"hit", "ship1_hit"}},
           SDL2pp::Point{30, 30},
-          SDL2pp::Point{0, 0})) {}
+          SDL2pp::Point{0, 0}))
+{
+  // C++23 would allow: std::println("Player created at position ({}, {})", 30, 30);
+}
 
 void Player::HandleInput(const std::shared_ptr<InputManager> &input)
 {

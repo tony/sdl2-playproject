@@ -2,8 +2,8 @@
 #ifndef SRC_ACTOR_H_
 #define SRC_ACTOR_H_
 
-// C++23 MODULE CONVERSION NOTE:
-// This header could be converted to a C++23 module interface:
+// We'll keep the header guard for backward compatibility
+// The C++23 module declaration would look like this:
 // export module game.actor;
 // export import <SDL2pp/Optional.hh>;
 // export import <SDL2pp/SDL2pp.hh>;
@@ -11,8 +11,6 @@
 // export import "config.h";
 // export import "resource.h";
 // export import "util.h";
-//
-// export class Actor { ... };
 
 #include <SDL2pp/Optional.hh>
 #include <SDL2pp/SDL2pp.hh>
@@ -37,12 +35,14 @@ public:
         scale(scale) {}
   Actor(const Actor &) = delete;
   Actor &operator=(const Actor &) = delete;
+  virtual ~Actor() = default;
 
-  SDL2pp::Rect GetSubspriteRect() const
+  [[nodiscard]] SDL2pp::Rect GetSubspriteRect() const
   {
     return SDL2pp::Rect(position, GetSize());
   }
-  SDL2pp::Point GetSize() const
+
+  [[nodiscard]] SDL2pp::Point GetSize() const
   {
     return SDL2pp::Point{
         static_cast<int>(rint(sprites.at("default")->GetSize().x) * scale),
@@ -54,22 +54,16 @@ public:
   std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &> sprites;
 
   // C++20 (supported in C++23) spaceship operator for comparing actors
-  auto operator<=>(const Actor &other) const
-  {
-    // Compare based on position
-    if (auto cmp = position.x <=> other.position.x; cmp != 0)
-    {
-      return cmp;
-    }
-    return position.y <=> other.position.y;
-  }
-
-  bool operator==(const Actor &other) const = default;
+  auto operator<=>(const Actor &other) const = default;
 
 protected:
   virtual void Update(const std::unique_ptr<SDL2pp::Renderer> &renderer)
   {
     std::ignore = renderer;
+
+    // Example of C++23 feature:
+    // if this was a C++23 module, we could use std::print for debug output
+    // std::print("Actor at position ({}, {})\n", position.x, position.y);
   }
 
   SDL2pp::Point velocity;

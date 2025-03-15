@@ -15,12 +15,13 @@
 
 class LevelStage;
 
-typedef struct ShipStats
+// Modern C++23 style struct definition - no need for typedef
+struct ShipStats
 {
   int health = 100;
   int health_max = 100;
   int level = 1;
-} ShipStats;
+};
 
 class Ship : public Actor, public std::enable_shared_from_this<Ship>
 {
@@ -35,7 +36,7 @@ public:
 
   void Update(const std::unique_ptr<SDL2pp::Renderer> &renderer) final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
-  int GetFlip() const { return flip; }
+  [[nodiscard]] int GetFlip() const { return flip; }
   void SetHit(bool h) { hit = h; }
   void SpawnBullet(void);
   std::shared_ptr<ShipStats> stats;
@@ -44,12 +45,12 @@ public:
   const std::shared_ptr<spdlog::logger> &console;
 
   // Return a span view of bullets (non-owning)
-  std::span<const std::shared_ptr<Bullet>> GetBullets() const
+  [[nodiscard]] std::span<const std::shared_ptr<Bullet>> GetBullets() const
   {
     return std::span<const std::shared_ptr<Bullet>>(bullets);
   }
 
-  std::span<std::shared_ptr<Bullet>> GetBullets()
+  [[nodiscard]] std::span<std::shared_ptr<Bullet>> GetBullets()
   {
     return std::span<std::shared_ptr<Bullet>>(bullets);
   }
@@ -71,7 +72,7 @@ public:
 class Player
 {
 public:
-  Player(const std::shared_ptr<LevelStage> &stage);
+  explicit Player(const std::shared_ptr<LevelStage> &stage);
 
   void HandleInput(const std::shared_ptr<InputManager> &input);
   std::shared_ptr<PlayerShip> ship;
