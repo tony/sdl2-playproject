@@ -5,6 +5,7 @@
 #include <spdlog/spdlog.h>
 
 #include <memory>
+#include <span>
 #include <vector>
 
 #include "actor.h"
@@ -14,50 +15,65 @@
 
 class LevelStage;
 
-typedef struct ShipStats {
+typedef struct ShipStats
+{
   int health = 100;
   int health_max = 100;
   int level = 1;
 } ShipStats;
 
-class Ship : public Actor, public std::enable_shared_from_this<Ship> {
- public:
-  Ship(const std::shared_ptr<LevelStage>& stage,
-       const std::map<std::string, std::string>& string_map,
+class Ship : public Actor, public std::enable_shared_from_this<Ship>
+{
+public:
+  Ship(const std::shared_ptr<LevelStage> &stage,
+       const std::map<std::string, std::string> &string_map,
        SDL2pp::Point position,
        SDL2pp::Point velocity = {0, 0},
-       const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
+       const std::shared_ptr<ShipStats> &stats = std::make_shared<ShipStats>(),
        int flip = 0,
        float scale = 1);
 
-  void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) final;
+  void Update(const std::unique_ptr<SDL2pp::Renderer> &renderer) final;
   void OnHitByBullet(std::shared_ptr<Bullet> bullet);
   int GetFlip() const { return flip; }
   void SetHit(bool h) { hit = h; }
   void SpawnBullet(void);
   std::shared_ptr<ShipStats> stats;
   std::vector<std::shared_ptr<Bullet>> bullets;
-  const std::shared_ptr<LevelStage>& stage;
-  const std::shared_ptr<spdlog::logger>& console;
+  const std::shared_ptr<LevelStage> &stage;
+  const std::shared_ptr<spdlog::logger> &console;
+
+  // Return a span view of bullets (non-owning)
+  std::span<const std::shared_ptr<Bullet>> GetBullets() const
+  {
+    return std::span<const std::shared_ptr<Bullet>>(bullets);
+  }
+
+  std::span<std::shared_ptr<Bullet>> GetBullets()
+  {
+    return std::span<std::shared_ptr<Bullet>>(bullets);
+  }
 };
 
-class PlayerShip : public Ship {
- public:
+class PlayerShip : public Ship
+{
+public:
   PlayerShip(
-      const std::shared_ptr<LevelStage>& stage,
-      const std::map<std::string, std::string>& string_map,
+      const std::shared_ptr<LevelStage> &stage,
+      const std::map<std::string, std::string> &string_map,
       SDL2pp::Point position,
       SDL2pp::Point velocity = {0, 0},
-      const std::shared_ptr<ShipStats>& stats = std::make_shared<ShipStats>(),
+      const std::shared_ptr<ShipStats> &stats = std::make_shared<ShipStats>(),
       int flip = 0);
-  void HandleInput(const std::shared_ptr<InputManager>& input);
+  void HandleInput(const std::shared_ptr<InputManager> &input);
 };
 
-class Player {
- public:
-  Player(const std::shared_ptr<LevelStage>& stage);
+class Player
+{
+public:
+  Player(const std::shared_ptr<LevelStage> &stage);
 
-  void HandleInput(const std::shared_ptr<InputManager>& input);
+  void HandleInput(const std::shared_ptr<InputManager> &input);
   std::shared_ptr<PlayerShip> ship;
 };
-#endif  // SRC_SHIP_H_
+#endif // SRC_SHIP_H_

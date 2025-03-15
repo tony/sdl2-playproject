@@ -5,13 +5,15 @@
 #include <SDL2pp/SDL.hh>
 #include <SDL2pp/Rect.hh>
 #include <memory>
+#include <optional>
 
 #include "actor.h"
 #include "resource.h"
 
 class LevelStage;
 
-typedef struct BulletStats {
+typedef struct BulletStats
+{
   int speed = 1;
   int size = 1;
   int rate = 1;
@@ -19,18 +21,25 @@ typedef struct BulletStats {
   bool knockback = false;
 } BulletStats;
 
-class Bullet : public Actor {
- public:
-  Bullet(const std::shared_ptr<LevelStage>& stage,
-         const std::shared_ptr<Actor>& parent,
-         const std::map<std::string, std::string>& string_map);
+class Bullet : public Actor
+{
+public:
+  Bullet(const std::shared_ptr<LevelStage> &stage,
+         const std::shared_ptr<Actor> &parent,
+         const std::map<std::string, std::string> &string_map);
   bool InBounds() const { return MAIN_VIEWPORT_RECT.Contains(position); }
-  void Update(const std::unique_ptr<SDL2pp::Renderer>& renderer) final;
+  void Update(const std::unique_ptr<SDL2pp::Renderer> &renderer) final;
   std::shared_ptr<BulletStats> stats;
-  const std::shared_ptr<LevelStage>& stage;
+  const std::shared_ptr<LevelStage> &stage;
 
- private:
+  // Return optional hit position if in bounds, empty optional otherwise
+  std::optional<SDL2pp::Point> GetHitPosition() const
+  {
+    return InBounds() ? std::optional<SDL2pp::Point>(position) : std::nullopt;
+  }
+
+private:
   double tilt = 0;
   Uint32 last_scale = 0;
 };
-#endif  // SRC_BULLET_H_
+#endif // SRC_BULLET_H_
