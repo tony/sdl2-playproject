@@ -13,6 +13,7 @@
 #include <SDL2pp/Texture.hh>
 #include <SDL2pp/Window.hh>
 #include <memory>
+#include <thread>
 #include <vector>
 
 #include "spdlog/spdlog.h"
@@ -26,12 +27,14 @@ class Ship;
 class StatService;
 struct ShipStats;
 
-class Game {
- public:
-  explicit Game(const std::shared_ptr<spdlog::logger>& console);
+class Game
+{
+public:
+  explicit Game(const std::shared_ptr<spdlog::logger> &console);
   void MainLoop();
+  ~Game();
 
- private:
+private:
   SDL2pp::SDL sdl;
   SDL2pp::SDLTTF sdl_ttf;
   SDL2pp::SDLImage image;
@@ -40,9 +43,13 @@ class Game {
   std::unique_ptr<ResourceManager> resource_manager;
   std::shared_ptr<StatService> stat_service;
   std::shared_ptr<InputManager> input;
-  const std::shared_ptr<spdlog::logger>& console;
+  const std::shared_ptr<spdlog::logger> &console;
   std::shared_ptr<LevelStage> stage;
   bool quit = false;
-  void HandleEvent(const SDL_Event* e, bool* quit);
+  void HandleEvent(const SDL_Event *e, bool *quit);
+
+  // Background task using C++20/23 jthread (joins automatically on destruction)
+  void StartBackgroundLoading();
+  std::jthread background_loader;
 };
-#endif  // SRC_GAME_H_
+#endif // SRC_GAME_H_

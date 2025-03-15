@@ -7,66 +7,76 @@
 
 ResourceManager::ResourceManager() {}
 
-void ResourceManager::AddSurface(std::string key, std::string file_path) {
-  surfaces_[key] =
-      std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
+void ResourceManager::AddSurface(std::string_view key, std::string_view file_path)
+{
+  surfaces_[std::string(key)] =
+      std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(std::string(file_path)));
 }
 
-void ResourceManager::AddSurfaceWithTransparency(std::string key,
-                                                 std::string file_path,
-                                                 SDL_Color alpha) {
-  auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
+void ResourceManager::AddSurfaceWithTransparency(std::string_view key,
+                                                 std::string_view file_path,
+                                                 SDL_Color alpha)
+{
+  auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(std::string(file_path)));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
   surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha.r,
                                         alpha.g, alpha.b));
-  surfaces_[key] = surface;
+  surfaces_[std::string(key)] = surface;
 }
 
-void ResourceManager::AddSurfaceWithTransparencyAndTint(std::string key,
-                                                        std::string file_path,
+void ResourceManager::AddSurfaceWithTransparencyAndTint(std::string_view key,
+                                                        std::string_view file_path,
                                                         SDL_Color alpha,
-                                                        SDL_Color tint) {
-  auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(file_path));
+                                                        SDL_Color tint)
+{
+  auto surface = std::make_shared<SDL2pp::Surface>(SDL2pp::Surface(std::string(file_path)));
   surface->SetBlendMode(SDL_BLENDMODE_NONE);
   surface->SetColorKey(true, SDL_MapRGB(&surface->Lock().GetFormat(), alpha.r,
                                         alpha.g, alpha.b));
   surface->SetColorMod(tint.r, tint.g, tint.b);
   surface->SetAlphaMod(205);
-  surfaces_[key] = surface;
+  surfaces_[std::string(key)] = surface;
 }
 
-void ResourceManager::AddTexture(std::string key, SDL2pp::Texture texture) {
-  textures_[key] = std::make_shared<SDL2pp::Texture>(std::move(texture));
+void ResourceManager::AddTexture(std::string_view key, SDL2pp::Texture texture)
+{
+  textures_[std::string(key)] = std::make_shared<SDL2pp::Texture>(std::move(texture));
 }
 
-void ResourceManager::AddTexture(std::string key,
-                                 std::shared_ptr<SDL2pp::Texture> texture) {
-  textures_[key] = std::move(texture);
+void ResourceManager::AddTexture(std::string_view key,
+                                 std::shared_ptr<SDL2pp::Texture> texture)
+{
+  textures_[std::string(key)] = texture;
 }
 
-void ResourceManager::AddTextureSheet(std::string key,
-                                      SDL2pp::Texture texture) {
-  texture_sheets_[key] = std::make_shared<SDL2pp::Texture>(std::move(texture));
+void ResourceManager::AddTextureSheet(std::string_view key,
+                                      SDL2pp::Texture texture)
+{
+  texture_sheets_[std::string(key)] = std::make_shared<SDL2pp::Texture>(std::move(texture));
 }
 
 void ResourceManager::AddTextureSheet(
-    std::string key,
-    std::shared_ptr<SDL2pp::Texture> texture) {
-  texture_sheets_[key] = std::move(texture);
+    std::string_view key,
+    std::shared_ptr<SDL2pp::Texture> texture)
+{
+  texture_sheets_[std::string(key)] = texture;
 }
 
-void ResourceManager::AddFont(std::string key,
-                              std::string file_path,
-                              int font_size) {
-  fonts_[key] = std::make_shared<SDL2pp::Font>(file_path, font_size);
+void ResourceManager::AddFont(std::string_view key,
+                              std::string_view file_path,
+                              int font_size)
+{
+  fonts_[std::string(key)] = std::make_shared<SDL2pp::Font>(std::string(file_path), font_size);
 }
 
-std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&>
-string2texture_map(const std::map<std::string, std::string>& string_map,
-                   const std::unique_ptr<ResourceManager>& resource_manager) {
-  std::map<std::string, const std::shared_ptr<SDL2pp::Texture>&> texture_map;
-  for (const auto& [key, value] : string_map) {
-    texture_map.insert({key, resource_manager->GetTexture(value)});
+std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &>
+string2texture_map(const std::map<std::string, std::string> &string_map,
+                   const std::unique_ptr<ResourceManager> &resource_manager)
+{
+  std::map<std::string, const std::shared_ptr<SDL2pp::Texture> &> result;
+  for (const auto &[key, texture_name] : string_map)
+  {
+    result.emplace(key, resource_manager->GetTexture(texture_name));
   }
-  return texture_map;
+  return result;
 }
