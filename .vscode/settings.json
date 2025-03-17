@@ -1,3 +1,119 @@
 {
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/vendor"
+    ],
+    "C_Cpp.default.defines": [],
+    "C_Cpp.default.compilerPath": "/usr/bin/clang++",
+    "C_Cpp.default.cStandard": "c23",
+    "C_Cpp.default.cppStandard": "c++23",
+    "C_Cpp.default.intelliSenseMode": "linux-clang-x64",
+    "C_Cpp.default.browse.path": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/vendor"
+    ],
+    "C_Cpp.default.warnings": [
+        "all",
+        "extra",
+        "pedantic"
+    ],
+    "C_Cpp.default.errorSquiggles": "enabled",
+    "C_Cpp.default.warningSquiggles": "enabled",
+    "C_Cpp.default.fuzzySearch": "enabled",
+    "C_Cpp.default.autoComplete": "default",
+    "C_Cpp.default.suggestSnippets": true,
+    "C_Cpp.default.parameterHints.enabled": true,
+    "C_Cpp.default.inlayHints.parameterNames.enabled": true,
+    "C_Cpp.default.inlayHints.parameterTypes.enabled": true,
+    "C_Cpp.default.inlayHints.deducedTypes.enabled": true,
+    "C_Cpp.default.inlayHints.functionLikeReturnTypes.enabled": true,
+    "files.associations": {
+        "*.h": "cpp",
+        "*.hpp": "cpp",
+        "*.cc": "cpp",
+        "*.cpp": "cpp"
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true,
+        "source.fixAll.clangd": true
+    },
+    "clangd.enabled": true,
+    "clangd.arguments": [
+        "--background-index",
+        "--clang-tidy",
+        "--completion-parse",
+        "--fallback-style=Google",
+        "--header-insertion=iwyu",
+        "--suggest-missing-includes",
+        "--header-insertion-decorators",
+        "--format-style=Google"
+    ],
+    "cmake.configureOnOpen": true,
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.generator": "Ninja",
+    "cmake.preferredGenerators": [
+        "Ninja",
+        "Unix Makefiles"
+    ],
+    "cmake.debugConfig": {
+        "stopAtEntry": true,
+        "cwd": "${workspaceFolder}",
+        "environment": [
+            {
+                "name": "PATH",
+                "value": "${env:PATH}:${workspaceFolder}/build/bin"
+            },
+            {
+                "name": "DISPLAY",
+                "value": "${env:DISPLAY}"
+            }
+        ]
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/build": true,
+        "**/.vscode": false
+    },
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/build": true
+    },
+    "files.watcherExclude": {
+        "**/.git/objects/**": true,
+        "**/.git/subtree-cache/**": true,
+        "**/node_modules/**": true,
+        "**/.hg/store/**": true,
+        "**/build/**": true
+    },
+    "C_Cpp.formatting": {
+        "style": "Google",
+        "indentSize": 4,
+        "tabSize": 4,
+        "useTabs": false
+    },
+    "C_Cpp.clang_format_style": "Google",
+    "C_Cpp.clang_format_fallbackStyle": "Google",
+    "C_Cpp.clang_format_path": "/usr/bin/clang-format",
+    "C_Cpp.clang_tidy.enabled": true,
+    "C_Cpp.clang_tidy.checks": [
+        "*",
+        "-fuchsia-*",
+        "-google-*",
+        "-zircon-*",
+        "-abseil-*",
+        "-modernize-use-trailing-return-type",
+        "-llvm-*"
+    ]
 }

@@ -1,0 +1,112 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && cmake .. && make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "build_ninja",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && cmake -GNinja .. && ninja",
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "cd ${workspaceFolder}/build && make clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "format",
+            "type": "shell",
+            "command": "clang-format -i ${workspaceFolder}/src/*",
+            "problemMatcher": []
+        },
+        {
+            "label": "tidy",
+            "type": "shell",
+            "command": "clang-tidy -p ${workspaceFolder}/build ${workspaceFolder}/src/*.cpp -fix",
+            "problemMatcher": []
+        },
+        {
+            "label": "cppcheck",
+            "type": "shell",
+            "command": "cppcheck --enable=all --inconclusive --std=c++23 ${workspaceFolder}/src/*",
+            "problemMatcher": []
+        },
+        {
+            "label": "run",
+            "type": "shell",
+            "command": "${workspaceFolder}/build/game",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "dependsOn": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "watch_build",
+            "type": "shell",
+            "command": "entr -c 'cd ${workspaceFolder}/build && make'",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "watch_run",
+            "type": "shell",
+            "command": "entr -c 'cd ${workspaceFolder}/build && make && ${workspaceFolder}/build/game'",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "watch_debug",
+            "type": "shell",
+            "command": "entr -c 'cd ${workspaceFolder}/build && make && ${workspaceFolder}/build/game'",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        }
+    ]
+} 
