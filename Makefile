@@ -85,6 +85,17 @@ install_ubuntu_deps:
 		libsdl2-ttf-dev \
 		entr
 
+install_conan:
+	@echo "Installing Conan package manager..."
+	@if ! command -v conan > /dev/null; then \
+		pip3 install --upgrade pip; \
+		pip3 install conan==2.2.0; \
+		conan profile detect; \
+		echo "Conan installed successfully. Run 'conan --version' to verify."; \
+	else \
+		echo "Conan is already installed. Run 'conan --version' to check version."; \
+	fi
+
 install_dev_deps:
 	sudo apt-get update
 	sudo apt-get install -y \
@@ -94,7 +105,7 @@ install_dev_deps:
 		cppcheck \
 		iwyu \
 		python3-pip
-	pip3 install conan
+	$(MAKE) install_conan
 	@echo "Installing vcpkg..."
 	@if [ ! -d "vcpkg" ]; then \
 		git clone https://github.com/Microsoft/vcpkg.git; \
