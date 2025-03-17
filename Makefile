@@ -75,6 +75,34 @@ install_osx_deps:
 	brew install cmake ninja sdl2 sdl2_image sdl2_ttf entr
 
 install_ubuntu_deps:
-	sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+	sudo apt-get update
+	sudo apt-get install -y \
+		build-essential \
+		cmake \
+		ninja-build \
+		libsdl2-dev \
+		libsdl2-image-dev \
+		libsdl2-ttf-dev \
+		entr
+
+install_dev_deps:
+	sudo apt-get update
+	sudo apt-get install -y \
+		clang \
+		clang-tools \
+		clang-format \
+		cppcheck \
+		iwyu \
+		python3-pip
+	pip3 install conan
+	@echo "Installing vcpkg..."
+	@if [ ! -d "vcpkg" ]; then \
+		git clone https://github.com/Microsoft/vcpkg.git; \
+		cd vcpkg && ./bootstrap-vcpkg.sh && cd ..; \
+	fi
+	@echo "Note: sonar-scanner must be installed manually from https://docs.sonarqube.org/latest/analyzing-source-code/scanners/sonarscanner/"
+	@echo "Development dependencies installed. You may need to add vcpkg to your PATH."
+
+install_all: install_ubuntu_deps install_dev_deps
 
 .PHONY: mkdir_build clean
