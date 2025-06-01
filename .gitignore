@@ -5,3 +5,7 @@ cmake-build-debug/
 *.core
 *.swp
 .vscode/
+
+# Claude code
+**/CLAUDE.local.md
+**/.claude/settings.local.json
