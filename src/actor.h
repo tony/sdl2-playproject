@@ -50,7 +50,7 @@ class Actor {
   bool hit = false;
   Uint32 last_hit = 0;
   Uint32 last_shot = 0;
-  const unsigned int shooting_delay = 80;
+  static constexpr unsigned int shooting_delay = 80;
 
   enum class ActorState { DEFAULT, UP, DOWN, LEFT, RIGHT, TOTAL };
   ActorState state = ActorState::DEFAULT;
