@@ -19,9 +19,9 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   json j = json::parse(ifs);
 
   for (auto& f : j) {
-    if (static_cast<bool>(f.count("name")) &&
-        static_cast<bool>(f.count("location")) &&
-        static_cast<bool>(f.count("size"))) {
+    if (f.count("name") &&
+        f.count("location") &&
+        f.count("size")) {
       resource_manager->AddFont(f.find("name").value(),
                                 f.find("location").value(),
                                 f.find("size").value());
@@ -32,14 +32,14 @@ void LoadResources(const std::unique_ptr<SDL2pp::Renderer>& renderer,
   json j2 = json::parse(ifs2);
 
   for (auto& f : j2) {
-    if (static_cast<bool>(f.count("name")) &&
-        static_cast<bool>(f.count("location"))) {
-      if (static_cast<bool>(f.count("alpha")) &&
-          static_cast<bool>(f.count("tint"))) {
+    if (f.count("name") &&
+        f.count("location")) {
+      if (f.count("alpha") &&
+          f.count("tint")) {
         resource_manager->AddSurfaceWithTransparencyAndTint(
             f.find("name").value(), f.find("location").value(),
             TintToSDL_Color(f.find("alpha")), TintToSDL_Color(f.find("tint")));
-      } else if (static_cast<bool>(f.count("alpha"))) {
+      } else if (f.count("alpha")) {
         resource_manager->AddSurfaceWithTransparency(
             f.find("name").value(), f.find("location").value(),
             TintToSDL_Color(f.find("alpha")));

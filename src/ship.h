@@ -14,11 +14,11 @@
 
 class LevelStage;
 
-typedef struct ShipStats {
+struct ShipStats {
   int health = 100;
   int health_max = 100;
   int level = 1;
-} ShipStats;
+};
 
 class Ship : public Actor, public std::enable_shared_from_this<Ship> {
  public:

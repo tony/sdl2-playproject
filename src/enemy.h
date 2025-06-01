@@ -16,11 +16,11 @@
 
 class LevelStage;
 
-typedef struct EnemyStats {
+struct EnemyStats {
   unsigned int health = 2;
   unsigned int health_max = 2;
   unsigned int level = 1;
-} EnemyStats;
+};
 
 class Enemy {
  public:
