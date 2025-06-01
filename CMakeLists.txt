@@ -14,7 +14,7 @@ set(BIN_DIR ${game_SOURCE_DIR}/bin)
 
 # Bump up warning levels appropriately for clang, gcc & msvc and build in debug mode
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU" OR ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -std=c++14")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS} -g")
 	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O2")
 elseif (MSVC)
@@ -56,9 +56,7 @@ file (COPY ${MY_PROJECT_FONTS_RESOURCES} DESTINATION resources/fonts)
 file (GLOB MY_PROJECT_MANIFESTS_RESOURCES resources/manifests/*)
 file (COPY ${MY_PROJECT_MANIFESTS_RESOURCES} DESTINATION resources/manifests)
 
-include_directories("./src")
-include_directories("./vendor/spdlog/include")
-include_directories("./vendor/json/single_include/nlohmann")
+# Target-specific includes will be added below
 
 file (GLOB game_SOURCES src/*.cpp)
 
@@ -73,8 +71,24 @@ if(CMAKE_EXPORT_COMPILE_COMMANDS)
 	set(CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES ${CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES})
 endif()
 
-include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
-
 add_executable(game ${game_SOURCES})
-target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} SDL2pp ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+target_include_directories(game PRIVATE
+	"./src"
+	"./vendor/spdlog/include"
+	"./vendor/json/single_include/nlohmann"
+	${SDL2_INCLUDE_DIR}
+	${SDL2_IMAGE_INCLUDE_DIR}
+	${SDL2_TTF_INCLUDE_DIR}
+	${SDL2PP_INCLUDE_DIRS}
+)
+
+target_link_libraries(game PRIVATE
+	${SDL2_LIBRARY}
+	${SDL2_IMAGE_LIBRARY}
+	${SDL2_TTF_LIBRARY}
+	SDL2pp
+	${SDL2PP_LIBRARIES}
+	${CMAKE_THREAD_LIBS_INIT}
+)
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
