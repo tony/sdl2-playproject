@@ -21,6 +21,21 @@ build_ninja: mkdir_build
 	cd build; cmake -GNinja ..
 	ninja -C build
 
+clean:
+	@if [ -d build ]; then \
+		echo "Cleaning build directory..."; \
+		if [ -f build/build.ninja ]; then \
+			ninja -C build clean; \
+		elif [ -f build/Makefile ]; then \
+			make -C build clean; \
+		fi; \
+		echo "Removing CMake configuration..."; \
+		rm -f build/CMakeCache.txt; \
+		rm -rf build/CMakeFiles; \
+	else \
+		echo "Build directory doesn't exist. Nothing to clean."; \
+	fi
+
 debug: mkdir_build
 	cd build; cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 	make -C build
@@ -62,4 +77,4 @@ install_osx_deps:
 install_ubuntu_deps:
 	sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 
-.PHONY: mkdir_build
+.PHONY: mkdir_build clean
