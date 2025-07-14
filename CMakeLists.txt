@@ -49,6 +49,9 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 find_package(Threads)
 
+# Option to use direct library paths for SDL2
+option(SDL2_LIBRARY_DIRECT "Use direct library paths for SDL2" OFF)
+
 file (GLOB MY_PROJECT_GFX_RESOURCES resources/gfx/*)
 file (COPY ${MY_PROJECT_GFX_RESOURCES} DESTINATION resources/gfx)
 file (GLOB MY_PROJECT_FONTS_RESOURCES resources/fonts/*)
@@ -76,5 +79,29 @@ endif()
 include_directories(${SDL2_INCLUDE_DIR} ${SDL2_IMAGE_INCLUDE_DIR} ${SDL2_TTF_INCLUDE_DIR} ${SDL2PP_INCLUDE_DIRS})
 
 add_executable(game ${game_SOURCES})
-target_link_libraries(game ${SDL2_LIBRARY} ${SDL2_IMAGE_LIBRARY} ${SDL2_TTF_LIBRARY} SDL2pp ${SDL2PP_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+# Use direct paths when SDL2_LIBRARY_DIRECT is ON, otherwise use the found libraries
+if(SDL2_LIBRARY_DIRECT)
+    message(STATUS "Using direct library paths for SDL2")
+    target_link_libraries(game 
+        ${SDL2_MAIN_PATH}
+        ${SDL2_LIB_PATH}
+        ${SDL2_IMAGE_LIBRARY} 
+        ${SDL2_TTF_LIBRARY} 
+        SDL2pp 
+        ${SDL2PP_LIBRARIES} 
+        ${CMAKE_THREAD_LIBS_INIT}
+    )
+else()
+    # Use individual library files instead of the combined SDL2_LIBRARY variable
+    target_link_libraries(game 
+        /usr/lib/x86_64-linux-gnu/libSDL2main.a 
+        /usr/lib/x86_64-linux-gnu/libSDL2.so
+        ${SDL2_IMAGE_LIBRARY} 
+        ${SDL2_TTF_LIBRARY} 
+        SDL2pp 
+        ${SDL2PP_LIBRARIES} 
+        ${CMAKE_THREAD_LIBS_INIT}
+    )
+endif()
 install(TARGETS game RUNTIME DESTINATION ${BIN_DIR})
