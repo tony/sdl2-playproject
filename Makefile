@@ -10,6 +10,9 @@ entr_warn:
 
 all: build
 
+clean:
+	rm -rf build
+
 mkdir_build:
 	-test ! -d ./build && mkdir -p build
 
