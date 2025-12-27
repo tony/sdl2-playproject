@@ -10,40 +10,40 @@ This is a space shooter game built with C++17 using SDL2. The game features a co
 
 ### Standard Build
 ```bash
-make build              # CMake + Make build
-make build_ninja        # CMake + Ninja build (faster)
+just build              # CMake + Make build
+just build-ninja        # CMake + Ninja build (faster)
 ```
 
 ### Debug Build
 ```bash
-make debug              # Debug build with Make
-make debug_ninja        # Debug build with Ninja (recommended)
+just debug              # Debug build with Make
+just debug-ninja        # Debug build with Ninja (recommended)
 ```
 
 ### Run Game
 ```bash
-make run                # Build and run the game
+just run                # Build and run the game
 ./build/game           # Run directly
 ```
 
 ### Code Quality
 ```bash
-make format            # Format code with clang-format (Chromium style)
-make tidy              # Run clang-tidy for static analysis
-make cpplint           # Run cpplint checks
-make cppcheck          # Run cppcheck analysis
+just format            # Format code with clang-format (Chromium style)
+just tidy              # Run clang-tidy for static analysis
+just cpplint           # Run cpplint checks
+just cppcheck          # Run cppcheck analysis
 ```
 
 ### Development Workflow
 ```bash
-make watch_run         # Auto-rebuild and run on file changes (requires entr)
-make watch_debug       # Auto-rebuild debug version on changes
+just watch-run         # Auto-rebuild and run on file changes (requires entr)
+just watch-debug       # Auto-rebuild debug version on changes
 ```
 
 ### Dependencies Installation
 ```bash
-make install_osx_deps     # Install dependencies on macOS
-make install_ubuntu_deps  # Install dependencies on Ubuntu
+just install-osx-deps     # Install dependencies on macOS
+just install-ubuntu-deps  # Install dependencies on Ubuntu
 ```
 
 ## Architecture Overview
