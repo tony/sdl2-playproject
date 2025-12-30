@@ -74,7 +74,7 @@ watch-cpplint:
     #!/usr/bin/env bash
     set -euo pipefail
     if command -v entr > /dev/null; then
-        ${{ watch_files }} | entr -c just cpplint
+        {{ watch_files }} | entr -c just cpplint
     else
         just cpplint
         just _entr-warn
@@ -85,7 +85,7 @@ watch-cppcheck:
     #!/usr/bin/env bash
     set -euo pipefail
     if command -v entr > /dev/null; then
-        ${{ watch_files }} | entr -c just cppcheck
+        {{ watch_files }} | entr -c just cppcheck
     else
         just cppcheck
         just _entr-warn
@@ -96,7 +96,7 @@ watch-debug:
     #!/usr/bin/env bash
     set -euo pipefail
     if command -v entr > /dev/null; then
-        ${{ watch_files }} | entr -c just debug-ninja
+        {{ watch_files }} | entr -c just debug-ninja
     else
         just debug-ninja
         just _entr-warn
@@ -107,7 +107,7 @@ watch-run:
     #!/usr/bin/env bash
     set -euo pipefail
     if command -v entr > /dev/null; then
-        ${{ watch_files }} | entr -c just debug run
+        {{ watch_files }} | entr -c just debug run
     else
         just debug run
         just _entr-warn
