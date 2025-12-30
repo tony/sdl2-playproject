@@ -11,13 +11,13 @@
 
 class LevelStage;
 
-typedef struct BulletStats {
+struct BulletStats {
   int speed = 1;
   int size = 1;
   int rate = 1;
   int damage = 1;
   bool knockback = false;
-} BulletStats;
+};
 
 class Bullet : public Actor {
  public:

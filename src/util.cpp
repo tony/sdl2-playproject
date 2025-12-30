@@ -46,15 +46,17 @@ std::shared_ptr<SDL2pp::Texture> DrawText(
 }
 
 int RandInt(int lo, int hi) {
-  std::random_device rd;
-  std::mt19937 mt(rd());
+  thread_local std::random_device rd;
+  thread_local std::mt19937 mt(rd());
   std::uniform_int_distribution<int> dist(lo, hi);
   return dist(mt);
 }
 
 float RandFloat(float lo, float hi) {
-  return lo + static_cast<float>(random()) /
-                  (static_cast<float>(RAND_MAX / (hi - lo)));
+  thread_local std::random_device rd;
+  thread_local std::mt19937 mt(rd());
+  std::uniform_real_distribution<float> dist(lo, hi);
+  return dist(mt);
 }
 
 SDL2pp::Rect TintToSDL_Rect(json::iterator o) {

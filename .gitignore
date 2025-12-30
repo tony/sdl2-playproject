@@ -5,3 +5,10 @@ cmake-build-debug/
 *.core
 *.swp
 .vscode/
+
+# Claude code
+**/CLAUDE.local.md
+**/.claude/settings.local.json
+
+# Symlinks to codebases for easy access by AI Agents
+.refs/
